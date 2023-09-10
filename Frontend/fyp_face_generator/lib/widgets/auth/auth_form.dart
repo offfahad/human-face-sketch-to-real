@@ -1,36 +1,43 @@
-
-
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFn);
 
-  final void Function(String email, String password, String username, bool isLogin) submitFn; 
+  final void Function(
+    String email,
+    String password,
+    String username,
+    bool isLogin,
+    BuildContext ctx,
+  ) submitFn;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
-
   final _formKey = GlobalKey<FormState>();
   var _isLogin = true;
 
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
-  
 
-  void _trySubmit(){
+  void _trySubmit() {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
-    if(isValid){
+    if (isValid) {
       _formKey.currentState.save();
-      print(_userEmail);
-      print(_userName);
-      print(_userPassword);
+      widget.submitFn(
+        _userEmail.trim(),
+        _userName.trim(),
+        _userPassword.trim(),
+        _isLogin,
+        context,
+      );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -46,42 +53,42 @@ class _AuthFormState extends State<AuthForm> {
                 children: <Widget>[
                   TextFormField(
                     key: ValueKey('emai l'),
-                    validator: (value){
-                      if(value.isEmpty || !value.contains('@gmail.com')){
+                    validator: (value) {
+                      if (value.isEmpty || !value.contains('@gmail.com')) {
                         return 'Please enter a valid email address';
                       }
                       return null;
                     },
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(labelText: 'Email Address'),
-                    onSaved: (value){
+                    onSaved: (value) {
                       _userEmail = value;
                     },
                   ),
-                  if(!_isLogin)
-                  TextFormField(
-                    key: ValueKey('username'),
-                    validator: (value){
-                      if(value.isEmpty || value.length<4){
-                        return 'Please enter at least 4 characters';
-                      }
-                    },
-                    decoration: InputDecoration(labelText: 'Username'),
-                    onSaved: (value){
-                      _userName = value;
-                    },
-                  ),
+                  if (!_isLogin)
+                    TextFormField(
+                      key: ValueKey('username'),
+                      validator: (value) {
+                        if (value.isEmpty || value.length < 4) {
+                          return 'Please enter at least 4 characters';
+                        }
+                      },
+                      decoration: InputDecoration(labelText: 'Username'),
+                      onSaved: (value) {
+                        _userName = value;
+                      },
+                    ),
                   TextFormField(
                     key: ValueKey('password'),
-                    validator: (value){
-                      if(value.isEmpty || value.length<7){
+                    validator: (value) {
+                      if (value.isEmpty || value.length < 7) {
                         return 'Password must be at least 7 characters long';
                       }
                       return null;
                     },
                     decoration: InputDecoration(labelText: 'Password'),
                     obscureText: true,
-                    onSaved: (value){
+                    onSaved: (value) {
                       _userPassword = value;
                     },
                   ),
@@ -93,13 +100,14 @@ class _AuthFormState extends State<AuthForm> {
                     onPressed: _trySubmit,
                   ),
                   FlatButton(
-                    child: Text(_isLogin ? 'Create new account' : 'I already have an account'),
-                    onPressed: (){
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    }
-                  ),
+                      child: Text(_isLogin
+                          ? 'Create new account'
+                          : 'I already have an account'),
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      }),
                 ],
               ),
             ),

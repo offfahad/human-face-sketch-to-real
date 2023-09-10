@@ -33,6 +33,7 @@ dependencies:
   splashscreen:
   image_gallery_saver: '^1.6.8'
   cloud_firestore: ^0.13.5
+  firebase_auth: ^0.16.0
 
 dev_dependencies:
   flutter_test:

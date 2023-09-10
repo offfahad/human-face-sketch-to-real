@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp_face_generator/screens/auth_screen.dart';
 import 'package:splashscreen/splashscreen.dart';
 import './home.dart';
 
@@ -12,7 +13,7 @@ class _MySplashState extends State<MySplash> {
   Widget build(BuildContext context) {
     return SplashScreen(
       seconds: 3,
-      navigateAfterSeconds: Home(),
+      navigateAfterSeconds: AuthScreen(),
       title: const Text(
         'Face Generator App',
         style: TextStyle(

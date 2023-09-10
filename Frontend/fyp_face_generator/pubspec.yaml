@@ -32,6 +32,7 @@ dependencies:
   cached_network_image:
   splashscreen:
   image_gallery_saver: '^1.6.8'
+  cloud_firestore: ^0.13.5
 
 dev_dependencies:
   flutter_test:

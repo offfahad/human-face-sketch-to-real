@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "124497545395",
+    "project_id": "facegenerator-28ce4",
+    "storage_bucket": "facegenerator-28ce4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124497545395:android:628cd5a4f15a29627448c6",
+        "android_client_info": {
+          "package_name": "com.example.fyp_face_generator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp5O15p3YVB__6n5gAp_yQLI_-X2pZX-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

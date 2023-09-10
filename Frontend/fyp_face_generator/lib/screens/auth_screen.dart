@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fyp_face_generator/widgets/auth/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:fyp_face_generator/widgets/auth/auth_form.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  _AuthScreenState createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
@@ -21,6 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
     BuildContext ctx,
   ) async {
     AuthResult authResult;
+
     try {
       setState(() {
         _isLoading = true;
@@ -44,19 +46,24 @@ class _AuthScreenState extends State<AuthScreen> {
         });
       }
     } on PlatformException catch (err) {
-      var message = 'An error occurred, please check your credentials!';
+      var message = 'An error occurred, pelase check your credentials!';
+
       if (err.message != null) {
         message = err.message;
       }
+
       Scaffold.of(ctx).showSnackBar(
         SnackBar(
           content: Text(message),
           backgroundColor: Theme.of(ctx).errorColor,
         ),
       );
+      setState(() {
+        _isLoading = false;
+      });
     } catch (err) {
       print(err);
-        setState(() {
+      setState(() {
         _isLoading = false;
       });
     }
@@ -65,7 +72,11 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: AuthForm(_submitAuthForm, _isLoading));
+      backgroundColor: Theme.of(context).primaryColor,
+      body: AuthForm(
+        _submitAuthForm,
+        _isLoading,
+      ),
+    );
   }
 }

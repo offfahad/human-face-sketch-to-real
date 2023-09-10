@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp_face_generator/screens/auth_screen.dart';
 import 'package:splashscreen/splashscreen.dart';
 import './home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MySplash extends StatefulWidget {
   @override
@@ -13,10 +14,18 @@ class _MySplashState extends State<MySplash> {
   Widget build(BuildContext context) {
     return SplashScreen(
       seconds: 3,
-      navigateAfterSeconds: AuthScreen(),
+      navigateAfterSeconds: StreamBuilder(
+        stream: FirebaseAuth.instance.onAuthStateChanged,
+        builder: (ctx, userSnapshot) {
+          if (userSnapshot.hasData) {
+            return Home();
+          }
+          return AuthScreen();
+        },
+      ),
       title: const Text(
         'Face Generator App',
-        style: TextStyle(
+        style: TextStyle( 
             fontWeight: FontWeight.bold, fontSize: 35, color: Colors.white),
       ),
       gradientBackground: const LinearGradient(

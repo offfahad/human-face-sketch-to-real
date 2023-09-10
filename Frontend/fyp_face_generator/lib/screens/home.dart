@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp_face_generator/models/drawingarea.dart';
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -78,128 +79,158 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                Color.fromRGBO(255, 255, 255, 1.0),
-                Color.fromRGBO(255, 255, 255, 1.0),
-                Color.fromRGBO(255, 255, 255, 1.0)
-              ])),
-        ),
-        Center(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Container(
-                  width: 256,
-                  height: 256,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.4),
-                            blurRadius: 510,
-                            spreadRadius: 1)
-                      ]),
-                  child: GestureDetector(
-                    onPanDown: (details) {
-                      this.setState(() {
-                        points.add(DrawingArea(
-                            point: details.localPosition,
-                            areaPaint: Paint()
-                              ..strokeCap = StrokeCap.round
-                              ..isAntiAlias = true
-                              ..color = Colors.white
-                              ..strokeWidth = 2.0));
-                      });
-                    },
-                    onPanUpdate: (details) {
-                      this.setState(() {
-                        points.add(DrawingArea(
-                            point: details.localPosition,
-                            areaPaint: Paint()
-                              ..strokeCap = StrokeCap.round
-                              ..isAntiAlias = true
-                              ..color = Colors.white
-                              ..strokeWidth = 2.0));
-                      });
-                    },
-                    onPanEnd: (details) {
-                      saveToImage(points);
-                      this.setState(
-                        () {
-                          points.add(null);
-                        },
-                      );
-                    },
-                    child: SizedBox.expand(
-                        child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: CustomPaint(
-                        painter: MyCustomPainter(points: points),
-                      ),
-                    )),
-                  ),
-                )),
-            Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      points.clear();
-                    });
-                  },
-                  child: Text('Clear Input'),
-                )),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Container(
-                child: Center(
-                  child: Container(
-                    height: 256,
-                    width: 256,
-                    child: imageOutput,
-                  ),
-                ),
+        appBar: AppBar(
+          title: Text('Draw Face Sketch'),
+          actions: [
+            DropdownButton(
+              icon: Icon(
+                Icons.more_vert,
+                color: Theme.of(context).primaryIconTheme.color,
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Visibility(
-                  visible: imageOutput != null,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        imageOutput = null;
-                      });
-                    },
-                    child: Text('Clear Output'),
+              items: [
+                DropdownMenuItem(
+                  child: Container(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.exit_to_app),
+                        SizedBox(width: 8),
+                        Text('Logout'),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(width: 20.0),
-                Visibility(
-                  visible: imageOutput != null,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Save Image'),
-                  ),
-                ),
+                  value: 'logout',
+                )
               ],
+              onChanged: (itemIdentifier){
+                if(itemIdentifier == 'logout'){
+                  FirebaseAuth.instance.signOut();
+                } 
+              },
             ),
           ],
-        ))
-      ],
-    ));
+        ),
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                    Color.fromRGBO(255, 255, 255, 1.0),
+                    Color.fromRGBO(255, 255, 255, 1.0),
+                    Color.fromRGBO(255, 255, 255, 1.0)
+                  ])),
+            ),
+            Center(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 256,
+                      height: 256,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.4),
+                                blurRadius: 510,
+                                spreadRadius: 1)
+                          ]),
+                      child: GestureDetector(
+                        onPanDown: (details) {
+                          this.setState(() {
+                            points.add(DrawingArea(
+                                point: details.localPosition,
+                                areaPaint: Paint()
+                                  ..strokeCap = StrokeCap.round
+                                  ..isAntiAlias = true
+                                  ..color = Colors.white
+                                  ..strokeWidth = 2.0));
+                          });
+                        },
+                        onPanUpdate: (details) {
+                          this.setState(() {
+                            points.add(DrawingArea(
+                                point: details.localPosition,
+                                areaPaint: Paint()
+                                  ..strokeCap = StrokeCap.round
+                                  ..isAntiAlias = true
+                                  ..color = Colors.white
+                                  ..strokeWidth = 2.0));
+                          });
+                        },
+                        onPanEnd: (details) {
+                          saveToImage(points);
+                          this.setState(
+                            () {
+                              points.add(null);
+                            },
+                          );
+                        },
+                        child: SizedBox.expand(
+                            child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          child: CustomPaint(
+                            painter: MyCustomPainter(points: points),
+                          ),
+                        )),
+                      ),
+                    )),
+                Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          points.clear();
+                        });
+                      },
+                      child: Text('Clear Input'),
+                    )),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Container(
+                    child: Center(
+                      child: Container(
+                        height: 256,
+                        width: 256,
+                        child: imageOutput,
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Visibility(
+                      visible: imageOutput != null,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            imageOutput = null;
+                          });
+                        },
+                        child: Text('Clear Output'),
+                      ),
+                    ),
+                    SizedBox(width: 20.0),
+                    Visibility(
+                      visible: imageOutput != null,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: Text('Save Image'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ))
+          ],
+        ));
   }
 }

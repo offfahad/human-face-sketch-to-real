@@ -128,7 +128,7 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.only(bottom: 20),
                     child: Container(
                       width: 256,
                       height: 256,
@@ -138,7 +138,7 @@ class _HomeState extends State<Home> {
                           ),
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.black.withOpacity(0.4),
+                                color: Colors.black.withOpacity(0.0),
                                 blurRadius: 510,
                                 spreadRadius: 1)
                           ]),
@@ -151,7 +151,7 @@ class _HomeState extends State<Home> {
                                   ..strokeCap = StrokeCap.round
                                   ..isAntiAlias = true
                                   ..color = Colors.white
-                                  ..strokeWidth = 2.0));
+                                  ..strokeWidth = 1.0));
                           });
                         },
                         onPanUpdate: (details) {
@@ -175,23 +175,43 @@ class _HomeState extends State<Home> {
                         },
                         child: SizedBox.expand(
                             child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderRadius: BorderRadius.all(Radius.circular(0)),
                           child: CustomPaint(
                             painter: MyCustomPainter(points: points),
                           ),
                         )),
                       ),
                     )),
-                Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          points.clear();
-                        });
-                      },
-                      child: Text('Clear Input'),
-                    )),
+                // Padding(
+                //     padding: EdgeInsets.all(8.0),
+                //     child: ElevatedButton(
+                //       onPressed: () {
+                //         setState(() {
+                //           points.clear();
+                //         });
+                //       },
+                //       child: Text('Clear Input'),
+                //     )),
+                Container(
+                  width: MediaQuery.of(context).size.width*0.62,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.all(Radius.circular(0),),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.black,),
+                        onPressed: (){
+                          this.setState(() {
+                            points.clear();
+                          });
+                        }),
+                        IconButton(icon: Icon(Icons.image), onPressed: null)
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Container(

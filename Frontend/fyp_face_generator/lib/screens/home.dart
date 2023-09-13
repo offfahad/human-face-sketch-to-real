@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp_face_generator/models/drawingarea.dart';
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,6 +17,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<DrawingArea> points = [];
   Widget imageOutput;
+  Widget img1;
+  bool isSavedPressed = false;
+  var listBytes;
 
   void saveToImage(List<DrawingArea> points) async {
     final recorder = ui.PictureRecorder();
@@ -37,16 +43,17 @@ class _HomeState extends State<Home> {
     final img = await picture.toImage(256, 256);
 
     final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
-    final listBytes = Uint8List.view(pngBytes.buffer);
+    listBytes = Uint8List.view(pngBytes.buffer);
 
-    //File file = await writeBytes(listBytes);
+    //File image = await writeBytes(listBytes);
     String base64 = base64Encode(listBytes);
+    //saveImageToGallery(listBytes);
     fetchResponse(base64);
   }
 
   void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
-    var url = Uri.parse("http://192.168.1.100:5000/predict");
+    var url = Uri.parse("http://192.168.52.132:5000/predict");
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -76,6 +83,68 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void loadImage(File file) {
+    if (file != null) {
+      img1 = Image.file(file);
+    } else {
+      setState(() {
+        img1 = null;
+      });
+    }
+  }
+
+  Future<String> fileToBase64(File file) async {
+    List<int> bytes = await file.readAsBytes();
+    return base64Encode(bytes);
+  }
+
+  void pickImage() async {
+    File file = await FilePicker.getFile();
+    loadImage(file);
+    var base64String = await fileToBase64(file);
+    fetchResponse(base64String);
+  }
+
+  void showImageSavedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Image Saved'),
+          content: Text('Image Stored In Gallery.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+    void showImageNotSavedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('No Sketch Found'),
+          content: Text('Draw A Sketch First.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,10 +170,10 @@ class _HomeState extends State<Home> {
                   value: 'logout',
                 )
               ],
-              onChanged: (itemIdentifier){
-                if(itemIdentifier == 'logout'){
+              onChanged: (itemIdentifier) {
+                if (itemIdentifier == 'logout') {
                   FirebaseAuth.instance.signOut();
-                } 
+                }
               },
             ),
           ],
@@ -128,7 +197,7 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                    padding: EdgeInsets.only(bottom: 25),
+                    padding: EdgeInsets.only(bottom: 15),
                     child: Container(
                       width: 256,
                       height: 256,
@@ -193,34 +262,60 @@ class _HomeState extends State<Home> {
                 //       child: Text('Clear Input'),
                 //     )),
                 Container(
-                  width: MediaQuery.of(context).size.width*0.62,
+                  width: MediaQuery.of(context).size.width * 0.62,
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(0),),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(0),
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.delete, color: Colors.black,),
-                        onPressed: (){
-                          this.setState(() {
-                            points.clear();
-                          });
-                        }),
-                        IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            this.setState(() {
+                              points.clear();
+                            });
+                          }),
+                      IconButton(
                           icon: Icon(
                             Icons.image,
                             color: Colors.black,
-                            ), 
-                          onPressed: null
                           ),
-                        IconButton(icon: Icon(Icons.save, color: Colors.black,), onPressed: null)
+                          onPressed: pickImage,
+                          ),
+                      IconButton(
+                          icon: Icon(
+                            Icons.save,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              if (points.isNotEmpty) {
+                                final result = ImageGallerySaver.saveImage(
+                                    Uint8List.fromList(listBytes));
+                                if (result != null) {
+                                  print('Image Stored Sucessfully');
+                                  showImageSavedDialog(context);
+                                } else {
+                                  print('Error image is not stored');
+                                }
+                              }
+                              else{
+                                showImageNotSavedDialog(context);
+                              }
+                            });
+                          })
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: EdgeInsets.symmetric(vertical: 20.0),
                   child: Container(
                     child: Center(
                       child: Container(
@@ -231,36 +326,39 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-              Visibility(
-                visible: imageOutput != null,
-                child: Container(
-                  width: MediaQuery.of(context).size.width*0.62,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(0),),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.delete, color: Colors.black,),
-                        onPressed: (){
-                          this.setState(() {
-                            imageOutput = null;
-                          });
-                        }),
+                Visibility(
+                  visible: imageOutput != null,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.62,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(0),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         IconButton(
-                          icon: Icon(
-                            Icons.image,
-                            color: Colors.black,
-                            ), 
-                          onPressed: null
-                          ),
-                        IconButton(icon: Icon(Icons.save, color: Colors.black,), onPressed: null)
-                    ],
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              this.setState(() {
+                                imageOutput = null;
+                              });
+                            }),
+                        IconButton(
+                            icon: Icon(
+                              Icons.save,
+                              color: Colors.black,
+                            ),
+                            onPressed: null)
+                      ],
+                    ),
                   ),
-                ),
-              )
+                )
               ],
             ))
           ],

@@ -9,6 +9,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="fyp_face_generator"
         android:icon="@mipmap/ic_launcher">
+        <application android:requestLegacyExternalStorage="true" .....>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

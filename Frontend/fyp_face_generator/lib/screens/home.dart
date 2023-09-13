@@ -128,7 +128,7 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                    padding: EdgeInsets.only(bottom: 20),
+                    padding: EdgeInsets.only(bottom: 25),
                     child: Container(
                       width: 256,
                       height: 256,
@@ -208,7 +208,14 @@ class _HomeState extends State<Home> {
                             points.clear();
                           });
                         }),
-                        IconButton(icon: Icon(Icons.image), onPressed: null)
+                        IconButton(
+                          icon: Icon(
+                            Icons.image,
+                            color: Colors.black,
+                            ), 
+                          onPressed: null
+                          ),
+                        IconButton(icon: Icon(Icons.save, color: Colors.black,), onPressed: null)
                     ],
                   ),
                 ),
@@ -224,30 +231,36 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Visibility(
-                      visible: imageOutput != null,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
+              Visibility(
+                visible: imageOutput != null,
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.62,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.all(Radius.circular(0),),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.black,),
+                        onPressed: (){
+                          this.setState(() {
                             imageOutput = null;
                           });
-                        },
-                        child: Text('Clear Output'),
-                      ),
-                    ),
-                    SizedBox(width: 20.0),
-                    Visibility(
-                      visible: imageOutput != null,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text('Save Image'),
-                      ),
-                    ),
-                  ],
+                        }),
+                        IconButton(
+                          icon: Icon(
+                            Icons.image,
+                            color: Colors.black,
+                            ), 
+                          onPressed: null
+                          ),
+                        IconButton(icon: Icon(Icons.save, color: Colors.black,), onPressed: null)
+                    ],
+                  ),
                 ),
+              )
               ],
             ))
           ],

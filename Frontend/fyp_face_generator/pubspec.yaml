@@ -36,6 +36,7 @@ dependencies:
   firebase_auth: ^0.16.0
   file_picker: ^1.13.0+1
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

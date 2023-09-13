@@ -287,7 +287,7 @@ class _HomeState extends State<Home> {
                             Icons.image,
                             color: Colors.black,
                           ),
-                          onPressed: pickImage,
+                          onPressed: pickImage
                           ),
                       IconButton(
                           icon: Icon(

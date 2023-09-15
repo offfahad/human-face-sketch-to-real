@@ -20,8 +20,6 @@ class _HomeState extends State<Home> {
   Widget img1;
   bool isSavedPressed = false;
   var listBytes;
-  var sketchSavedMessage = "Sketch Image Saved To Gallary";
-  var noSketchMessage = "No Sketch Found To Save";  
 
   void saveToImage(List<DrawingArea> points) async {
     final recorder = ui.PictureRecorder();
@@ -96,8 +94,11 @@ class _HomeState extends State<Home> {
   }
 
   Future<String> fileToBase64(File file) async {
-    List<int> bytes = await file.readAsBytes();
-    return base64Encode(bytes);
+    if(file!=null){
+      List<int> bytes = await file.readAsBytes();
+      return base64Encode(bytes);
+    }
+    return null;
   }
 
   void pickImage() async {
@@ -253,16 +254,6 @@ class _HomeState extends State<Home> {
                         )),
                       ),
                     )),
-                // Padding(
-                //     padding: EdgeInsets.all(8.0),
-                //     child: ElevatedButton(
-                //       onPressed: () {
-                //         setState(() {
-                //           points.clear();
-                //         });
-                //       },
-                //       child: Text('Clear Input'),
-                //     )),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.62,
                   decoration: BoxDecoration(
@@ -301,31 +292,12 @@ class _HomeState extends State<Home> {
                                 final result = ImageGallerySaver.saveImage(
                                     Uint8List.fromList(listBytes));
                                 if (result != null) {
-                                  //print('Image Stored Sucessfully');
-                                  //showImageSavedDialog(context);
-                                  Scaffold.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(sketchSavedMessage),
-                                      backgroundColor: Theme.of(context).primaryColor,
-                                    ),
-                                  );
+                                  showImageSavedDialog(context);
                                 } else {
-                                  //print('Error image is not stored');
-                                    Scaffold.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(noSketchMessage),
-                                      backgroundColor: Theme.of(context).primaryColor,
-                                    ),
-                                  );
+                                  showImageNotSavedDialog(context);
                                 }
                               } else {
-                                //showImageNotSavedDialog(context);
-                                    Scaffold.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(noSketchMessage),
-                                      backgroundColor: Theme.of(context).primaryColor,
-                                    ),
-                                  );
+                                showImageNotSavedDialog(context);
                               }
                             });
                           })

@@ -20,6 +20,7 @@ class _HomeState extends State<Home> {
   Widget img1;
   bool isSavedPressed = false;
   var listBytes;
+  Uint8List convertedBytes;
 
   void saveToImage(List<DrawingArea> points) async {
     final recorder = ui.PictureRecorder();
@@ -74,7 +75,7 @@ class _HomeState extends State<Home> {
   }
 
   void displayResponseImage(String bytes) async {
-    Uint8List convertedBytes = base64Decode(bytes);
+    convertedBytes = base64Decode(bytes);
     setState(() {
       imageOutput = Container(
           width: 256,
@@ -94,7 +95,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<String> fileToBase64(File file) async {
-    if(file!=null){
+    if (file != null) {
       List<int> bytes = await file.readAsBytes();
       return base64Encode(bytes);
     }
@@ -344,7 +345,21 @@ class _HomeState extends State<Home> {
                               Icons.save,
                               color: Colors.black,
                             ),
-                            onPressed: null)
+                            onPressed: () {
+                              setState(() {
+                                if (convertedBytes.isNotEmpty) {
+                                  final result = ImageGallerySaver.saveImage(
+                                      Uint8List.fromList(convertedBytes));
+                                  if (result != null) {
+                                    showImageSavedDialog(context);
+                                  } else {
+                                    showImageNotSavedDialog(context);
+                                  }
+                                } else {
+                                  showImageNotSavedDialog(context);
+                                }
+                              });
+                            })
                       ],
                     ),
                   ),

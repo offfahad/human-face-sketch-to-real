@@ -211,7 +211,7 @@ class _HomeState extends State<Home> {
                           ),
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.black.withOpacity(0.0),
+                                color: Colors.black.withOpacity(0.4),
                                 blurRadius: 510,
                                 spreadRadius: 1)
                           ]),

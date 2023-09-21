@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:face_generator_fyp/drawingarea.dart';
+import 'package:face_generator_fyp/models/drawingArea.dart';
+import 'package:face_generator_fyp/widgets/custom_painter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
 

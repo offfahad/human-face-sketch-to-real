@@ -1,12 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-
-class DrawingArea {
-  Offset? point;
-  Paint areaPaint;
-
-  DrawingArea({this.point, required this.areaPaint});
-}
+import 'package:face_generator_fyp/models/drawingArea.dart';
 
 class MyCustomPainter extends CustomPainter {
   List<DrawingArea?> points;

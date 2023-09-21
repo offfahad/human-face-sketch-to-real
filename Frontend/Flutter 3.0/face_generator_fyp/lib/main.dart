@@ -1,4 +1,4 @@
-import 'package:face_generator_fyp/home.dart';
+import 'package:face_generator_fyp/screens/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {

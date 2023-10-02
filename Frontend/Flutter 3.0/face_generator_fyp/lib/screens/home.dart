@@ -17,6 +17,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<DrawingArea?> points = [];
   Widget imageOutput = Container();
+  bool isErasing = false;
 
   void saveToImage(List<DrawingArea?> points) async {
     final recorder = ui.PictureRecorder();
@@ -50,7 +51,7 @@ class _HomeState extends State<Home> {
 
   void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
-    var url = Uri.parse("http://192.168.1.132:5000/predict");
+    var url = Uri.parse("http://192.168.47.56:5000/predict");
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -125,7 +126,7 @@ class _HomeState extends State<Home> {
                             areaPaint: Paint()
                               ..strokeCap = StrokeCap.round
                               ..isAntiAlias = true
-                              ..color = Colors.white
+                              ..color = isErasing ? Colors.black : Colors.white
                               ..strokeWidth = 2.0));
                       });
                     },
@@ -136,7 +137,7 @@ class _HomeState extends State<Home> {
                             areaPaint: Paint()
                               ..strokeCap = StrokeCap.round
                               ..isAntiAlias = true
-                              ..color = Colors.white
+                              ..color = isErasing ? Colors.black : Colors.white
                               ..strokeWidth = 2.0));
                       });
                     },
@@ -159,13 +160,28 @@ class _HomeState extends State<Home> {
                 )),
             Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      points.clear();
-                    });
-                  },
-                  child: const Text('Clear Input', style: TextStyle(color: Colors.black),),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          points.clear();
+                        });
+                      },
+                      child: const Text('Clear Input', style: TextStyle(color: Colors.black),),
+                    ),
+                    const SizedBox(width: 20.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          isErasing = !isErasing;
+                        });
+                      },
+                      child: Text(isErasing ? 'Draw' : 'Erase', style: const TextStyle(color: Colors.black),),
+                    ),
+                  ],
+
                 )),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),

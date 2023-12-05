@@ -21,8 +21,8 @@ class _HomeState extends State<Home> {
 
   void saveToImage(List<DrawingArea?> points) async {
     final recorder = ui.PictureRecorder();
-    final canvas =
-        Canvas(recorder, Rect.fromPoints(const Offset(0.0, 0.0), const Offset(200, 200)));
+    final canvas = Canvas(recorder,
+        Rect.fromPoints(const Offset(0.0, 0.0), const Offset(200, 200)));
     Paint paint = Paint()
       ..color = Colors.white
       ..strokeCap = StrokeCap.round
@@ -33,11 +33,10 @@ class _HomeState extends State<Home> {
     canvas.drawRect(const Rect.fromLTWH(0, 0, 256, 256), paint2);
 
     for (int i = 0; i < points.length - 1; i++) {
-      if (points[i] != null && points[i + 1] != null)
-        {
-          canvas.drawLine(points[i]!.point!, points[i + 1]!.point!, paint);
-        }
+      if (points[i] != null && points[i + 1] != null) {
+        canvas.drawLine(points[i]!.point!, points[i + 1]!.point!, paint);
       }
+    }
     final picture = recorder.endRecording();
     final img = await picture.toImage(256, 256);
 
@@ -48,6 +47,7 @@ class _HomeState extends State<Home> {
     String base64 = base64Encode(listBytes);
     fetchResponse(base64);
   }
+
 
   void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
@@ -166,10 +166,30 @@ class _HomeState extends State<Home> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
+                          if (points.isNotEmpty) {
+                            points.removeLast();
+                          }
+                          //points.add(null);
+                        });
+                      },
+                      child: const Text(
+                        'Remove Last',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
                           points.clear();
                         });
                       },
-                      child: const Text('Clear Input', style: TextStyle(color: Colors.black),),
+                      child: const Text(
+                        'Clear Input',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                     const SizedBox(width: 20.0),
                     ElevatedButton(
@@ -178,10 +198,12 @@ class _HomeState extends State<Home> {
                           isErasing = !isErasing;
                         });
                       },
-                      child: Text(isErasing ? 'Draw' : 'Erase', style: const TextStyle(color: Colors.black),),
+                      child: Text(
+                        isErasing ? 'Draw' : 'Erase',
+                        style: const TextStyle(color: Colors.black),
+                      ),
                     ),
                   ],
-
                 )),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -205,7 +227,8 @@ class _HomeState extends State<Home> {
                         imageOutput = Container();
                       });
                     },
-                    child: const Text('Clear Output', style: TextStyle(color: Colors.black)),
+                    child: const Text('Clear Output',
+                        style: TextStyle(color: Colors.black)),
                   ),
                 ),
                 const SizedBox(width: 20.0),
@@ -214,7 +237,8 @@ class _HomeState extends State<Home> {
                   visible: imageOutput != null,
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: const Text('Save Image', style: TextStyle(color: Colors.black)),
+                    child: const Text('Save Image',
+                        style: TextStyle(color: Colors.black)),
                   ),
                 ),
               ],

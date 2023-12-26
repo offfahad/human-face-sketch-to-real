@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
 
   void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
-    var url = Uri.parse("http://192.168.47.56:5000/predict");
+    var url = Uri.parse("http://192.168.16.56:5000/predict");
 
     Map<String, String> headers = {
       'Content-type': 'application/json',

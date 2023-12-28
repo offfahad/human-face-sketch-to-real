@@ -9,7 +9,7 @@ class MyCustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint background = Paint()..color = Colors.black;
+    Paint background = Paint()..color = Colors.white;
     Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
     canvas.drawRect(rect, background);
     canvas.clipRect(rect);

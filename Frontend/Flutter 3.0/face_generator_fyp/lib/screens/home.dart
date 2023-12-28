@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
 
   void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
-    var url = Uri.parse("http://192.168.16.56:5000/predict");
+    var url = Uri.parse("http://192.168.7.56:5000/predict");
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -93,9 +93,9 @@ class _HomeState extends State<Home> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                Color.fromRGBO(255, 255, 255, 1.0),
-                Color.fromRGBO(255, 255, 255, 1.0),
-                Color.fromRGBO(255, 255, 255, 1.0)
+                Color.fromRGBO(0, 0, 0, 1),
+                Color.fromRGBO(0, 0, 0, 1),
+                Color.fromRGBO(0, 0, 0, 1)
               ])),
         ),
         Center(
@@ -126,8 +126,8 @@ class _HomeState extends State<Home> {
                             areaPaint: Paint()
                               ..strokeCap = StrokeCap.round
                               ..isAntiAlias = true
-                              ..color = isErasing ? Colors.black : Colors.white
-                              ..strokeWidth = 2.0));
+                              ..color = isErasing ? Colors.white : Colors.black
+                              ..strokeWidth = 1.0));
                       });
                     },
                     onPanUpdate: (details) {
@@ -137,8 +137,8 @@ class _HomeState extends State<Home> {
                             areaPaint: Paint()
                               ..strokeCap = StrokeCap.round
                               ..isAntiAlias = true
-                              ..color = isErasing ? Colors.black : Colors.white
-                              ..strokeWidth = 2.0));
+                              ..color = isErasing ? Colors.white : Colors.black
+                              ..strokeWidth = 1.0));
                       });
                     },
                     onPanEnd: (details) {

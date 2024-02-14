@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<DrawingArea?> points = [];
+  List<DrawingArea?> drawingPoints = [];
   Widget imageOutput = Container();
   bool isErasing = false;
 
@@ -24,12 +24,12 @@ class _HomeState extends State<Home> {
     final canvas = Canvas(recorder,
         Rect.fromPoints(const Offset(0.0, 0.0), const Offset(200, 200)));
     Paint paint = Paint()
-      ..color = Colors.white
+      ..color = Colors.black
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 2.0;
     final paint2 = Paint()
       ..style = PaintingStyle.fill
-      ..color = Colors.black;
+      ..color = Colors.white;
     canvas.drawRect(const Rect.fromLTWH(0, 0, 256, 256), paint2);
 
     for (int i = 0; i < points.length - 1; i++) {
@@ -93,9 +93,9 @@ class _HomeState extends State<Home> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                Color.fromRGBO(0, 0, 0, 1),
-                Color.fromRGBO(0, 0, 0, 1),
-                Color.fromRGBO(0, 0, 0, 1)
+                Color.fromRGBO(80, 59, 59, 1),
+                Color.fromRGBO(121, 201, 154, 1),
+                Color.fromRGBO(168, 168, 168, 1)
               ])),
         ),
         Center(
@@ -121,7 +121,7 @@ class _HomeState extends State<Home> {
                   child: GestureDetector(
                     onPanDown: (details) {
                       setState(() {
-                        points.add(DrawingArea(
+                        drawingPoints.add(DrawingArea(
                             point: details.localPosition,
                             areaPaint: Paint()
                               ..strokeCap = StrokeCap.round
@@ -132,7 +132,7 @@ class _HomeState extends State<Home> {
                     },
                     onPanUpdate: (details) {
                       setState(() {
-                        points.add(DrawingArea(
+                        drawingPoints.add(DrawingArea(
                             point: details.localPosition,
                             areaPaint: Paint()
                               ..strokeCap = StrokeCap.round
@@ -142,10 +142,10 @@ class _HomeState extends State<Home> {
                       });
                     },
                     onPanEnd: (details) {
-                      saveToImage(points);
+                      saveToImage(drawingPoints);
                       setState(
                         () {
-                          points.add(null);
+                          drawingPoints.add(null);
                         },
                       );
                     },
@@ -153,7 +153,7 @@ class _HomeState extends State<Home> {
                         child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(20)),
                       child: CustomPaint(
-                        painter: MyCustomPainter(points: points),
+                        painter: MyCustomPainter(points: drawingPoints),
                       ),
                     )),
                   ),
@@ -166,14 +166,14 @@ class _HomeState extends State<Home> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          if (points.isNotEmpty) {
-                            points.removeLast();
+                          if (drawingPoints.isNotEmpty) {
+                            drawingPoints.removeLast();
                           }
                           //points.add(null);
                         });
                       },
                       child: const Text(
-                        'Remove Last',
+                        'Undo',
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
@@ -183,7 +183,7 @@ class _HomeState extends State<Home> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          points.clear();
+                          drawingPoints.clear();
                         });
                       },
                       child: const Text(

@@ -21,9 +21,6 @@ class DrawingRoomScreen extends StatefulWidget {
 class _DrawingRoomScreenState extends State<DrawingRoomScreen> {
   var historyDrawingPoints = <DrawingPoint>[];
   var drawingPoints = <DrawingPoint>[];
-
-  var selectedColor = Colors.black;
-  var selectedWidth = 2.0;
   DrawingPoint? currentDrawingPoint;
 
   Widget imageOutput = Container();
@@ -31,12 +28,26 @@ class _DrawingRoomScreenState extends State<DrawingRoomScreen> {
   final ImagePicker picker = ImagePicker();
   File? image;
 
+  var avaiableColor = [
+    Colors.black,
+    Colors.red,
+    Colors.amber,
+    Colors.blue,
+    Colors.green,
+    Colors.brown,
+  ];
+
+  var selectedColor = Colors.black;
+  var selectedWidth = 2.0;
+
   Future<void> chooseImage() async {
     final XFile? file = await picker.pickImage(source: ImageSource.gallery);
     if (file != null) {
       final File pickedImage = File(file.path);
       final decodedImage = await decodeImageFromFile(pickedImage);
-      if (decodedImage != null && decodedImage.width == 256 && decodedImage.height == 256) {
+      if (decodedImage != null &&
+          decodedImage.width == 256 &&
+          decodedImage.height == 256) {
         setState(() {
           image = pickedImage;
         });
@@ -73,44 +84,43 @@ class _DrawingRoomScreenState extends State<DrawingRoomScreen> {
   }
 
   void saveToImage(List<DrawingPoint?> points) async {
-  final recorder = ui.PictureRecorder();
-  final canvas = Canvas(
-    recorder,
-    Rect.fromPoints(const Offset(0.0, 0.0), const Offset(256, 256)),
-  );
-  Paint paint = Paint()
-    ..color = const ui.Color.fromARGB(255, 255, 255, 255)
-    ..strokeCap = StrokeCap.round
-    ..strokeWidth = 2.0;
-  final paint2 = Paint()
-    ..style = PaintingStyle.fill
-    ..color = const ui.Color.fromARGB(255, 0, 0, 0);
-  canvas.drawRect(const Rect.fromLTWH(0, 0, 256, 256), paint2);
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(
+      recorder,
+      Rect.fromPoints(const Offset(0.0, 0.0), const Offset(256, 256)),
+    );
+    Paint paint = Paint()
+      ..color = const ui.Color.fromARGB(255, 255, 255, 255)
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 2.0;
+    final paint2 = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const ui.Color.fromARGB(255, 0, 0, 0);
+    canvas.drawRect(const Rect.fromLTWH(0, 0, 256, 256), paint2);
 
-  for (int i = 0; i < points.length - 1; i++) {
-    if (points[i] != null && points[i + 1] != null) {
-      for (int j = 0; j < points[i]!.offsets.length - 1; j++) {
-        canvas.drawLine(
-          points[i]!.offsets[j],
-          points[i]!.offsets[j + 1],
-          paint,
-        );
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != null && points[i + 1] != null) {
+        for (int j = 0; j < points[i]!.offsets.length - 1; j++) {
+          canvas.drawLine(
+            points[i]!.offsets[j],
+            points[i]!.offsets[j + 1],
+            paint,
+          );
+        }
       }
     }
+    final picture = recorder.endRecording();
+    final img = await picture.toImage(256, 256);
+
+    final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
+    final listBytes = Uint8List.view(pngBytes!.buffer);
+
+    //File file = await writeBytes(listBytes);
+    String base64 = base64Encode(listBytes);
+    fetchResponse(base64);
   }
-  final picture = recorder.endRecording();
-  final img = await picture.toImage(256, 256);
 
-  final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
-  final listBytes = Uint8List.view(pngBytes!.buffer);
-
-  //File file = await writeBytes(listBytes);
-  String base64 = base64Encode(listBytes);
-  fetchResponse(base64);
-}
-
-
-void fetchResponse(var base64Image) async {
+  void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
     var url = Uri.parse("http://192.168.43.199:5000/predict");
 
@@ -159,81 +169,120 @@ void fetchResponse(var base64Image) async {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 50),
+          padding: const EdgeInsets.only(top: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: image !=null ? Image.file(image!) : Container(
-                  width: 256,
-                  height: 256,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(0),
-                    ),
-
-                    color: Colors.white,
-                    border: Border.all(
-                      color: const Color.fromARGB(
-                          255, 0, 0, 0), // Set the border color here
-                      width: 1, // Set the border width here
-                    ), // Set the background color to white
-                    //boxShadow: [
-                    //BoxShadow(
-                    // color: Colors.black.withOpacity(0.0),
-                    //blurRadius: 10,
-                    //spreadRadius: 1,
-                    //),
-                    //],
-                  ),
-                  child: GestureDetector(
-                    onPanStart: (details) {
-                      setState(() {
-                        currentDrawingPoint = DrawingPoint(
-                          id: DateTime.now().microsecondsSinceEpoch,
-                          offsets: [
-                            details.localPosition,
-                          ],
-                          color: selectedColor,
-                          width: selectedWidth,
-                        );
-
-                        if (currentDrawingPoint == null) return;
-                        drawingPoints.add(currentDrawingPoint!);
-                        historyDrawingPoints = List.of(drawingPoints);
-                      });
+                padding: const EdgeInsets.only(left: 10),
+                child: SizedBox(
+                  height: 50,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: avaiableColor.length,
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(
+                        width: 8,
+                      );
                     },
-                    onPanUpdate: (details) {
-                      setState(() {
-                        if (currentDrawingPoint == null) return;
-
-                        currentDrawingPoint = currentDrawingPoint?.copyWith(
-                          offsets: currentDrawingPoint!.offsets
-                            ..add(details.localPosition),
-                        );
-                        drawingPoints.last = currentDrawingPoint!;
-                        historyDrawingPoints = List.of(drawingPoints);
-                      });
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedColor = avaiableColor[index];
+                          });
+                        },
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                              color: avaiableColor[index],
+                              shape: BoxShape.circle),
+                          foregroundDecoration: BoxDecoration(
+                              border: selectedColor == avaiableColor[index]
+                                  ? Border.all(color: Colors.brown, width: 4)
+                                  : null,
+                              shape: BoxShape.circle),
+                        ),
+                      );
                     },
-                    onPanEnd: (details) {
-                      saveToImage(drawingPoints);
-                      currentDrawingPoint = null;
-                    },
-                    child: CustomPaint(
-                      painter: DrawingPainter(
-                        drawingPoints: drawingPoints,
-                      ),
-                      size: const Size(256, 256),
-                    ),
                   ),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15, top: 5),
+                child: image != null
+                    ? Image.file(image!)
+                    : Container(
+                        width: 256,
+                        height: 256,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(0),
+                          ),
+
+                          color: Colors.white,
+                          border: Border.all(
+                            color: const Color.fromARGB(
+                                255, 0, 0, 0), // Set the border color here
+                            width: 1, // Set the border width here
+                          ), // Set the background color to white
+                          //boxShadow: [
+                          //BoxShadow(
+                          // color: Colors.black.withOpacity(0.0),
+                          //blurRadius: 10,
+                          //spreadRadius: 1,
+                          //),
+                          //],
+                        ),
+                        child: GestureDetector(
+                          onPanStart: (details) {
+                            setState(() {
+                              currentDrawingPoint = DrawingPoint(
+                                id: DateTime.now().microsecondsSinceEpoch,
+                                offsets: [
+                                  details.localPosition,
+                                ],
+                                color: selectedColor,
+                                width: selectedWidth,
+                              );
+
+                              if (currentDrawingPoint == null) return;
+                              drawingPoints.add(currentDrawingPoint!);
+                              historyDrawingPoints = List.of(drawingPoints);
+                            });
+                          },
+                          onPanUpdate: (details) {
+                            setState(() {
+                              if (currentDrawingPoint == null) return;
+
+                              currentDrawingPoint =
+                                  currentDrawingPoint?.copyWith(
+                                offsets: currentDrawingPoint!.offsets
+                                  ..add(details.localPosition),
+                              );
+                              drawingPoints.last = currentDrawingPoint!;
+                              historyDrawingPoints = List.of(drawingPoints);
+                            });
+                          },
+                          onPanEnd: (details) {
+                            saveToImage(drawingPoints);
+                            currentDrawingPoint = null;
+                          },
+                          child: CustomPaint(
+                            painter: DrawingPainter(
+                              drawingPoints: drawingPoints,
+                            ),
+                            size: const Size(256, 256),
+                          ),
+                        ),
+                      ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 //width: 500,
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 0, 0, 0),
+                  color: Colors.brown,
                   borderRadius: BorderRadius.all(
                     Radius.circular(20),
                   ),
@@ -290,8 +339,7 @@ void fetchResponse(var base64Image) async {
                     width: 10,
                   ),
                   IconButton(
-                    onPressed: (){
-                    },
+                    onPressed: () {},
                     icon: const Icon(
                       Icons.save_alt_outlined,
                       color: Colors.white,
@@ -311,15 +359,27 @@ void fetchResponse(var base64Image) async {
                 ]),
               ),
               Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Center(
-                child: SizedBox(
-                  height: 256,
-                  width: 256,
-                  child: imageOutput,
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Center(
+                  child: SizedBox(
+                    height: 256,
+                    width: 256,
+                    child: imageOutput ?? Container(
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 1.0),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'No image generated yet',
+                                style: TextStyle(
+                                    fontSize: 16.0, color: Colors.black),
+                              ),
+                            ),
+                          ),
+                  ),
                 ),
               ),
-            ),
             ],
           ),
         ),
@@ -327,8 +387,6 @@ void fetchResponse(var base64Image) async {
     );
   }
 }
-
-
 
 void showSaveDialog(BuildContext context, bool isSuccess, String errorMessage) {
   showDialog(
@@ -351,4 +409,3 @@ void showSaveDialog(BuildContext context, bool isSuccess, String errorMessage) {
     },
   );
 }
-

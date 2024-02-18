@@ -355,13 +355,14 @@ class _DrawingRoomScreenState extends State<DrawingRoomScreen> {
                     width: 10,
                   ),
                   IconButton(
-                      onPressed: () {
-                        chooseImage();
-                      },
-                      icon: const Icon(
-                        Icons.file_upload_outlined,
-                        color: Colors.white,
-                      ))
+                    onPressed: () {
+                      chooseImage();
+                    },
+                    icon: const Icon(
+                      Icons.file_upload_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
                 ]),
               ),
               Padding(

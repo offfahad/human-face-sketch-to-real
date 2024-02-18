@@ -138,6 +138,12 @@ class _DrawingRoomScreenState extends State<DrawingRoomScreen> {
       displayResponseImage(outputBytes.substring(2, outputBytes.length - 1));
     } catch (e) {
       // ignore: avoid_print
+      // Display a Snackbar when an error occurs
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Server is down. Please try again later.'),
+        ),
+      );
       print(" *Error has Occured: $e");
       return null;
     }
@@ -169,9 +175,9 @@ class _DrawingRoomScreenState extends State<DrawingRoomScreen> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: 0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 10),
@@ -210,7 +216,7 @@ class _DrawingRoomScreenState extends State<DrawingRoomScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 15, top: 5),
+                padding: const EdgeInsets.only(bottom: 10, top: 5),
                 child: image != null
                     ? Image.file(image!)
                     : Container(
@@ -359,24 +365,22 @@ class _DrawingRoomScreenState extends State<DrawingRoomScreen> {
                 ]),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                padding: const EdgeInsets.only(top: 10),
                 child: Center(
                   child: SizedBox(
                     height: 256,
                     width: 256,
-                    child: imageOutput ?? Container(
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.black, width: 1.0),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'No image generated yet',
-                                style: TextStyle(
-                                    fontSize: 16.0, color: Colors.black),
-                              ),
-                            ),
-                          ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1.0),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'No image generated yet',
+                          style: TextStyle(fontSize: 16.0, color: Colors.black),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),

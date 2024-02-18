@@ -132,7 +132,7 @@ class _Screen2State extends State<Screen2> {
                             Padding(
                               padding: const EdgeInsets.only(left: 0),
                               child: SizedBox(
-                                height: 250,
+                                height: 256,
                                 child: ListView.separated(
                                   scrollDirection: Axis.vertical,
                                   itemCount: avaiableColor.length,
@@ -179,7 +179,7 @@ class _Screen2State extends State<Screen2> {
                             height: 256,
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(
-                                Radius.circular(0),
+                                Radius.circular(5),
                               ),
                               color: Colors.white,
                               border: Border.all(
@@ -207,7 +207,6 @@ class _Screen2State extends State<Screen2> {
                               onPanUpdate: (details) {
                                 setState(() {
                                   if (currentDrawingPoint == null) return;
-
                                   currentDrawingPoint =
                                       currentDrawingPoint?.copyWith(
                                     offsets: currentDrawingPoint!.offsets
@@ -236,12 +235,12 @@ class _Screen2State extends State<Screen2> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              height: 250,
-                              width: 50,
+                              height: 256,
+                              width: 40,
                               decoration: const BoxDecoration(
                                 color: Colors.brown,
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
+                                  Radius.circular(5),
                                 ),
                               ),
                               child: Column(
@@ -291,7 +290,7 @@ class _Screen2State extends State<Screen2> {
                                       //image = null;
                                     },
                                     icon: const Icon(
-                                      Icons.clear_all,
+                                      Icons.delete,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -331,6 +330,29 @@ class _Screen2State extends State<Screen2> {
                 child: Container(
                   color: Colors.green, // Color of the second container
                   // Add your widgets for the second container here
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 256,
+                            height: 256,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 1.0),
+                            ),
+                            child: const Center(
+                                child: Text(
+                              'No generated image yet!',
+                              style: TextStyle(color: Colors.black),
+                            )),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],

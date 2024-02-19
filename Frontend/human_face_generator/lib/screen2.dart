@@ -36,6 +36,10 @@ class _Screen2State extends State<Screen2> {
 
   Widget imageOutput = Container();
 
+  bool isSavedPressed = false;
+  var listBytes;
+  Uint8List? convertedBytes;
+
   void saveToImage(List<DrawingPoint?> points) async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(
@@ -66,7 +70,7 @@ class _Screen2State extends State<Screen2> {
     final img = await picture.toImage(256, 256);
 
     final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
-    final listBytes = Uint8List.view(pngBytes!.buffer);
+    listBytes = Uint8List.view(pngBytes!.buffer);
 
     //File file = await writeBytes(listBytes);
     String base64 = base64Encode(listBytes);
@@ -112,63 +116,37 @@ class _Screen2State extends State<Screen2> {
     });
   }
 
-  void saveImageToGallery() async {
-    if (drawingPoints.isNotEmpty) {
-      final recorder = ui.PictureRecorder();
-      final canvas = Canvas(
-        recorder,
-        Rect.fromPoints(const Offset(0.0, 0.0), const Offset(256, 256)),
-      );
-      Paint paint = Paint()
-        ..color = const ui.Color.fromARGB(255, 255, 255, 255)
-        ..strokeCap = StrokeCap.round
-        ..strokeWidth = 2.0;
-      final paint2 = Paint()
-        ..style = PaintingStyle.fill
-        ..color = const ui.Color.fromARGB(255, 0, 0, 0);
-      canvas.drawRect(const Rect.fromLTWH(0, 0, 256, 256), paint2);
-
-      for (int i = 0; i < drawingPoints.length - 1; i++) {
-        for (int j = 0; j < drawingPoints[i].offsets.length - 1; j++) {
-          canvas.drawLine(
-            drawingPoints[i].offsets[j],
-            drawingPoints[i].offsets[j + 1],
-            paint,
-          );
-        }
-      }
-
-      final picture = recorder.endRecording();
-      final img = await picture.toImage(256, 256);
-
-      final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
-      final listBytes = Uint8List.view(pngBytes!.buffer);
-
-      // Save to the gallery
-      final result = await ImageGallerySaver.saveImage(listBytes);
-
-      if (result['isSuccess']) {
-        showSaveDialog(context, true, '');
-      } else {
-        showSaveDialog(context, false, result['errorMessage']);
-      }
-    }
-  }
-
-  void showSaveDialog(
-      BuildContext context, bool isSuccess, String errorMessage) {
+  void showImageSavedDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: isSuccess ? const Text('Success') : const Text('Error'),
-          content: isSuccess
-              ? const Text('Image saved to gallery')
-              : Text('Error saving image: $errorMessage'),
-          actions: <Widget>[
+          title: const Text('Image Saved'),
+          content: const Text('Image Stored In Gallery.'),
+          actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+    void showImageNotSavedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('No Sketch Found'),
+          content: const Text('Draw A Sketch First.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
               },
               child: const Text('OK'),
             ),
@@ -327,7 +305,20 @@ class _Screen2State extends State<Screen2> {
                           ),
                           IconButton(
                             onPressed: () {
-                              saveImageToGallery();
+                              setState(() {
+                                if(drawingPoints.isNotEmpty){
+                                  final result = ImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
+                                  if (result != null){
+                                    showImageSavedDialog(context);
+                                  }
+                                  else{
+                                    showImageNotSavedDialog(context);
+                                  }
+                                }
+                                else{
+                                  showImageNotSavedDialog(context);
+                                }
+                              });
                             },
                             icon: const Icon(
                               Icons.save_alt_outlined,

@@ -398,16 +398,16 @@ void showSaveDialog(BuildContext context, bool isSuccess, String errorMessage) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: isSuccess ? Text('Success') : Text('Error'),
+        title: isSuccess ? const Text('Success') : const Text('Error'),
         content: isSuccess
-            ? Text('Image saved to gallery')
+            ? const Text('Image saved to gallery')
             : Text('Error saving image: $errorMessage'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       );

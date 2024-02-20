@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:human_face_generator/custom_painter.dart';
@@ -34,11 +35,13 @@ class _Screen2State extends State<Screen2> {
   var drawingPoints = <DrawingPoint>[];
   DrawingPoint? currentDrawingPoint;
 
-  Widget imageOutput = Container();
+  Widget? imageOutput = Container();
 
   bool isSavedPressed = false;
-  var listBytes;
+  var sketchSaveBytes;
   Uint8List? convertedBytes;
+
+  final GlobalKey imageKey = GlobalKey();
 
   void saveToImage(List<DrawingPoint?> points) async {
     final recorder = ui.PictureRecorder();
@@ -54,7 +57,6 @@ class _Screen2State extends State<Screen2> {
       ..style = PaintingStyle.fill
       ..color = const ui.Color.fromARGB(255, 0, 0, 0);
     canvas.drawRect(const Rect.fromLTWH(0, 0, 256, 256), paint2);
-
     for (int i = 0; i < points.length - 1; i++) {
       if (points[i] != null && points[i + 1] != null) {
         for (int j = 0; j < points[i]!.offsets.length - 1; j++) {
@@ -68,13 +70,42 @@ class _Screen2State extends State<Screen2> {
     }
     final picture = recorder.endRecording();
     final img = await picture.toImage(256, 256);
-
     final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
-    listBytes = Uint8List.view(pngBytes!.buffer);
-
+    final listBytes = Uint8List.view(pngBytes!.buffer);
     //File file = await writeBytes(listBytes);
     String base64 = base64Encode(listBytes);
     fetchResponse(base64);
+  }
+
+  void saveToImageGallary(List<DrawingPoint?> points) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(
+      recorder,
+      Rect.fromPoints(const Offset(0.0, 0.0), const Offset(256, 256)),
+    );
+    Paint paint = Paint()
+      ..color = const ui.Color.fromARGB(255, 0, 0, 0)
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 2.0;
+    final paint2 = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const ui.Color.fromARGB(255, 255, 255, 255);
+    canvas.drawRect(const Rect.fromLTWH(0, 0, 256, 256), paint2);
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != null && points[i + 1] != null) {
+        for (int j = 0; j < points[i]!.offsets.length - 1; j++) {
+          canvas.drawLine(
+            points[i]!.offsets[j],
+            points[i]!.offsets[j + 1],
+            paint,
+          );
+        }
+      }
+    }
+    final picture = recorder.endRecording();
+    final img = await picture.toImage(256, 256);
+    final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
+    sketchSaveBytes = Uint8List.view(pngBytes!.buffer);
   }
 
   void fetchResponse(var base64Image) async {
@@ -109,10 +140,14 @@ class _Screen2State extends State<Screen2> {
   void displayResponseImage(String bytes) async {
     Uint8List convertedBytes = base64Decode(bytes);
     setState(() {
-      imageOutput = SizedBox(
+      imageOutput = RepaintBoundary(
+        key: imageKey,
+        child: SizedBox(
           width: 256,
           height: 256,
-          child: Image.memory(convertedBytes, fit: BoxFit.contain));
+          child: Image.memory(convertedBytes, fit: BoxFit.contain),
+        ),
+      );
     });
   }
 
@@ -136,7 +171,7 @@ class _Screen2State extends State<Screen2> {
     );
   }
 
-    void showImageNotSavedDialog(BuildContext context) {
+  void showImageNotSavedDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -212,6 +247,7 @@ class _Screen2State extends State<Screen2> {
                         },
                         onPanEnd: (details) {
                           saveToImage(drawingPoints);
+                          saveToImageGallary(drawingPoints);
                           currentDrawingPoint = null;
                         },
                         child: CustomPaint(
@@ -229,11 +265,16 @@ class _Screen2State extends State<Screen2> {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 1.0),
                       ),
-                      child: const Center(
-                          child: Text(
-                        'No generated image yet!',
-                        style: TextStyle(color: Colors.black),
-                      )),
+                      child: imageOutput != null
+                          ? imageOutput
+                          : Center(
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("No AI generated image yet!"),
+                                Text("Draw a face sketch first!")
+                              ],
+                            )),
                     ),
                   ],
                 ),
@@ -306,22 +347,21 @@ class _Screen2State extends State<Screen2> {
                           IconButton(
                             onPressed: () {
                               setState(() {
-                                if(drawingPoints.isNotEmpty){
-                                  final result = ImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
-                                  if (result != null){
+                                if (drawingPoints.isNotEmpty) {
+                                  final result = ImageGallerySaver.saveImage(
+                                      Uint8List.fromList(sketchSaveBytes));
+                                  if (result != null) {
                                     showImageSavedDialog(context);
-                                  }
-                                  else{
+                                  } else {
                                     showImageNotSavedDialog(context);
                                   }
-                                }
-                                else{
+                                } else {
                                   showImageNotSavedDialog(context);
                                 }
                               });
                             },
                             icon: const Icon(
-                              Icons.save_alt_outlined,
+                              Icons.save,
                               color: Colors.white,
                             ),
                           ),
@@ -355,9 +395,9 @@ class _Screen2State extends State<Screen2> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              drawingPoints.clear();
-                              historyDrawingPoints.clear();
-                              //image = null;
+                              setState(() {
+                                imageOutput = null;
+                              });
                             },
                             icon: const Icon(
                               Icons.delete,
@@ -368,14 +408,37 @@ class _Screen2State extends State<Screen2> {
                             height: 0,
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              if (imageOutput != null) {
+                                RenderRepaintBoundary boundary =
+                                    imageKey.currentContext!.findRenderObject()
+                                        as RenderRepaintBoundary;
+                                ui.Image image =
+                                    await boundary.toImage(pixelRatio: 3.0);
+                                ByteData? byteData = await image.toByteData(
+                                    format: ui.ImageByteFormat.png);
+                                Uint8List pngBytes =
+                                    byteData!.buffer.asUint8List();
+
+                                // Save the image to the device's gallery
+                                final result =
+                                    await ImageGallerySaver.saveImage(
+                                        Uint8List.fromList(pngBytes));
+
+                                // Check if the image was saved successfully
+                                if (result != null) {
+                                  showImageSavedDialog(context);
+                                } else {
+                                  showImageNotSavedDialog(context);
+                                }
+                              } else {
+                                showImageNotSavedDialog(context);
+                              }
+                            },
                             icon: const Icon(
-                              Icons.save_alt_outlined,
+                              Icons.save,
                               color: Colors.white,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 0,
                           ),
                         ],
                       ),

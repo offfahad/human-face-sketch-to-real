@@ -434,6 +434,7 @@ class _Screen2State extends State<Screen2> {
                               color: Colors.white,
                             ),
                           ),
+                          IconButton(onPressed: (){}, icon: const Icon(Icons.select_all, color: Colors.white,))
                         ],
                       ),
                     ),

@@ -11,6 +11,10 @@ import 'package:human_face_generator/custom_painter.dart';
 import 'package:human_face_generator/drawing_point.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart' show ByteData, rootBundle;
+import 'dart:typed_data';
+
+import 'package:path_provider/path_provider.dart';
 
 class Screen2 extends StatefulWidget {
   const Screen2({super.key});
@@ -245,6 +249,35 @@ class _Screen2State extends State<Screen2> {
     }
   }
 
+  File? selectRandomImage() {
+    const int totalImages = 10;
+    Random random = Random();
+    int randomIndex = random.nextInt(totalImages) + 1;
+    String imagePath = 'assets/Sketches/$randomIndex.jpg';
+    // Check if the image file exists
+    File imageFile = File(imagePath);
+    if (imageFile.existsSync()) {
+      return imageFile;
+    } else {
+      // Handle the case when the image file doesn't exist
+      print('Image file not found: $imagePath');
+      return null;
+    }
+  }
+
+  Future<File> imageToFile({String? imageName, String? ext}) async {
+    var bytes = await rootBundle.load('assets/sketches/$imageName.$ext');
+    String tempPath = (await getTemporaryDirectory()).path;
+    File file = File('$tempPath/profile.png');
+    await file.writeAsBytes(
+        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
+    return file;
+  }
+
+  void assignRandomImage() {
+    UserPickedImage = selectRandomImage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -338,7 +371,7 @@ class _Screen2State extends State<Screen2> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 256,
+                      height: 300,
                       width: 40,
                       decoration: const BoxDecoration(
                         color: Colors.brown,
@@ -347,7 +380,7 @@ class _Screen2State extends State<Screen2> {
                         ),
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           IconButton(
                             onPressed: () {
@@ -434,7 +467,14 @@ class _Screen2State extends State<Screen2> {
                               color: Colors.white,
                             ),
                           ),
-                          IconButton(onPressed: (){}, icon: const Icon(Icons.select_all, color: Colors.white,))
+                          IconButton(
+                              onPressed: () {
+                                assignRandomImage();
+                              },
+                              icon: const Icon(
+                                Icons.select_all,
+                                color: Colors.white,
+                              ))
                         ],
                       ),
                     ),

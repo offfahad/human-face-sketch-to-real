@@ -12,18 +12,17 @@ import 'package:human_face_generator/drawing_point.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
-import 'dart:typed_data';
 
 import 'package:path_provider/path_provider.dart';
 
-class Screen2 extends StatefulWidget {
-  const Screen2({super.key});
+class DrawingScreen extends StatefulWidget {
+  const DrawingScreen({super.key});
 
   @override
-  State<Screen2> createState() => _Screen2State();
+  State<DrawingScreen> createState() => _Screen2State();
 }
 
-class _Screen2State extends State<Screen2> {
+class _Screen2State extends State<DrawingScreen> {
   var avaiableColor = [
     Colors.black,
     Colors.red,

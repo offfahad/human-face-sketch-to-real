@@ -264,19 +264,6 @@ class _Screen2State extends State<DrawingScreen> {
     }
   }
 
-  Future<File> imageToFile({String? imageName, String? ext}) async {
-    var bytes = await rootBundle.load('assets/sketches/$imageName.$ext');
-    String tempPath = (await getTemporaryDirectory()).path;
-    File file = File('$tempPath/profile.png');
-    await file.writeAsBytes(
-        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
-    return file;
-  }
-
-  void assignRandomImage() {
-    UserPickedImage = selectRandomImage();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -370,7 +357,7 @@ class _Screen2State extends State<DrawingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 300,
+                      height: 256,
                       width: 40,
                       decoration: const BoxDecoration(
                         color: Colors.brown,
@@ -379,7 +366,7 @@ class _Screen2State extends State<DrawingScreen> {
                         ),
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
                             onPressed: () {
@@ -466,14 +453,6 @@ class _Screen2State extends State<DrawingScreen> {
                               color: Colors.white,
                             ),
                           ),
-                          IconButton(
-                              onPressed: () {
-                                assignRandomImage();
-                              },
-                              icon: const Icon(
-                                Icons.select_all,
-                                color: Colors.white,
-                              ))
                         ],
                       ),
                     ),

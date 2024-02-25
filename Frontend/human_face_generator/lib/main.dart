@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:human_face_generator/drawing_screen.dart';
+import 'package:human_face_generator/src/features/authentication/screens/splash_screen/splash_screen.dart';
 import 'package:human_face_generator/src/utlis/theme/theme.dart';
 
 void main() {
@@ -12,13 +14,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const DrawingScreen(),
+      home: SplashScreen()
     );
   }
 }

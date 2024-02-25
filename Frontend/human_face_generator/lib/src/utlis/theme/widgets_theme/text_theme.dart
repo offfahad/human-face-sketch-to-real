@@ -15,12 +15,12 @@ class TTextTheme {
   );
   static TextTheme darkTextTheme = TextTheme(
     displayMedium: GoogleFonts.montserrat(
-      color: Colors.white70,
+      color: Colors.white,
       fontSize: 24,
       fontWeight: FontWeight.bold,
     ),
     titleSmall: GoogleFonts.poppins(
-      color: Colors.white60,
+      color: Colors.white24,
       fontSize: 22,
     ),
   );

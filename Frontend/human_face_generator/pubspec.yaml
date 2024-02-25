@@ -36,6 +36,7 @@ dependencies:
   cached_network_image:
   http: ^1.1.0
   google_fonts: ^6.1.0
+  flutter_native_splash: ^2.2.7
 
 
 
@@ -54,6 +55,22 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
+flutter_native_splash:
+  color: "#f7f6f1"
+  color_dark: "272727"
+  image: assets/images/starting_logo.png
+  image_dark: assets/images/starting_logo.png
+
+  android_12:
+    image: assets/images/starting_logo.png
+    icon_background_color: "#f7f6f1"
+    image_dark: assets/images/starting_logo.png
+    icon_background_color_dark: "#272727"
+
+    web: true
+    
+
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -68,6 +85,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/sketches/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

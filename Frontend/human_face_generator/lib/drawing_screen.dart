@@ -11,9 +11,6 @@ import 'package:human_face_generator/custom_painter.dart';
 import 'package:human_face_generator/drawing_point.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/services.dart' show ByteData, rootBundle;
-
-import 'package:path_provider/path_provider.dart';
 
 class DrawingScreen extends StatefulWidget {
   const DrawingScreen({super.key});

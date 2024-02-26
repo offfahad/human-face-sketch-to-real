@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/constants/image_strings.dart';
-import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 
 class WelcomeScreen extends StatelessWidget {

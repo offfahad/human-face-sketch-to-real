@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:human_face_generator/drawing_screen.dart';
 
-class SplashScreenController extends GetxController{
-  static SplashScreenController get find => Get.find();
+class FadeInAnimationController extends GetxController{
+  static FadeInAnimationController get find => Get.find();
 
 
   RxBool animate = false.obs;

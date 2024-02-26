@@ -7,6 +7,7 @@ import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/screens/login/login_screen.dart';
+import 'package:human_face_generator/src/features/authentication/screens/signup/sign_up_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -70,7 +71,9 @@ class WelcomeScreen extends StatelessWidget {
                       const SizedBox(width: 10.0),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () => Get.to(
+                            () => const SignUpScreen(),
+                          ),
                           child: Text(tSignup.toUpperCase()),
                         ),
                       ),

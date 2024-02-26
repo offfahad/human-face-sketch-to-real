@@ -19,13 +19,16 @@ const String tLogin = "Login";
 const String tSignup = "Signup";
 
 const String tLoginTitle = "Welcome Back,";
-const String tLoginSubTitle = "Make it work, make it right, make it fast";
+const String tLoginSubTitle = "Make it work, make it right, make it fast.";
 const String tRememberMe = "Remember Me?";
-const String tAlreadyHaveAnAccount = "Already have an Account?";
 const String tDontHaveAnAccount = "Don't have an Account?";
 const String tForgetPassword = "Forget Password?";
-
 const String tEmail = "E-Mail";
 const String tPassword = "Password";
-
+const String tFullName = "Full Name";
+const String tPhoneNo = "Phone No";
 const String tSignInWithGoogle = "Sign-In With Google";
+
+const String tSignUpTitle = "Get On Board";
+const String tSignUpSubTitle = "Create your profile to start your Journey.";
+const String tAlreadyHaveAnAccount = "Already have an Account?";

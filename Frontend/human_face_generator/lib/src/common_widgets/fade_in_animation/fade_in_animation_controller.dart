@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
-import 'package:human_face_generator/drawing_screen.dart';
 import 'package:human_face_generator/src/features/authentication/screens/on_boarding/on_boarding_screen.dart';
-import 'package:human_face_generator/src/features/authentication/screens/welcome/welcome_screen.dart';
 
 class FadeInAnimationController extends GetxController {
   static FadeInAnimationController get find => Get.find();

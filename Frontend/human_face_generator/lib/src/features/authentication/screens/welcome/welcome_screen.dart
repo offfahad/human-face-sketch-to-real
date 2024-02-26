@@ -6,6 +6,7 @@ import 'package:human_face_generator/src/common_widgets/fade_in_animation/fade_i
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
+import 'package:human_face_generator/src/features/authentication/screens/login/login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -60,7 +61,9 @@ class WelcomeScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () => Get.to(
+                            () => const LoginScreen(),
+                          ),
                           child: Text(tLogin.toUpperCase()),
                         ),
                       ),

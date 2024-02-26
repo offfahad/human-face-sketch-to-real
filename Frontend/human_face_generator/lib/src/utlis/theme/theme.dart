@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:human_face_generator/src/utlis/theme/widgets_theme/elvevated_button_theme.dart';
+import 'package:human_face_generator/src/utlis/theme/widgets_theme/outlined_button_theme.dart';
 import 'package:human_face_generator/src/utlis/theme/widgets_theme/text_theme.dart';
 
 class TAppTheme {
   TAppTheme._();
 
   static ThemeData lightTheme = ThemeData(
-      primarySwatch: Colors.yellow,
       brightness: Brightness.light,
       textTheme: TTextTheme.lightTextTheme,
-      appBarTheme: AppBarTheme(),
-      elevatedButtonTheme:
-          ElevatedButtonThemeData(style: ElevatedButton.styleFrom()));
+      outlinedButtonTheme: TOutlinedButtonTheme.lightOutlinedButtonTheme,
+      elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
+  );
+
   static ThemeData darkTheme = ThemeData(
-    primarySwatch: Colors.yellow,
     brightness: Brightness.dark,
     textTheme: TTextTheme.darkTextTheme,
-    appBarTheme: AppBarTheme(),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(),
-    elevatedButtonTheme:
-        ElevatedButtonThemeData(style: ElevatedButton.styleFrom()),
+    outlinedButtonTheme: TOutlinedButtonTheme.darkOutlineddButtonTheme,
+    elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
   );
 }

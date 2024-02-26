@@ -88,6 +88,7 @@ flutter:
     - assets/sketches/
     - assets/images/
     - assets/images/on_board_images/
+    - assets/images/welcome_images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

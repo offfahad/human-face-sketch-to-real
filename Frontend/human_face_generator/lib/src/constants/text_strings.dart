@@ -43,3 +43,8 @@ const String tForgetPhoneSubTitle = "Enter your registered Phone No to receive O
 const String tForgetMailSubTitle = "Enter your registered E-Mail to receive OTP.";
 
 const String tNext = "Next";
+
+//OTP
+const String tOtpTitle = "CO\nDE";
+const String tOtpSubTitle = "Verification";
+const String tOtpMessage = "Enter the verification code sent at ";

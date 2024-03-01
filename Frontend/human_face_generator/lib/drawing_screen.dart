@@ -463,7 +463,7 @@ class _Screen2State extends State<DrawingScreen> {
                       height: 256,
                       width: 40,
                       decoration: const BoxDecoration(
-                        color: ui.Color.fromARGB(255, 101, 81, 74),
+                        color: tPrimaryColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(0),
                         ),
@@ -565,7 +565,7 @@ class _Screen2State extends State<DrawingScreen> {
                       height: 256,
                       width: 40,
                       decoration: const BoxDecoration(
-                        color: ui.Color.fromARGB(255, 101, 81, 74),
+                        color: tPrimaryColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(0),
                         ),

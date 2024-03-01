@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:human_face_generator/custom_painter.dart';
 import 'package:human_face_generator/drawing_point.dart';
+import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class DrawingScreen extends StatefulWidget {
@@ -352,6 +353,14 @@ class _Screen2State extends State<DrawingScreen> {
             fontSize: 14.0,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: () {
+              AuthenticationRepository.instance.logout();
+            },
+          )
+        ],
         backgroundColor: const ui.Color.fromARGB(255, 101, 81, 74),
       ),
       body: Center(

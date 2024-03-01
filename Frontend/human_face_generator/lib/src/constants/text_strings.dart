@@ -48,3 +48,20 @@ const String tNext = "Next";
 const String tOtpTitle = "CO\nDE";
 const String tOtpSubTitle = "Verification";
 const String tOtpMessage = "Enter the verification code sent at ";
+
+
+const String tProfile = "Profile";
+const String tEditProfile = "Edit Profile";
+const String tLogoutDialogHeading = "Logout";
+const String tProfileHeading = "Muhammad Fahad";
+const String tProfileSubHeading = "mughalfahad544@gmail.com";
+
+const String tMenu5 = "Logout";
+const String tMenu1 = "Setting";
+const String tMenu4 = "Information";
+const String tMenu2 = "Biling Details";
+const String tMenu3 = "User Management";
+
+const String tDelete = "Delete";
+const String tJoined = "Joined on ";
+const String tJoinedAt = "1 March 2024";

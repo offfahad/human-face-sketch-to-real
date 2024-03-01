@@ -12,6 +12,7 @@ class TTextFormFieldTheme {
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 2, color: tSecondaryColor),
     ),
+    iconColor: tPrimaryColor,
   );
   
   static InputDecorationTheme darkInputDecorationTheme =
@@ -22,5 +23,6 @@ class TTextFormFieldTheme {
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 2, color: tPrimaryColor),
     ),
+    iconColor: tPrimaryColor,
   );
 }

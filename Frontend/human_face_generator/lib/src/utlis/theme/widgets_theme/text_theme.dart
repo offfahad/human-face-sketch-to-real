@@ -24,6 +24,7 @@ class TTextTheme {
       fontWeight: FontWeight.w600,
       color: tDarkColor,
     ),
+    
     titleLarge: GoogleFonts.poppins(
       fontSize: 14.0,
       fontWeight: FontWeight.w600,

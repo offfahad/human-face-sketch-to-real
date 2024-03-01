@@ -15,3 +15,5 @@ const String tForgetPasswordImage = "assets/forget-password/forget-password.png"
 
 
 const String tUserImage = "assets/logo/user-image.png";
+
+const String tProfileImage = "assets/images/profile.jpg";

@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-const tPrimaryColor = Colors.brown;
-const tSecondaryColor =Color.fromARGB(255, 83, 83, 83);
+const tPrimaryColor = Color.fromARGB(255, 101, 81, 74);
+const tSecondaryColor =Color.fromARGB(255, 52, 52, 52);
 const tAccentColor = Color(0xFF001BFF);
 
 const tCardBgColor = Color(0xFFF7F6F1);

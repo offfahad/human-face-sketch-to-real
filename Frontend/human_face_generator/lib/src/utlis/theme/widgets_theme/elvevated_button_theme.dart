@@ -9,8 +9,8 @@ class TElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       shape: const RoundedRectangleBorder(),
       foregroundColor: tWhiteColor,
-      backgroundColor: tSecondaryColor,
-      side: const BorderSide(color: tSecondaryColor),
+      backgroundColor: tPrimaryColor,
+      side: const BorderSide(color: tPrimaryColor),
       padding: const EdgeInsets.symmetric(vertical: tButtonHeight),
     ),
   );

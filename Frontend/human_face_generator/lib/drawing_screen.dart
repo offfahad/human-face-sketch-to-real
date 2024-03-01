@@ -6,11 +6,14 @@ import 'dart:ui' as ui;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:human_face_generator/custom_painter.dart';
 import 'package:human_face_generator/drawing_point.dart';
+import 'package:human_face_generator/src/constants/colors.dart';
+import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
@@ -345,23 +348,21 @@ class _Screen2State extends State<DrawingScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: const Icon(Icons.menu, color: Colors.white),
-        title: Text(
-          "Home Face Generator",
-          style: GoogleFonts.montserrat(
-            color: Colors.white,
-            fontSize: 14.0,
+        leading: IconButton(
+          icon: const Icon(Icons.settings, color: Colors.white),
+          onPressed: () => Get.to(
+            () => const ProfileScreen(),
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () {
-              AuthenticationRepository.instance.logout();
-            },
-          )
-        ],
-        backgroundColor: const ui.Color.fromARGB(255, 101, 81, 74),
+        title: Text(
+          "Home Face Generator",
+          style: GoogleFonts.poppins(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+            color: tWhiteColor,
+          ),
+        ),
+        backgroundColor: tPrimaryColor,
       ),
       body: Center(
         child: Column(

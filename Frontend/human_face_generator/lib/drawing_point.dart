@@ -10,7 +10,7 @@ class DrawingPoint {
     this.id = -1,
     this.offsets = const [],
     this.color = Colors.black,
-    this.width = 2,
+    this.width = 1,
   });
 
   DrawingPoint copyWith({List<Offset>? offsets}) {

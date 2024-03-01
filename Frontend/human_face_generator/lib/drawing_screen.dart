@@ -2,15 +2,16 @@ import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:human_face_generator/custom_painter.dart';
 import 'package:human_face_generator/drawing_point.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:image_picker/image_picker.dart';
 
 class DrawingScreen extends StatefulWidget {
   const DrawingScreen({super.key});
@@ -20,32 +21,18 @@ class DrawingScreen extends StatefulWidget {
 }
 
 class _Screen2State extends State<DrawingScreen> {
-  var avaiableColor = [
-    Colors.black,
-    Colors.red,
-    Colors.amber,
-    Colors.blue,
-    Colors.green,
-    Colors.brown,
-  ];
-
   var selectedColor = Colors.black;
-  var selectedWidth = 2.0;
+  var selectedWidth = 1.0;
 
   var historyDrawingPoints = <DrawingPoint>[];
   var drawingPoints = <DrawingPoint>[];
   DrawingPoint? currentDrawingPoint;
-
   Widget? imageOutput = Container();
-
-  bool isSavedPressed = false;
   Uint8List? convertedBytes;
   var listBytes;
   final GlobalKey imageKey = GlobalKey();
-
-  final ImagePicker picker = ImagePicker();
-  File? UserPickedImage;
-  List? output;
+  File? file;
+  PlatformFile? _imageFile;
 
   void saveToImage(List<DrawingPoint?> points) async {
     final recorder = ui.PictureRecorder();
@@ -56,7 +43,7 @@ class _Screen2State extends State<DrawingScreen> {
     Paint paint = Paint()
       ..color = const ui.Color.fromARGB(255, 255, 255, 255)
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 2.0;
+      ..strokeWidth = 1.0;
     final paint2 = Paint()
       ..style = PaintingStyle.fill
       ..color = const ui.Color.fromARGB(255, 0, 0, 0);
@@ -196,54 +183,81 @@ class _Screen2State extends State<DrawingScreen> {
     return completer.future;
   }
 
-  Future<void> loadImage(XFile? file) async {
-    if (file != null) {
-      final File pickedImage = File(file.path);
-      final decodedImage = await decodeImageFromFile(pickedImage);
-      if (decodedImage != null &&
-          decodedImage.width == 256 &&
-          decodedImage.height == 256) {
-        setState(() {
-          UserPickedImage = pickedImage;
-        });
-        var base64String = await fileToBase64(file);
-        fetchResponse(base64String);
-      } else {
-        // Show a dialog box indicating the image is not supported
-        // ignore: use_build_context_synchronously
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Image Not Supported'),
-              content: const Text(
-                  'Please choose a sketch image which you saved from this application.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
+  Future<ui.Image?> decodeImageFromPlatformFile(
+      PlatformFile platformFile) async {
+    final Uint8List bytes = platformFile.bytes!;
+    final Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(bytes, (ui.Image img) {
+      completer.complete(img);
+    });
+    return completer.future;
+  }
+
+  // Future<void> loadImage(XFile? file) async {
+  //   try {
+  //     if (file != null) {
+  //       final File pickedImage = File(file.path);
+  //       final decodedImage = await decodeImageFromFile(pickedImage);
+  //       if (decodedImage != null &&
+  //           decodedImage.width == 256 &&
+  //           decodedImage.height == 256) {
+  //         setState(() {
+  //           //UserPickedImage = pickedImage;
+  //         });
+  //         var base64String = await fileToBase64(file);
+  //         fetchResponse(base64String);
+  //       } else {
+  //         showImageNotSupportedDialog();
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print('Error loading image: $e');
+  //   }
+  // }
+
+  Future<String> fileToBase64(File file) async {
+    try {
+      List<int> bytes = await file.readAsBytes();
+      return base64Encode(bytes);
+    } catch (e) {
+      print('Error converting file to base64: $e');
+      return '';
     }
   }
 
-  Future<String> fileToBase64(XFile file) async {
-    List<int> bytes = await file.readAsBytes();
-    return base64Encode(bytes);
-  }
-
-  Future<void> pickImage() async {
-    final XFile? file = await picker.pickImage(source: ImageSource.gallery);
-    if (file != null) {
-      loadImage(file);
+  Future<String> platformFileToBase64(PlatformFile platformFile) async {
+    try {
+      // Read the bytes from the PlatformFile
+      Uint8List bytes = platformFile.bytes!;
+      // Encode the bytes to base64
+      return base64Encode(bytes);
+    } catch (e) {
+      print('Error converting file to base64: $e');
+      return '';
     }
   }
+
+  // Future<void> _pickImage() async {
+  //   final ImagePicker _picker = ImagePicker();
+  //   XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+  //   if (image != null) {
+  //     if (kIsWeb) {
+  //       var f = await image.readAsBytes();
+  //       setState(() {
+  //         webImage = f;
+  //         //UserPickedImage = File(); // Set to null as it's not being used
+  //       });
+  //     } else {
+  //       var selected = File(image.path);
+  //       setState(() {
+  //         UserPickedImage = selected;
+  //       });
+  //     }
+  //   } else {
+  //     print('No image has been picked');
+  //   }
+  // }
 
   File? selectRandomImage() {
     const int totalImages = 10;
@@ -261,9 +275,85 @@ class _Screen2State extends State<DrawingScreen> {
     }
   }
 
+  void showImageNotSupportedDialog(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Image Not Supported'),
+          content: const Text(
+              'Please choose a sketch image which you saved from this application.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Method to pick and display an image file
+  Future<void> _pickImage(context) async {
+    try {
+      // Pick an image file using file_picker package
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
+
+      // If user cancels the picker, do nothing
+      if (result == null) return;
+      if (!kIsWeb) {
+        file = File(result.files.single.path!);
+        final decodedImage = await decodeImageFromFile(file!);
+        if (decodedImage!.width != 256 && decodedImage.height != 256) {
+          showImageNotSupportedDialog(context);
+          return;
+        }
+        var base64String = await fileToBase64(file!);
+        fetchResponse(base64String);
+      }
+      if (kIsWeb) {
+        _imageFile = result.files.first;
+        final decodedImage = await decodeImageFromPlatformFile(_imageFile!);
+        if (decodedImage!.width != 256 && decodedImage.height != 256) {
+          showImageNotSupportedDialog(context);
+          _imageFile = null;
+          return;
+        }
+        // If user picks an image, update the state with the new image file
+        var base64String = await platformFileToBase64(_imageFile!);
+        fetchResponse(base64String);
+      }
+    } catch (e) {
+      // If there is an error, show a snackbar with the error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        leading: const Icon(Icons.menu, color: Colors.white),
+        title: Text(
+          "Home Face Generator",
+          style: GoogleFonts.montserrat(
+            color: Colors.white,
+            fontSize: 14.0,
+          ),
+        ),
+        backgroundColor: const ui.Color.fromARGB(255, 101, 81, 74),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -275,61 +365,67 @@ class _Screen2State extends State<DrawingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 257,
-                      height: 257,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(0),
+                        width: 257,
+                        height: 257,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(0),
+                          ),
+                          color: Colors.white,
+                          border: Border.all(
+                            color: const Color.fromARGB(
+                                255, 0, 0, 0), // Set the border color here
+                            width: 1, // Set the border width here
+                          ),
                         ),
-                        color: Colors.white,
-                        border: Border.all(
-                          color: const Color.fromARGB(
-                              255, 0, 0, 0), // Set the border color here
-                          width: 1, // Set the border width here
-                        ),
-                      ),
-                      child: UserPickedImage != null
-                          ? Image.file(UserPickedImage!)
-                          : GestureDetector(
-                              onPanStart: (details) {
-                                setState(() {
-                                  currentDrawingPoint = DrawingPoint(
-                                    id: DateTime.now().microsecondsSinceEpoch,
-                                    offsets: [
-                                      details.localPosition,
-                                    ],
-                                    color: selectedColor,
-                                    width: selectedWidth,
-                                  );
-                                  if (currentDrawingPoint == null) return;
-                                  drawingPoints.add(currentDrawingPoint!);
-                                  historyDrawingPoints = List.of(drawingPoints);
-                                });
-                              },
-                              onPanUpdate: (details) {
-                                setState(() {
-                                  if (currentDrawingPoint == null) return;
-                                  currentDrawingPoint =
-                                      currentDrawingPoint?.copyWith(
-                                    offsets: currentDrawingPoint!.offsets
-                                      ..add(details.localPosition),
-                                  );
-                                  drawingPoints.last = currentDrawingPoint!;
-                                  historyDrawingPoints = List.of(drawingPoints);
-                                });
-                              },
-                              onPanEnd: (details) {
-                                saveToImage(drawingPoints);
-                                currentDrawingPoint = null;
-                              },
-                              child: CustomPaint(
-                                painter: DrawingPainter(
-                                  drawingPoints: drawingPoints,
+                        child: _imageFile == null
+                            ? GestureDetector(
+                                onPanStart: (details) {
+                                  setState(() {
+                                    currentDrawingPoint = DrawingPoint(
+                                      id: DateTime.now().microsecondsSinceEpoch,
+                                      offsets: [
+                                        details.localPosition,
+                                      ],
+                                      color: selectedColor,
+                                      width: selectedWidth,
+                                    );
+                                    if (currentDrawingPoint == null) return;
+                                    drawingPoints.add(currentDrawingPoint!);
+                                    historyDrawingPoints =
+                                        List.of(drawingPoints);
+                                  });
+                                },
+                                onPanUpdate: (details) {
+                                  setState(() {
+                                    if (currentDrawingPoint == null) return;
+                                    currentDrawingPoint =
+                                        currentDrawingPoint?.copyWith(
+                                      offsets: currentDrawingPoint!.offsets
+                                        ..add(details.localPosition),
+                                    );
+                                    drawingPoints.last = currentDrawingPoint!;
+                                    historyDrawingPoints =
+                                        List.of(drawingPoints);
+                                  });
+                                },
+                                onPanEnd: (details) {
+                                  saveToImage(drawingPoints);
+                                  currentDrawingPoint = null;
+                                },
+                                child: CustomPaint(
+                                  painter: DrawingPainter(
+                                    drawingPoints: drawingPoints,
+                                  ),
+                                  size: const Size(256, 256),
                                 ),
-                                size: const Size(256, 256),
-                              ),
-                            ),
-                    ),
+                              )
+                            : kIsWeb
+                                ? Image.memory(
+                                    Uint8List.fromList(_imageFile!.bytes!),
+                                    fit: BoxFit.fill,
+                                  )
+                                : Image.file(file!)),
                     const SizedBox(height: 50),
                     Container(
                       width: 257,
@@ -357,7 +453,7 @@ class _Screen2State extends State<DrawingScreen> {
                       height: 256,
                       width: 40,
                       decoration: const BoxDecoration(
-                        color: Colors.brown,
+                        color: ui.Color.fromARGB(255, 101, 81, 74),
                         borderRadius: BorderRadius.all(
                           Radius.circular(0),
                         ),
@@ -406,7 +502,8 @@ class _Screen2State extends State<DrawingScreen> {
                               drawingPoints.clear();
                               historyDrawingPoints.clear();
                               setState(() {
-                                UserPickedImage = null;
+                                file = null;
+                                _imageFile = null;
                               });
                             },
                             icon: const Icon(
@@ -443,7 +540,7 @@ class _Screen2State extends State<DrawingScreen> {
                           ),
                           IconButton(
                             onPressed: () {
-                              pickImage();
+                              _pickImage(context);
                             },
                             icon: const Icon(
                               Icons.file_upload_outlined,
@@ -458,7 +555,7 @@ class _Screen2State extends State<DrawingScreen> {
                       height: 256,
                       width: 40,
                       decoration: const BoxDecoration(
-                        color: Colors.brown,
+                        color: ui.Color.fromARGB(255, 101, 81, 74),
                         borderRadius: BorderRadius.all(
                           Radius.circular(0),
                         ),

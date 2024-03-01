@@ -41,10 +41,13 @@ dependencies:
   liquid_swipe: ^3.0.0
   smooth_page_indicator: ^1.0.0+2
   flutter_otp_text_field: ^1.1.0+2
+  file_picker: ^6.1.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
 
 dev_dependencies:
   flutter_test:

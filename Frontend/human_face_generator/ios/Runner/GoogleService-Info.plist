@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBz3_QU3pI-EBEgcclPt3pohTaBdIbcr64</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1094961899386</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.humanFaceGenerator</string>
+	<key>PROJECT_ID</key>
+	<string>fyp-human-face-generator</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fyp-human-face-generator.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1094961899386:ios:ae544d1718dcac923d98c3</string>
+</dict>
+</plist>

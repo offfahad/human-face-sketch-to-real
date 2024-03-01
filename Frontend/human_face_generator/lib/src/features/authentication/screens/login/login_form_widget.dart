@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:human_face_generator/drawing_screen.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_options/forget_password_model_bottom_sheet.dart';
@@ -43,13 +45,18 @@ class LoginForm extends StatelessWidget {
               child: TextButton(
                   onPressed: () {
                     ForgetPasswordScreen.buildShowModalBottomSheet(context);
-                  }, child: const Text(tForgetPassword)),
+                  },
+                  child: const Text(tForgetPassword)),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => Get.to(
+                  () => const DrawingScreen(),
+                ),
                 child: Text(tLogin.toUpperCase()),
               ),
             ),

@@ -12,3 +12,6 @@ const String tWelcomeScreenImage = "assets/images/welcome_images/image1.jpg";
 const String tGoogleLogoImage = "assets/logo/google-logo.png";
 
 const String tForgetPasswordImage = "assets/forget-password/forget-password.png";
+
+
+const String tUserImage = "assets/logo/user-image.png";

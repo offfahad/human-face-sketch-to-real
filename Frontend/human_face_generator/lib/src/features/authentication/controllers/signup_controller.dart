@@ -15,4 +15,8 @@ class SignUpController extends GetxController {
       Get.showSnackbar(GetSnackBar(message: error.toString(),));
     }
   }
+
+  void phoneAuthentication(String phoneNo){
+    AuthenticationRepository.instance.phoneAuthentication(phoneNo);
+  }
 }

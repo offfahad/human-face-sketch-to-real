@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/signup_controller.dart';
+import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_otp/otp_screen.dart';
 
 class SignUpFormWidget extends StatelessWidget {
   const SignUpFormWidget({
@@ -52,9 +53,11 @@ class SignUpFormWidget extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  if(_formKey.currentState!.validate()){
-                    SignUpController.instance.registerUser(controller.email.text.trim(), controller.password.text.trim());
-                  }
+                  // if(_formKey.currentState!.validate()){
+                  //   SignUpController.instance.registerUser(controller.email.text.trim(), controller.password.text.trim());
+                  // }
+                  SignUpController.instance.phoneAuthentication(controller.phoneNo.text.trim());
+                  Get.to(() => const OTPScreen());
                 },
                 child: Text(tSignup.toUpperCase()),
               ),

@@ -42,7 +42,8 @@ class UpdateProfileScreen extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   UserModel userData = snapshot.data as UserModel;
-
+                  final userId = userData.id!;
+                  print(userId);
                   final email = TextEditingController(text: userData.email);
                   final password =
                       TextEditingController(text: userData.password);
@@ -113,28 +114,9 @@ class UpdateProfileScreen extends StatelessWidget {
                                 label: const Text(tPassword),
                                 prefixIcon: const Icon(Icons.fingerprint),
                                 suffixIcon: IconButton(
-                                  icon: const Icon(LineAwesomeIcons.eye_slash),
-                                  onPressed: () async {
-                                    final userData = UserModel(
-                                      fullName: fullname.text.trim(),
-                                      email: email.text.trim(),
-                                      phoneNo: phoneNo.text.trim(),
-                                      password: password.text.trim(),
-                                    );
-                                    final updateSuccess =
-                                        await controller.updateRecord(userData);
-
-                                    if (updateSuccess) {
-                                      // Show success snackbar
-                                      Get.snackbar('Success',
-                                          'Records updated successfully');
-                                    } else {
-                                      // Show error snackbar
-                                      Get.snackbar(
-                                          'Error', 'Failed to update records');
-                                    }
-                                  },
-                                ),
+                                    icon:
+                                        const Icon(LineAwesomeIcons.eye_slash),
+                                    onPressed: () {}),
                               ),
                             ),
                             const SizedBox(height: tFormHeight),
@@ -143,8 +125,16 @@ class UpdateProfileScreen extends StatelessWidget {
                             SizedBox(
                               width: 200,
                               child: ElevatedButton(
-                                onPressed: () =>
-                                    Get.to(() => const UpdateProfileScreen()),
+                                onPressed: () async {
+                                  final userData = UserModel(
+                                    id: userId,
+                                    fullName: fullname.text.trim(),
+                                    email: email.text.trim(),
+                                    phoneNo: phoneNo.text.trim(),
+                                    password: password.text.trim(),
+                                  );
+                                  await controller.updateRecord(userData);
+                                },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: tPrimaryColor,
                                     side: BorderSide.none,

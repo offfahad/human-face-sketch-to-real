@@ -51,13 +51,23 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<void> updateUserRecord(UserModel user) async {
-    try {
-      await _db.collection("Users").doc(user.id).update(user.toJason());
-    } catch (e) {
-      print('Error updating user record: $e');
-      // You can throw a custom exception here or handle the error as per your requirement.
-      throw Exception('Failed to update user record');
-    }
+  Future<void> updateUserRecord(UserModel user) {
+    return _db
+        .collection("Users")
+        .doc(user.id!)
+        .update(user.toJason())
+        .whenComplete(() => Get.snackbar(
+            "Success", "Your account has been updated.",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: const Color.fromARGB(255, 38, 116, 40),
+            colorText: Colors.white))
+        .catchError((error, stackTrace) {
+      Get.snackbar("Error", "Something went wrong. Try again.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+      print(error.toString());
+    });
+    ;
   }
 }

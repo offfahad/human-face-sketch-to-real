@@ -8,9 +8,9 @@ import 'package:human_face_generator/src/features/authentication/screens/on_boar
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:human_face_generator/src/utlis/theme/theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
       .then((value) => Get.put(AuthenticationRepository()));
   OTPController();
   runApp(const MyApp());
@@ -28,6 +28,6 @@ class MyApp extends StatelessWidget {
         theme: TAppTheme.lightTheme,
         //darkTheme: TAppTheme.darkTheme,
         themeMode: ThemeMode.light,
-        home: const DrawingScreen());
+        home: const OnBoardingScreen());
   }
 }

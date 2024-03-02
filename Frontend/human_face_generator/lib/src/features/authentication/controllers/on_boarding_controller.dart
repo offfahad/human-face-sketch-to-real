@@ -7,9 +7,7 @@ import 'package:human_face_generator/src/features/authentication/screens/on_boar
 import 'package:human_face_generator/src/features/authentication/screens/welcome/welcome_screen.dart';
 import 'package:liquid_swipe/PageHelpers/LiquidController.dart';
 
-
-class OnBoardingController extends GetxController{
-
+class OnBoardingController extends GetxController {
   final controller = LiquidController();
   RxInt currentPage = 0.obs;
 
@@ -21,7 +19,6 @@ class OnBoardingController extends GetxController{
         subTitle: tOnBoardingSubText1,
         counterText: tOnBoardingCount1,
         bgColor: tOnBoardingPage1Color,
-        
       ),
     ),
     OnBoardingPageWidget(
@@ -44,15 +41,28 @@ class OnBoardingController extends GetxController{
     ),
   ];
 
+  // Track the number of pages visited
+  int pagesVisited = 0;
 
   void skip() {
     // Navigate to welcome screen
     Get.to(const WelcomeScreen());
   }
 
-  animateToNextSlide() {
+  void animateToNextSlide() {
     int nextPage = controller.currentPage + 1;
     controller.animateToPage(page: nextPage);
+
+    // Increment the pagesVisited count whenever the user navigates to the next slide
+    pagesVisited++;
+
+    // Check if the user has visited 3 pages or more
+    if (pagesVisited >= 3) {
+      // Navigate to the welcome screen
+      skip();
+    }
   }
-  onPageChangedCallback(int activePageIndex) => currentPage.value = activePageIndex;
+
+  onPageChangedCallback(int activePageIndex) =>
+      currentPage.value = activePageIndex;
 }

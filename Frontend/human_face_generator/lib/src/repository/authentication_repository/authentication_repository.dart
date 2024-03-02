@@ -51,7 +51,8 @@ class AuthenticationRepository extends GetxController {
     return null;
   }
 
-  Future<String?> loginWithEmailAndPassword(String email, String password) async {
+  Future<String?> loginWithEmailAndPassword(
+      String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
@@ -70,25 +71,37 @@ class AuthenticationRepository extends GetxController {
       verificationCompleted: (credential) async {
         await _auth.signInWithCredential(credential);
       },
-      codeSent: (verificationId, resendToken){
+      codeSent: (verificationId, resendToken) {
         this.verificationId.value = verificationId;
       },
-      codeAutoRetrievalTimeout: (verificationId){
+      codeAutoRetrievalTimeout: (verificationId) {
         this.verificationId.value = verificationId;
       },
-      verificationFailed: (e){
-        if(e.code == 'invalid-phone-number'){
+      verificationFailed: (e) {
+        if (e.code == 'invalid-phone-number') {
           Get.snackbar('Error', 'The provided number is not valid!');
-        }else{
+        } else {
           Get.snackbar('Error', 'Something went wrong. Try Again');
         }
       },
     );
   }
 
-  Future<bool> verifyOTP(String otp) async{
-    var credential = await _auth.signInWithCredential(PhoneAuthProvider.credential(verificationId: this.verificationId.value, smsCode: otp));
-    return credential.user != null ? true : false;
+  Future<bool> verifyOTP(String otp) async {
+    try {
+      var credential = await _auth.signInWithCredential(
+        PhoneAuthProvider.credential(
+          verificationId: verificationId.value,
+          smsCode: otp,
+        ),
+      );
+
+      return credential.user != null ? true : false;
+    } catch (e) {
+      // Handle the exception here
+      print('Error verifying OTP: $e');
+      return false; // Or you can throw the exception again to propagate it
+    }
   }
 
   Future<void> logout() async => await _auth.signOut();

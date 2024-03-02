@@ -25,4 +25,29 @@ class UserRepository extends GetxController {
       print(error.toString());
     });
   }
+
+  Future<UserModel?> getUserDetails(String email) async {
+    try {
+      final snapshot =
+          await _db.collection("Users").where("Email", isEqualTo: email).get();
+      final userData =
+          snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+      return userData;
+    } catch (e) {
+      print('Error fetching user details: $e');
+      return null; // or handle the error as needed
+    }
+  }
+
+  Future<List<UserModel>> allUser() async {
+    try {
+      final snapshot = await _db.collection("Users").get();
+      final userData =
+          snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList();
+      return userData;
+    } catch (e) {
+      print('Error fetching all users: $e');
+      return []; // or handle the error as needed
+    }
+  }
 }

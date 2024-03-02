@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:human_face_generator/drawing_screen.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
 import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_otp/otp_screen.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
@@ -28,7 +29,9 @@ class SignUpController extends GetxController {
 
   Future<void> createUser(UserModel user) async {
     await userRepo.createUser(user);
-    phoneAuthentication(user.phoneNo);
-    Get.to(()=> const OTPScreen());
+    //phoneAuthentication(user.phoneNo);
+    //Get.to(()=> const OTPScreen());
+    registerUser(user.email, user.password);
+    Get.to(()=> const DrawingScreen());
   }
 }

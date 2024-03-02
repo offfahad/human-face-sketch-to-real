@@ -65,7 +65,12 @@ class SignUpFormWidget extends StatelessWidget {
                     //    .phoneAuthentication(controller.phoneNo.text.trim());
                     //Get.to(() => const OTPScreen());
                     // }
-                    final user = UserModel(fullName: controller.fullName.text.trim(), email: controller.email.text.trim(), phoneNo: controller.phoneNo.text.trim(), password: controller.password.text.trim());
+                    final user = UserModel(
+                      fullName: controller.fullName.text.trim(),
+                      email: controller.email.text.trim(),
+                      phoneNo: controller.phoneNo.text.trim(),
+                      password: controller.password.text.trim(),
+                    );
                     SignUpController.instance.createUser(user);
                   }
                 },

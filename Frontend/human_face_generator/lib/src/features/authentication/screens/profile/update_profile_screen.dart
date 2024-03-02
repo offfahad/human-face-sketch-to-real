@@ -36,152 +36,176 @@ class UpdateProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(tDefaultSize),
-            child: FutureBuilder(
-              future: controller.getUserData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    UserModel userData = snapshot.data as UserModel;
-                    return Column(
-                      children: [
-                        // -- IMAGE with ICON
-                        Stack(
-                          children: [
-                            SizedBox(
-                              width: 120,
-                              height: 120,
-                              child: ClipRRect(
+          child: FutureBuilder(
+            future: controller.getUserData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  UserModel userData = snapshot.data as UserModel;
+
+                  final email = TextEditingController(text: userData.email);
+                  final password =
+                      TextEditingController(text: userData.password);
+                  final fullname =
+                      TextEditingController(text: userData.fullName);
+                  final phoneNo = TextEditingController(text: userData.phoneNo);
+
+                  return Column(
+                    children: [
+                      // -- IMAGE with ICON
+                      Stack(
+                        children: [
+                          SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: const Image(
+                                    image: AssetImage(tProfileImage))),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
-                                  child: const Image(
-                                      image: AssetImage(tProfileImage))),
+                                  color: tPrimaryColor),
+                              child: const Icon(LineAwesomeIcons.camera,
+                                  color: tWhiteColor),
                             ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                width: 35,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    color: tPrimaryColor),
-                                child: const Icon(LineAwesomeIcons.camera,
-                                    color: tWhiteColor),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 40),
+
+                      // -- Form Fields
+                      Form(
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: fullname,
+                              decoration: const InputDecoration(
+                                  label: Text(tFullName),
+                                  prefixIcon: Icon(LineAwesomeIcons.user)),
+                            ),
+                            const SizedBox(height: tFormHeight - 20),
+                            TextFormField(
+                              controller: email,
+                              decoration: const InputDecoration(
+                                  label: Text(tEmail),
+                                  prefixIcon:
+                                      Icon(LineAwesomeIcons.envelope_1)),
+                            ),
+                            const SizedBox(height: tFormHeight - 20),
+                            TextFormField(
+                              controller: phoneNo,
+                              decoration: const InputDecoration(
+                                  label: Text(tPhoneNo),
+                                  prefixIcon: Icon(LineAwesomeIcons.phone)),
+                            ),
+                            const SizedBox(height: tFormHeight - 20),
+                            TextFormField(
+                              controller: password,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                label: const Text(tPassword),
+                                prefixIcon: const Icon(Icons.fingerprint),
+                                suffixIcon: IconButton(
+                                  icon: const Icon(LineAwesomeIcons.eye_slash),
+                                  onPressed: () async {
+                                    final userData = UserModel(
+                                      fullName: fullname.text.trim(),
+                                      email: email.text.trim(),
+                                      phoneNo: phoneNo.text.trim(),
+                                      password: password.text.trim(),
+                                    );
+                                    final updateSuccess =
+                                        await controller.updateRecord(userData);
+
+                                    if (updateSuccess) {
+                                      // Show success snackbar
+                                      Get.snackbar('Success',
+                                          'Records updated successfully');
+                                    } else {
+                                      // Show error snackbar
+                                      Get.snackbar(
+                                          'Error', 'Failed to update records');
+                                    }
+                                  },
+                                ),
                               ),
                             ),
+                            const SizedBox(height: tFormHeight),
+
+                            // -- Form Submit Button
+                            SizedBox(
+                              width: 200,
+                              child: ElevatedButton(
+                                onPressed: () =>
+                                    Get.to(() => const UpdateProfileScreen()),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: tPrimaryColor,
+                                    side: BorderSide.none,
+                                    shape: const StadiumBorder()),
+                                child: const Text(tEditProfile,
+                                    style: TextStyle(color: tWhiteColor)),
+                              ),
+                            ),
+                            const SizedBox(height: tFormHeight),
+
+                            // -- Created Date and Delete Button
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text.rich(
+                                  TextSpan(
+                                    text: tJoined,
+                                    style: TextStyle(fontSize: 12),
+                                    children: [
+                                      TextSpan(
+                                          text: tJoinedAt,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12))
+                                    ],
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Colors.redAccent.withOpacity(0.1),
+                                      elevation: 0,
+                                      foregroundColor: Colors.red,
+                                      shape: const StadiumBorder(),
+                                      side: BorderSide.none),
+                                  child: const Text(tDelete),
+                                ),
+                              ],
+                            )
                           ],
                         ),
-                        const SizedBox(height: 40),
-
-                        // -- Form Fields
-                        Form(
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                initialValue: userData.fullName,
-                                decoration: const InputDecoration(
-                                    label: Text(tFullName),
-                                    prefixIcon: Icon(LineAwesomeIcons.user)),
-                              ),
-                              const SizedBox(height: tFormHeight - 20),
-                              TextFormField(
-                                initialValue: userData.email,
-                                decoration: const InputDecoration(
-                                    label: Text(tEmail),
-                                    prefixIcon:
-                                        Icon(LineAwesomeIcons.envelope_1)),
-                              ),
-                              const SizedBox(height: tFormHeight - 20),
-                              TextFormField(
-                                initialValue: userData.phoneNo,
-                                decoration: const InputDecoration(
-                                    label: Text(tPhoneNo),
-                                    prefixIcon: Icon(LineAwesomeIcons.phone)),
-                              ),
-                              const SizedBox(height: tFormHeight - 20),
-                              TextFormField(
-                                initialValue: userData.phoneNo,
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                
-                                  label: const Text(tPassword),
-                                  prefixIcon: const Icon(Icons.fingerprint),
-                                  suffixIcon: IconButton(
-                                      icon: const Icon(
-                                          LineAwesomeIcons.eye_slash),
-                                      onPressed: () {}),
-                                ),
-                              ),
-                              const SizedBox(height: tFormHeight),
-
-                              // -- Form Submit Button
-                              SizedBox(
-                                width: 200,
-                                child: ElevatedButton(
-                                  onPressed: () =>
-                                      Get.to(() => const UpdateProfileScreen()),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: tPrimaryColor,
-                                      side: BorderSide.none,
-                                      shape: const StadiumBorder()),
-                                  child: const Text(tEditProfile,
-                                      style: TextStyle(color: tWhiteColor)),
-                                ),
-                              ),
-                              const SizedBox(height: tFormHeight),
-
-                              // -- Created Date and Delete Button
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text.rich(
-                                    TextSpan(
-                                      text: tJoined,
-                                      style: TextStyle(fontSize: 12),
-                                      children: [
-                                        TextSpan(
-                                            text: tJoinedAt,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12))
-                                      ],
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Colors.redAccent.withOpacity(0.1),
-                                        elevation: 0,
-                                        foregroundColor: Colors.red,
-                                        shape: const StadiumBorder(),
-                                        side: BorderSide.none),
-                                    child: const Text(tDelete),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(snapshot.error.toString()),
-                    );
-                  } else {
-                    return const Center(
-                      child: Text("Something, went Wrong"),
-                    );
-                  }
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
                 } else {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: Text("Something, went Wrong"),
                   );
                 }
-              }, 
-            ),
-          
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ),
       ),
     );

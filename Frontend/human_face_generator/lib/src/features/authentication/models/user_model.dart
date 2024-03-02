@@ -32,7 +32,7 @@ class UserModel {
         id: document.id,
         fullName: data["FullName"],
         email: data["Email"],
-        phoneNo: "Phone",
+        phoneNo: data["Phone"],
         password: data["Password"]);
   }
 }

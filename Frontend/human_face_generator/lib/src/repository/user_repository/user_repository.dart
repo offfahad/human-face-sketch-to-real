@@ -50,4 +50,14 @@ class UserRepository extends GetxController {
       return []; // or handle the error as needed
     }
   }
+
+  Future<void> updateUserRecord(UserModel user) async {
+    try {
+      await _db.collection("Users").doc(user.id).update(user.toJason());
+    } catch (e) {
+      print('Error updating user record: $e');
+      // You can throw a custom exception here or handle the error as per your requirement.
+      throw Exception('Failed to update user record');
+    }
+  }
 }

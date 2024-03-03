@@ -66,6 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1094961899386',
     projectId: 'fyp-human-face-generator',
     storageBucket: 'fyp-human-face-generator.appspot.com',
+    androidClientId: '1094961899386-uis3s8t9bog9jla2s3c64mu02ujgk7p1.apps.googleusercontent.com',
+    iosClientId: '1094961899386-8u62cser4l0qa7aenk4vu3p4e84d52an.apps.googleusercontent.com',
     iosBundleId: 'com.example.humanFaceGenerator',
   );
 
@@ -75,6 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1094961899386',
     projectId: 'fyp-human-face-generator',
     storageBucket: 'fyp-human-face-generator.appspot.com',
+    androidClientId: '1094961899386-uis3s8t9bog9jla2s3c64mu02ujgk7p1.apps.googleusercontent.com',
+    iosClientId: '1094961899386-et23alurkn38m6jqgq1e6ggfle52gtkj.apps.googleusercontent.com',
     iosBundleId: 'com.example.humanFaceGenerator.RunnerTests',
   );
 }

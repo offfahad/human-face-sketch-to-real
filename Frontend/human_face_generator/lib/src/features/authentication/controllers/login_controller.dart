@@ -16,7 +16,21 @@ class LoginController extends GetxController {
     );
 
     if (error != null) {
-      Get.showSnackbar(GetSnackBar(message: error.toString()));
+      Get.showSnackbar(GetSnackBar(
+        message: error.toString(),
+        duration: const Duration(seconds: 3),
+      ));
+    }
+  }
+
+  Future<void> googleSignIn() async {
+    try {
+      await AuthenticationRepository.instance.signInWithGoogle();
+    } catch (e) {
+      Get.showSnackbar(GetSnackBar(
+        message: e.toString(),
+        duration: const Duration(seconds: 3),
+      ));
     }
   }
 }

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:human_face_generator/drawing_screen.dart';
 import 'package:human_face_generator/src/features/authentication/screens/on_boarding/on_boarding_screen.dart';
-import 'package:human_face_generator/src/repository/authentication_repository/exceptions/signin_email_password_exception.dart';
-import 'package:human_face_generator/src/repository/authentication_repository/exceptions/signup_email_password_exception.dart';
+import 'package:human_face_generator/src/repository/authentication_repository/exceptions/t_exceptions.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -40,13 +40,13 @@ class AuthenticationRepository extends GetxController {
           ? Get.offAll(() => const DrawingScreen())
           : Get.to(() => const OnBoardingScreen());
     } on FirebaseAuthException catch (e) {
-      final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
-      return ex.message;
+      final ex = TException.fromCode(e.code);
       print('Firebase Auth Exception - ${ex.message}');
-    } catch (_) {
-      const ex = SignUpWithEmailAndPasswordFailure();
       return ex.message;
+    } catch (_) {
+      const ex = TException();
       print('Exception - ${ex.message}');
+      return ex.message;
     }
     return null;
   }
@@ -56,10 +56,10 @@ class AuthenticationRepository extends GetxController {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      final ex = LogInWithEmailAndPasswordFailure.fromCode(e.code);
+      final ex = TException.fromCode(e.code);
       return ex.message;
     } catch (_) {
-      const ex = LogInWithEmailAndPasswordFailure();
+      const ex = TException();
       return ex.message;
     }
     return null;
@@ -104,5 +104,46 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      return await _auth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      final ex = TException.fromCode(e.code);
+      print('Google Auth Exception - ${ex.message}');
+      throw ex.message;
+      
+    } catch (_) {
+      const ex = TException();
+      print('google Auth Exception - ${ex.message}');
+      throw ex.message;
+    }
+  }
+
   Future<void> logout() async => await _auth.signOut();
+
+  // Future<void> sendEmailVerification() async {
+  //   try {
+  //     _auth.currentUser?.sendEmailVerification();
+  //   } on FirebaseAuthException catch (e) {
+  //     final ex = TException.fromCode(e.code);
+  //     throw ex.message;
+  //   } catch (_) {
+  //     const ex = TException();
+  //     throw ex.message;
+  //   }
+  // }
 }

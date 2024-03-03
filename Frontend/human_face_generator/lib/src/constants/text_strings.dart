@@ -65,3 +65,20 @@ const String tMenu3 = "User Management";
 const String tDelete = "Delete";
 const String tJoined = "Joined on ";
 const String tJoinedAt = "1 March 2024";
+
+const String tEmailConnotEmpty = "Email connot be emoty";
+const String tInvalidEmailFormat = "Invalid email format";
+const String tNoRecordFound = "No record found";
+
+const String tAlert = "Alert";
+const String tOhSnap = "Oh Snap";
+const String tEmailSend = "Hurry!!! Email is on it's way.";
+const String tEmailLinkToResetPassword = "Email Link To Reset Password";
+const String tAccountCreateVerifyEmail = "Account Create Verify Email";
+
+const String tEmailVerification = "Verify Your Email Address";
+const String tEmailVerificationSubTitle = "We have just send an email verification link on you email. Please check email and click on that link to verify your Email address";
+const String tContinue = "Continue";
+const String tResendEmailLink = "Resend E-Mail Link";
+const String tBackToLogin = "Back To Login";
+

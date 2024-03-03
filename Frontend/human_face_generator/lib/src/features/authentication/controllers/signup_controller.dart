@@ -16,14 +16,18 @@ class SignUpController extends GetxController {
 
   final userRepo = Get.put(UserRepository());
 
- void registerUser(String email, String password) async {
-    String? error = await AuthenticationRepository.instance.createUserWithEmailAndPassword(email, password);
-    if(error != null) {
-      Get.showSnackbar(GetSnackBar(message: error.toString(),));
+  void registerUser(String email, String password) async {
+    String? error = await AuthenticationRepository.instance
+        .createUserWithEmailAndPassword(email, password);
+    if (error != null) {
+      Get.showSnackbar(GetSnackBar(
+        message: error.toString(),
+        duration: const Duration(seconds: 3),
+      ));
     }
   }
 
-  void phoneAuthentication(String phoneNo){
+  void phoneAuthentication(String phoneNo) {
     AuthenticationRepository.instance.phoneAuthentication(phoneNo);
   }
 
@@ -32,6 +36,6 @@ class SignUpController extends GetxController {
     //phoneAuthentication(user.phoneNo);
     //Get.to(()=> const OTPScreen());
     registerUser(user.email, user.password);
-    Get.to(()=> const DrawingScreen());
+    Get.to(() => const DrawingScreen());
   }
 }

@@ -84,6 +84,5 @@ class UserRepository extends GetxController {
           colorText: Colors.white);
       print(error.toString());
     });
-    ;
   }
 }

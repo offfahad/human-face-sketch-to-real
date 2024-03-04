@@ -5,7 +5,6 @@ import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/signup_controller.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
-import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_otp/otp_screen.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpFormWidget extends StatefulWidget {
@@ -74,7 +73,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               flagsButtonPadding: const EdgeInsets.all(8),
               dropdownIconPosition: IconPosition.trailing,
               focusNode: FocusNode(),
-              controller: controller.phoneNo,
+              //controller: controller.phoneNo,
               keyboardType: TextInputType.phone,
               //dropdownTextStyle: const TextStyle(fontSize: 16),
               decoration: const InputDecoration(
@@ -85,10 +84,13 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               ),
               initialCountryCode: 'PK',
               onChanged: (phone) {
-                print(phone.completeNumber);
-              },
-              onCountryChanged: (country) {
-                print(country.name);
+                if (phone.completeNumber.isNotEmpty) {
+                  String phoneNumber =
+                      phone.completeNumber; // Get the complete phone number
+
+                  // Update the controller with the complete phone number
+                  controller.phoneNo.text = phoneNumber;
+                }
               },
               validator: (value) {
                 if (value == null) {

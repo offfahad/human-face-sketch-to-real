@@ -106,53 +106,76 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle() async {
     try {
+      // Initialize GoogleSignIn
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      // Sign out any previous user
+      await googleSignIn.signOut();
+
       // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      if (googleUser != null) {
+        // Obtain the auth details from the request
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
 
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
+        if (googleAuth != null) {
+          // Create a new credential
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
 
-      // Once signed in, return the UserCredential
-      return await _auth.signInWithCredential(credential);
+          // Once signed in, return the UserCredential
+          return await _auth.signInWithCredential(credential);
+        } else {
+          // Handle the case where authentication details are null
+          print('Authentication details are null.');
+          return null;
+        }
+      } else {
+        // Handle the case where the user didn't select any account
+        print('User did not select any account.');
+        return null;
+      }
     } on FirebaseAuthException catch (e) {
       final ex = TException.fromCode(e.code);
       print('Google Auth Exception - ${ex.message}');
       throw ex.message;
-      
-    } catch (_) {
+    } catch (e) {
       const ex = TException();
-      print('google Auth Exception - ${ex.message}');
+      print('Google Auth Exception - ${ex.message}');
       throw ex.message;
     }
   }
 
-  Future<UserCredential> signInWithGoogleWb() async {
-  // Create a new provider
-  GoogleAuthProvider googleProvider = GoogleAuthProvider();
+  Future<UserCredential?> signInWithGoogleWb() async {
+    try {
+      // Create a new provider
+      GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
-  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-  googleProvider.setCustomParameters({
-    'login_hint': 'user@example.com'
-  });
+      googleProvider
+          .addScope('https://www.googleapis.com/auth/contacts.readonly');
+      googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
 
-  // Once signed in, return the UserCredential
-  return await _auth.signInWithPopup(googleProvider);
+      // Once signed in, return the UserCredential
+      return await _auth.signInWithPopup(googleProvider);
+    } catch (e) {
+      print('Error signing in with Google: $e');
+      return null;
+    }
+  }
 
-  // Or use signInWithRedirect
-  // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
-}
-
-
-  Future<void> logout() async => await _auth.signOut();
+  Future<void> logout() async {
+    if (GoogleSignIn().currentUser != null) {
+      await GoogleSignIn().signOut();
+      await GoogleSignIn().disconnect();
+    }
+    await FirebaseAuth.instance.signOut();
+  }
 
   // Future<void> sendEmailVerification() async {
   //   try {

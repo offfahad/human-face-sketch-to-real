@@ -88,28 +88,7 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: () {
-                      User? user = FirebaseAuth.instance.currentUser;
-                      if (user != null) {
-                        // Iterate through the user's provider data to check the sign-in method
-                        for (UserInfo userInfo in user.providerData) {
-                          if (userInfo.providerId == 'google.com') {
-                            // User is signed in with Google account
-                            Get.to(
-                                () => const GoogleAccountInformationUpdateScreen());
-                            return;
-                          } else if (userInfo.providerId == 'password') {
-                            // User is signed in with email and password
-                            Get.to(() => const UpdateProfileScreen());
-                            return;
-                          }
-                          // Add conditions for other sign-in methods if needed
-                        }
-                      }
-                      // Default case if user is not signed in or sign-in method is unknown
-                      Get.snackbar(
-                          'Error', 'Unable to determine sign-in method');
-                    },
+                    onPressed: () => Get.to(() => const UpdateProfileScreen()),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: tPrimaryColor,
                       side: BorderSide.none,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:human_face_generator/drawing_screen.dart';
@@ -60,8 +61,26 @@ class SignUpController extends GetxController {
       //   await userRepo.createUser(user);
       // }
       //Get.to(() => const DrawingScreen());
-      await userRepo.createUser(user);
+      await userRepo.createUserOnCollection(user);
       Get.to(() => const DrawingScreen());
     }
+  }
+
+  Future<void> createGmailUser(UserModel user) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      // Check if the user signed in with Google
+      for (UserInfo userInfo in currentUser.providerData) {
+        if (userInfo.providerId == 'google.com') {
+          // User signed in with Google, reset other fields except for the Gmail account
+          user.fullName = '';
+          user.phoneNo = '';
+          user.password = '';
+          // Store the Gmail account ID (email) in the user object
+          user.email = currentUser.email ?? '';
+        }
+      }
+    }
+    await userRepo.createUserOnCollection(user);
   }
 }

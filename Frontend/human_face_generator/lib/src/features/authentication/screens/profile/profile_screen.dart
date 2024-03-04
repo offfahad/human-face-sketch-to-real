@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +6,7 @@ import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
+import 'package:human_face_generator/src/features/authentication/screens/profile/google_account_information_update.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_menu_widget.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/update_profile_screen.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
@@ -22,12 +24,18 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: tPrimaryColor,
         leading: IconButton(
             onPressed: () => Get.back(),
-            icon: const Icon(LineAwesomeIcons.angle_left, color: tWhiteColor,)),
-        title: Text(tProfile, style: GoogleFonts.poppins(
+            icon: const Icon(
+              LineAwesomeIcons.angle_left,
+              color: tWhiteColor,
+            )),
+        title: Text(
+          tProfile,
+          style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,
             color: tWhiteColor,
-          ),),
+          ),
+        ),
         actions: [
           IconButton(
               onPressed: () {},
@@ -75,24 +83,48 @@ class ProfileScreen extends StatelessWidget {
                 Text(tProfileSubHeading,
                     style: Theme.of(context).textTheme.bodyMedium),
                 const SizedBox(height: 20),
-          
+
                 /// -- BUTTON
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: () => Get.to(() => const UpdateProfileScreen()),
+                    onPressed: () {
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        // Iterate through the user's provider data to check the sign-in method
+                        for (UserInfo userInfo in user.providerData) {
+                          if (userInfo.providerId == 'google.com') {
+                            // User is signed in with Google account
+                            Get.to(
+                                () => const GoogleAccountInformationUpdateScreen());
+                            return;
+                          } else if (userInfo.providerId == 'password') {
+                            // User is signed in with email and password
+                            Get.to(() => const UpdateProfileScreen());
+                            return;
+                          }
+                          // Add conditions for other sign-in methods if needed
+                        }
+                      }
+                      // Default case if user is not signed in or sign-in method is unknown
+                      Get.snackbar(
+                          'Error', 'Unable to determine sign-in method');
+                    },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: tPrimaryColor,
-                        side: BorderSide.none,
-                        shape: const StadiumBorder()),
-                    child: const Text(tEditProfile,
-                        style: TextStyle(color: tWhiteColor)),
+                      backgroundColor: tPrimaryColor,
+                      side: BorderSide.none,
+                      shape: const StadiumBorder(),
+                    ),
+                    child: const Text(
+                      tEditProfile,
+                      style: TextStyle(color: tWhiteColor),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
                 const Divider(),
                 const SizedBox(height: 10),
-          
+
                 /// -- MENU
                 ProfileMenuWidget(
                     title: "Settings",
@@ -136,7 +168,8 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                         cancel: OutlinedButton(
-                            onPressed: () => Get.back(), child: const Text("No")),
+                            onPressed: () => Get.back(),
+                            child: const Text("No")),
                       );
                     }),
               ],

@@ -189,3 +189,21 @@ class AuthenticationRepository extends GetxController {
   //   }
   // }
 }
+
+void checkUserSignInMethod() {
+  User? user = FirebaseAuth.instance.currentUser;
+  
+  if (user != null) {
+    // Iterate through the user's provider data to check the sign-in method
+    for (UserInfo userInfo in user.providerData) {
+      if (userInfo.providerId == 'google.com') {
+        print('User is signed in with Google account');
+      } else if (userInfo.providerId == 'password') {
+        print('User is signed in with email and password');
+      }
+      // Add conditions for other sign-in methods if needed
+    }
+  } else {
+    print('No user is currently signed in');
+  }
+}

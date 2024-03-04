@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:human_face_generator/drawing_screen.dart';
@@ -55,7 +56,7 @@ class AuthenticationRepository extends GetxController {
       String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
+    } on PlatformException catch (e) {
       final ex = TException.fromCode(e.code);
       return ex.message;
     } catch (_) {
@@ -65,7 +66,7 @@ class AuthenticationRepository extends GetxController {
     return null;
   }
 
-  Future<void> phoneAuthentication(String phoneNo) async {
+  Future<String?> phoneAuthentication(String phoneNo) async {
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNo,
       verificationCompleted: (credential) async {
@@ -85,6 +86,7 @@ class AuthenticationRepository extends GetxController {
         }
       },
     );
+    return null;
   }
 
   Future<bool> verifyOTP(String otp) async {
@@ -132,6 +134,23 @@ class AuthenticationRepository extends GetxController {
       throw ex.message;
     }
   }
+
+  Future<UserCredential> signInWithGoogleWb() async {
+  // Create a new provider
+  GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  googleProvider.setCustomParameters({
+    'login_hint': 'user@example.com'
+  });
+
+  // Once signed in, return the UserCredential
+  return await _auth.signInWithPopup(googleProvider);
+
+  // Or use signInWithRedirect
+  // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
+}
+
 
   Future<void> logout() async => await _auth.signOut();
 

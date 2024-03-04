@@ -27,10 +27,11 @@ class WelcomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           TFadeInAnimation(
-            durationInMs: 1200,
+            durationInMs: 0,
             animate: TAnimatePosition(
               bottomAfter: 0,
-              bottomBefore: -100,
+              //bottomBefore: -100,
+              bottomBefore: 0,
               leftAfter: 0,
               leftBefore: 0,
               topAfter: 0,

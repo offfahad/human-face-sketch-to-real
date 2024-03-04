@@ -11,18 +11,19 @@ class UserRepository extends GetxController {
   createUser(UserModel user) async {
     await _db
         .collection("Users")
-        .add(user.toJason());
-      //   .whenComplete(() => Get.snackbar(
-      //       "Success", "Your account has been created.",
-      //       snackPosition: SnackPosition.BOTTOM,
-      //       backgroundColor: const Color.fromARGB(255, 38, 116, 40),
-      //       colorText: Colors.white))
-      //   .catchError((error, stackTrace) {
-      // Get.snackbar("Error", "Something went wrong. Try again.",
-      //     snackPosition: SnackPosition.BOTTOM,
-      //     backgroundColor: Colors.red,
-      //     colorText: Colors.white);
-      //print(error.toString());
+        .add(user.toJason())
+        .whenComplete(() => Get.snackbar(
+            "Success", "Your account has been created.",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: const Color.fromARGB(255, 38, 116, 40),
+            colorText: Colors.white))
+        .catchError((error, stackTrace) {
+      Get.snackbar("Error", "Something went wrong. Try again.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+      print(error.toString());
+    });
   }
 
   Future<UserModel?> getUserDetails(String email) async {
@@ -37,6 +38,22 @@ class UserRepository extends GetxController {
       return null; // or handle the error as needed
     }
   }
+
+  // Future<UserModel?> getUserDetails(String uid) async {
+  //   try {
+  //     final snapshot = await _db.collection("Users").doc(uid).get();
+  //     if (snapshot.exists) {
+  //       final userData = UserModel.fromSnapshot(snapshot);
+  //       return userData;
+  //     } else {
+  //       print('User with UID $uid does not exist');
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching user details: $e');
+  //     return null; // or handle the error as needed
+  //   }
+  // }
 
   Future<List<UserModel>> allUser() async {
     try {

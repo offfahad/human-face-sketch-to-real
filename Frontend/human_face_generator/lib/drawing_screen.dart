@@ -91,11 +91,11 @@ class _Screen2State extends State<DrawingScreen> {
     } catch (e) {
       // ignore: avoid_print
       // Display a Snackbar when an error occurs
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Server is down. Please try again later.'),
-        ),
-      );
+      Get.showSnackbar(const GetSnackBar(
+        message: "Server is down. Try again letter.",
+        duration: Duration(seconds: 1),
+      ));
+
       print(" *Error has Occured: $e");
       return null;
     }

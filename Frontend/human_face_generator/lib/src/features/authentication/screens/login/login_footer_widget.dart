@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:human_face_generator/src/constants/image_strings.dart';
@@ -23,7 +24,11 @@ class LoginFooterWidget extends StatelessWidget {
           child: OutlinedButton.icon(
             icon: const Image(image: AssetImage(tGoogleLogoImage), width: 20.0),
             onPressed: () {
-              controller.googleSignIn();
+              if (kIsWeb) {
+                controller.googleSignInWeb();
+              } else {
+                controller.googleSignIn();
+              }
             },
             label: const Text(tSignInWithGoogle),
           ),

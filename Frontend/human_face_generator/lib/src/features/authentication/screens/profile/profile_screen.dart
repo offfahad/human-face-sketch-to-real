@@ -78,6 +78,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
+                
                 Text(tProfileHeading,
                     style: Theme.of(context).textTheme.headlineMedium),
                 Text(tProfileSubHeading,

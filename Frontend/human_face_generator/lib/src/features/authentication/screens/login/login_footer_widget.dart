@@ -20,7 +20,6 @@ class LoginFooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
-    final userRepo = Get.put(UserRepository());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -33,46 +32,10 @@ class LoginFooterWidget extends StatelessWidget {
             onPressed: () async {
               if (kIsWeb) {
                 await controller.googleSignInWeb();
+                await addGmailToCollection();
               } else {
                 await controller.googleSignIn();
-                User? currentUser = FirebaseAuth.instance.currentUser;
-                if (currentUser != null) {
-                  // Check if the user signed in with Google
-                  for (UserInfo userInfo in currentUser.providerData) {
-                    if (userInfo.providerId == 'google.com') {
-                      // User signed in with Google, reset other fields except for the Gmail account
-                      String email = currentUser.email ?? '';
-                      print(email);
-                      String fullName = '';
-                      String phoneNo = '';
-                      String password = '';
-
-                      // Query Firestore to check if the user's email already exists in the collection
-                      QuerySnapshot querySnapshot = await FirebaseFirestore
-                          .instance
-                          .collection('Users')
-                          .where('Email', isEqualTo: email)
-                          .get();
-
-                      if (querySnapshot.docs.isEmpty) {
-                        final user = UserModel(
-                            fullName: fullName,
-                            email: email,
-                            phoneNo: phoneNo,
-                            password: password);
-                        await userRepo.createUserOnCollection(user);
-                      } else {
-                        print('User already exists in collection');
-                        Get.snackbar(
-                            "Success", "Welcome Back.",
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor:
-                                const Color.fromARGB(255, 38, 116, 40),
-                            colorText: Colors.white);
-                      }
-                    }
-                  }
-                }
+                await addGmailToCollection();
               }
             },
             label: const Text(tSignInWithGoogle),
@@ -92,5 +55,44 @@ class LoginFooterWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+final userRepo = Get.put(UserRepository());
+Future<void> addGmailToCollection() async {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    // Check if the user signed in with Google
+    for (UserInfo userInfo in currentUser.providerData) {
+      if (userInfo.providerId == 'google.com') {
+        // User signed in with Google, reset other fields except for the Gmail account
+        String email = currentUser.email ?? '';
+        print(email);
+        String fullName = '';
+        String phoneNo = '';
+        String password = '';
+
+        // Query Firestore to check if the user's email already exists in the collection
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('Users')
+            .where('Email', isEqualTo: email)
+            .get();
+
+        if (querySnapshot.docs.isEmpty) {
+          final user = UserModel(
+              fullName: fullName,
+              email: email,
+              phoneNo: phoneNo,
+              password: password);
+          await userRepo.createUserOnCollection(user);
+        } else {
+          print('User already exists in collection');
+          Get.snackbar("Success", "Welcome Back.",
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: const Color.fromARGB(255, 38, 116, 40),
+              colorText: Colors.white);
+        }
+      }
+    }
   }
 }

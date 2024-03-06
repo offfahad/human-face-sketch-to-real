@@ -63,6 +63,16 @@ class OnBoardingController extends GetxController {
     }
   }
 
-  onPageChangedCallback(int activePageIndex) =>
-      currentPage.value = activePageIndex;
+  void onPageChangedCallback(int activePageIndex) {
+    currentPage.value = activePageIndex;
+
+    // Increment the pagesVisited count whenever the page changes
+    pagesVisited++;
+
+    // Check if the user has visited 3 pages or more
+    if (pagesVisited >= 3) {
+      // Navigate to the welcome screen
+      skip();
+    }
+  }
 }

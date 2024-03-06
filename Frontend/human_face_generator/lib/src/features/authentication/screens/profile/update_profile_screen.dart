@@ -7,7 +7,6 @@ import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
 import 'package:human_face_generator/src/features/core/controllers/profile_controller.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class UpdateProfileScreen extends StatefulWidget {

@@ -7,12 +7,15 @@ import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/opt_controller.dart';
 
 class OTPScreen extends StatelessWidget {
-  const OTPScreen({Key? key}) : super(key: key);
+  final String fetchedEmail; // Make it final to ensure it's set only once
+
+  OTPScreen({Key? key, required this.fetchedEmail}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var otpController = Get.put(OTPController());
-    var otp; 
+    var otp;
+    print(fetchedEmail);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(tDefaultSize),
@@ -21,11 +24,35 @@ class OTPScreen extends StatelessWidget {
           children: [
             Text(
               tOtpTitle,
-              style: GoogleFonts.montserrat(fontWeight: FontWeight.bold, fontSize: 80.0),
+              style: GoogleFonts.montserrat(
+                  fontWeight: FontWeight.bold, fontSize: 80.0),
             ),
-            Text(tOtpSubTitle.toUpperCase(), style: Theme.of(context).textTheme.titleLarge),
+            Text(tOtpSubTitle.toUpperCase(),
+                style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 40.0),
-            const Text("$tOtpMessage mughalfahad544@gmail.com", textAlign: TextAlign.center),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: "$tOtpMessage",
+                    style: TextStyle(
+                      // Define your style for tOtpMessage here
+                      fontWeight: FontWeight.normal,
+                      // Add any other styles you need
+                    ),
+                  ),
+                  TextSpan(
+                    text: fetchedEmail,
+                    style: const TextStyle(
+                      // Make fetchedEmail bold
+                      fontWeight: FontWeight.bold,
+                      // Add any other styles you need
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 20.0),
             OtpTextField(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -40,9 +67,11 @@ class OTPScreen extends StatelessWidget {
             const SizedBox(height: 20.0),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(onPressed: () {
-                OTPController.instance.verifyOTP(otp);
-              }, child: const Text(tNext)),
+              child: ElevatedButton(
+                  onPressed: () {
+                    OTPController.instance.verifyOTP(otp);
+                  },
+                  child: const Text(tNext)),
             ),
           ],
         ),

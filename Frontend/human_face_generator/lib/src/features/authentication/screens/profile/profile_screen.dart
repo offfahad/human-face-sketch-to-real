@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +6,6 @@ import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
-import 'package:human_face_generator/src/features/authentication/screens/profile/google_account_information_update.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_menu_widget.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/update_profile_screen.dart';
 import 'package:human_face_generator/src/features/core/controllers/profile_controller.dart';
@@ -107,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                         } else {
                           return const Center(
                             child:
-                                Text('Too Slow Intnet Connection Try Again.'),
+                                Text('Too Slow Internet Connection Try Again.'),
                           );
                         }
                       } else {

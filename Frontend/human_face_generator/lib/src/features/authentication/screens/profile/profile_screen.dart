@@ -171,15 +171,13 @@ class ProfileScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: 5.0),
                           child: Text("Are you sure, you want to Logout?"),
                         ),
-                        confirm: Expanded(
-                          child: ElevatedButton(
-                            onPressed: () =>
-                                AuthenticationRepository.instance.logout(),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: tPrimaryColor,
-                                side: BorderSide.none),
-                            child: const Text("Yes"),
-                          ),
+                        confirm: ElevatedButton(
+                          onPressed: () =>
+                              AuthenticationRepository.instance.logout(),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: tPrimaryColor,
+                              side: BorderSide.none),
+                          child: const Text("Yes"),
                         ),
                         cancel: OutlinedButton(
                             onPressed: () => Get.back(),

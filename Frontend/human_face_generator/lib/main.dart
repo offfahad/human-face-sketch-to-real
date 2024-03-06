@@ -26,8 +26,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'FYP APP',
         theme: TAppTheme.lightTheme,
-        //darkTheme: TAppTheme.darkTheme,
-        themeMode: ThemeMode.light,
         home: const OnBoardingScreen());
   }
 }

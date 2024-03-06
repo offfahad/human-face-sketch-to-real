@@ -12,14 +12,14 @@ class SignUpHeaderWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 20,),
+        const SizedBox(height: 10,),
         Image(
             image: const AssetImage(tWelcomeScreenImage),
             height: size.height * 0.2),
-        const SizedBox(height: 10,),
+        //const SizedBox(height: 10,),
         Text(tSignUpTitle, style: Theme.of(context).textTheme.displayLarge),
         Text(tSignUpSubTitle, style: Theme.of(context).textTheme.bodyLarge),
-        const SizedBox(height: 10,),
+        //const SizedBox(height: 10,),
       ],
     );
   }

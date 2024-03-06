@@ -94,7 +94,7 @@ class _Screen2State extends State<DrawingScreen> {
       // ignore: avoid_print
       // Display a Snackbar when an error occurs
       Get.showSnackbar(const GetSnackBar(
-        message: "Server is down try again.", title: "Server Down",
+        message: "Server is down try again.",
         backgroundColor: Colors.red,
         duration: Duration(seconds: 3),
       ));
@@ -570,7 +570,7 @@ class _Screen2State extends State<DrawingScreen> {
                               });
                             },
                             icon: const Icon(
-                              Icons.save,
+                              Icons.download,
                               color: Colors.white,
                             ),
                           ),
@@ -582,7 +582,7 @@ class _Screen2State extends State<DrawingScreen> {
                               _pickImage(context);
                             },
                             icon: const Icon(
-                              Icons.file_upload_outlined,
+                              Icons.upload,
                               color: Colors.white,
                             ),
                           ),
@@ -619,7 +619,7 @@ class _Screen2State extends State<DrawingScreen> {
                           IconButton(
                             onPressed: saveRealImageToGallery,
                             icon: const Icon(
-                              Icons.save,
+                              Icons.download,
                               color: Colors.white,
                             ),
                           ),

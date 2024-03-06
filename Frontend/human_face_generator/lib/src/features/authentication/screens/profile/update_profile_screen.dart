@@ -125,40 +125,32 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               },
                             ),
                             const SizedBox(height: tFormHeight - 20),
-                            // TextFormField(
-                            //   controller: phoneNo,
-                            //   decoration: const InputDecoration(
-                            //     label: Text(tPhoneNo),
-                            //     prefixIcon: Icon(LineAwesomeIcons.phone),
-                            //   ),
-                            // ),
-                            IntlPhoneField(
-                              flagsButtonPadding: const EdgeInsets.all(8),
-                              dropdownIconPosition: IconPosition.trailing,
-                              focusNode: FocusNode(),
-                              //controller: controller.phoneNo,
-                              keyboardType: TextInputType.phone,
-                              //dropdownTextStyle: const TextStyle(fontSize: 16),
+                            TextFormField(
+                              controller: phoneNo,
                               decoration: const InputDecoration(
                                 label: Text(tPhoneNo),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(),
-                                ),
+                                prefixIcon: Icon(LineAwesomeIcons.phone),
                               ),
-                              initialCountryCode: 'PK',
-                              onChanged: (phone) {
-                                if (phone.completeNumber.isNotEmpty) {
-                                  String phoneNumber = phone
-                                      .completeNumber; // Get the complete phone number
-
-                                  // Update the controller with the complete phone number
-                                  phoneNo.text = phoneNumber;
-                                }
-                              },
                               validator: (value) {
-                                if (value == null) {
-                                  return 'Phone number field cannot be empty! ';
+                                if (value == null || value.isEmpty) {
+                                  return 'Phone number field cannot be empty!';
                                 }
+
+                                // Check if the value starts with a "+"
+                                if (!value.startsWith('+')) {
+                                  return 'Phone number must start with a "+" sign!';
+                                }
+
+                                // Remove non-digit characters from the value
+                                String digitsOnly =
+                                    value.replaceAll(RegExp(r'\D'), '');
+
+                                // Check if the number of digits is exactly 12
+                                if (digitsOnly.length != 12) {
+                                  return 'Phone number must have exactly 12 digits after the "+" sign!';
+                                }
+
+                                // Return null if all checks pass
                                 return null;
                               },
                             ),

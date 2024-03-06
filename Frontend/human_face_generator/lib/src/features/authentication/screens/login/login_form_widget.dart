@@ -83,10 +83,12 @@ class _LoginFormState extends State<LoginForm> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                  onPressed: () {
-                    ForgetPasswordScreen.buildShowModalBottomSheet(context);
-                  },
-                  child: const Text(tForgetPassword)),
+                onPressed: () {
+                  ForgetPasswordScreen.buildShowModalBottomSheet(context);
+                },
+                child: Text(tForgetPassword,
+                    style: Theme.of(context).textTheme.bodyLarge),
+              ),
             ),
             const SizedBox(
               height: 10,

@@ -37,6 +37,7 @@ class _Screen2State extends State<DrawingScreen> {
   final GlobalKey imageKey = GlobalKey();
   File? file;
   PlatformFile? _imageFile;
+  bool show = true;
 
   void saveToImage(List<DrawingPoint?> points) async {
     final recorder = ui.PictureRecorder();
@@ -87,12 +88,13 @@ class _Screen2State extends State<DrawingScreen> {
 
       final Map<String, dynamic> responseData = json.decode(response.body);
       String outputBytes = responseData['Image'];
+
       displayResponseImage(outputBytes.substring(2, outputBytes.length - 1));
     } catch (e) {
       // ignore: avoid_print
       // Display a Snackbar when an error occurs
       Get.showSnackbar(const GetSnackBar(
-        message: "Server is down. Try again letter.",
+        message: "Server is down try again.",
         duration: Duration(seconds: 1),
       ));
 
@@ -103,6 +105,10 @@ class _Screen2State extends State<DrawingScreen> {
 
   void displayResponseImage(String bytes) async {
     Uint8List convertedBytes = base64Decode(bytes);
+    if(convertedBytes.isNotEmpty)
+    {
+      show = false;
+    }
     setState(() {
       imageOutput = RepaintBoundary(
         key: imageKey,
@@ -355,7 +361,7 @@ class _Screen2State extends State<DrawingScreen> {
           ),
         ),
         title: Text(
-          "Home Face Generator",
+          "Face Sketch To Real",
           style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,
@@ -391,6 +397,7 @@ class _Screen2State extends State<DrawingScreen> {
                         child: _imageFile == null
                             ? GestureDetector(
                                 onPanStart: (details) {
+                                  
                                   setState(() {
                                     currentDrawingPoint = DrawingPoint(
                                       id: DateTime.now().microsecondsSinceEpoch,
@@ -437,22 +444,43 @@ class _Screen2State extends State<DrawingScreen> {
                                   )
                                 : Image.file(file!)),
                     const SizedBox(height: 50),
-                    Container(
-                      width: 257,
-                      height: 257,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1.0),
+                    if (show)
+                      Container(
+                        width: 257,
+                        height: 257,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                        child: const Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "No AI generated image yet\nDraw a face sketch first\nIn the above box!",
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        )),
                       ),
-                      child: imageOutput ??
-                          const Center(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("No AI generated image yet!"),
-                              Text("Draw a face sketch first!")
-                            ],
-                          )),
-                    ),
+                    if (show == false)
+                      Container(
+                        width: 257,
+                        height: 257,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                        child: imageOutput ??
+                            const Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "No AI generated image yet\nDraw a face sketch first\nIn the above box!",
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            )),
+                      ),
                   ],
                 ),
                 const SizedBox(width: 20),

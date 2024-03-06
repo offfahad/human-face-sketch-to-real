@@ -20,8 +20,7 @@ class LoginScreen extends StatelessWidget {
               children: [
                 LoginHeaderWidget(),
                 LoginForm(),
-                LoginFooterWidget(),
-                
+                LoginFooterWidget(),              
               ],
             ),
           ),

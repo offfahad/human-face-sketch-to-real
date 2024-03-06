@@ -6,9 +6,11 @@ import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
+import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/google_account_information_update.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_menu_widget.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/update_profile_screen.dart';
+import 'package:human_face_generator/src/features/core/controllers/profile_controller.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -17,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProfileController());
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
@@ -77,12 +80,45 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                
-                Text(tProfileHeading,
-                    style: Theme.of(context).textTheme.headlineMedium),
-                Text(tProfileSubHeading,
-                    style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 20),
+                FutureBuilder(
+                    future: controller.getUserData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          UserModel userData = snapshot.data as UserModel;
+                          final email = userData.email;
+                          final fullname = userData.fullName;
+                          return Column(
+                            children: [
+                              Text(fullname,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
+                              Text(email,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                            ],
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text(snapshot.error.toString()),
+                          );
+                        } else {
+                          return const Center(
+                            child:
+                                Text('Too Slow Intnet Connection Try Again.'),
+                          );
+                        }
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: tPrimaryColor,
+                          ),
+                        );
+                      }
+                    }),
+
                 const SizedBox(height: 20),
 
                 /// -- BUTTON

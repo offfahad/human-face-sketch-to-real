@@ -186,7 +186,7 @@ class UpdateProfileScreen extends StatelessWidget {
                   );
                 } else {
                   return const Center(
-                    child: Text("Something, went Wrong"),
+                    child: Text("Too Slow Intnet Connection Try Again."),
                   );
                 }
               } else {

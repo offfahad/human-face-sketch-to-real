@@ -75,7 +75,7 @@ class _Screen2State extends State<DrawingScreen> {
 
   void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
-    var url = Uri.parse("http://192.168.249.56:5000/predict");
+    var url = Uri.parse("http://192.168.160.56:5000/predict");
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -94,8 +94,9 @@ class _Screen2State extends State<DrawingScreen> {
       // ignore: avoid_print
       // Display a Snackbar when an error occurs
       Get.showSnackbar(const GetSnackBar(
-        message: "Server is down try again.",
-        duration: Duration(seconds: 1),
+        message: "Server is down try again.", title: "Server Down",
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
       ));
 
       print(" *Error has Occured: $e");

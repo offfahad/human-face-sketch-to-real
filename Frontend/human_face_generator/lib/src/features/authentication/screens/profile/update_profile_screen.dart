@@ -7,14 +7,22 @@ import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
 import 'package:human_face_generator/src/features/core/controllers/profile_controller.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class UpdateProfileScreen extends StatelessWidget {
+class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({Key? key}) : super(key: key);
 
   @override
+  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+}
+
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+  bool _isPasswordVisible = false;
+  final controller = Get.put(ProfileController());
+  final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProfileController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: tPrimaryColor,
@@ -83,41 +91,109 @@ class UpdateProfileScreen extends StatelessWidget {
 
                       // -- Form Fields
                       Form(
+                        key: _formKey,
                         child: Column(
                           children: [
                             TextFormField(
                               controller: fullname,
                               decoration: const InputDecoration(
-                                  label: Text(tFullName),
-                                  prefixIcon: Icon(LineAwesomeIcons.user)),
+                                label: Text(tFullName),
+                                prefixIcon: Icon(LineAwesomeIcons.user),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Name field cannot be empty!';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: tFormHeight - 20),
                             TextFormField(
                               controller: email,
                               decoration: const InputDecoration(
-                                  label: Text(tEmail),
-                                  prefixIcon:
-                                      Icon(LineAwesomeIcons.envelope_1)),
+                                label: Text(tEmail),
+                                prefixIcon: Icon(LineAwesomeIcons.envelope_1),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Email field cannot be empty!';
+                                }
+                                if (!controller.isValidEmail(value)) {
+                                  return 'Please enter a valid email address!';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: tFormHeight - 20),
-                            TextFormField(
-                              controller: phoneNo,
+                            // TextFormField(
+                            //   controller: phoneNo,
+                            //   decoration: const InputDecoration(
+                            //     label: Text(tPhoneNo),
+                            //     prefixIcon: Icon(LineAwesomeIcons.phone),
+                            //   ),
+                            // ),
+                            IntlPhoneField(
+                              flagsButtonPadding: const EdgeInsets.all(8),
+                              dropdownIconPosition: IconPosition.trailing,
+                              focusNode: FocusNode(),
+                              //controller: controller.phoneNo,
+                              keyboardType: TextInputType.phone,
+                              //dropdownTextStyle: const TextStyle(fontSize: 16),
                               decoration: const InputDecoration(
-                                  label: Text(tPhoneNo),
-                                  prefixIcon: Icon(LineAwesomeIcons.phone)),
+                                label: Text(tPhoneNo),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(),
+                                ),
+                              ),
+                              initialCountryCode: 'PK',
+                              onChanged: (phone) {
+                                if (phone.completeNumber.isNotEmpty) {
+                                  String phoneNumber = phone
+                                      .completeNumber; // Get the complete phone number
+
+                                  // Update the controller with the complete phone number
+                                  phoneNo.text = phoneNumber;
+                                }
+                              },
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Phone number field cannot be empty! ';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: tFormHeight - 20),
                             TextFormField(
                               controller: password,
-                              obscureText: false,
                               decoration: InputDecoration(
-                                label: const Text(tPassword),
                                 prefixIcon: const Icon(Icons.fingerprint),
+                                labelText: tPassword,
+                                hintText: tPassword,
+                                border: const OutlineInputBorder(),
                                 suffixIcon: IconButton(
-                                    icon:
-                                        const Icon(LineAwesomeIcons.eye_slash),
-                                    onPressed: () {}),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordVisible = !_isPasswordVisible;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    _isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: tPrimaryColor,
+                                  ),
+                                ),
                               ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Password field cannot be empty!';
+                                }
+                                if (value.length < 7) {
+                                  return 'Password must be at least 7 characters long!';
+                                }
+                                return null;
+                              },
+                              obscureText: !_isPasswordVisible,
                             ),
                             const SizedBox(height: tFormHeight),
 
@@ -126,14 +202,16 @@ class UpdateProfileScreen extends StatelessWidget {
                               width: 200,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  final userData = UserModel(
-                                    id: userId,
-                                    fullName: fullname.text.trim(),
-                                    email: email.text.trim(),
-                                    phoneNo: phoneNo.text.trim(),
-                                    password: password.text.trim(),
-                                  );
-                                  await controller.updateRecord(userData);
+                                  if (_formKey.currentState!.validate()) {
+                                    final userData = UserModel(
+                                      id: userId,
+                                      fullName: fullname.text.trim(),
+                                      email: email.text.trim(),
+                                      phoneNo: phoneNo.text.trim(),
+                                      password: password.text.trim(),
+                                    );
+                                    await controller.updateRecord(userData);
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: tPrimaryColor,
@@ -191,7 +269,9 @@ class UpdateProfileScreen extends StatelessWidget {
                 }
               } else {
                 return const Center(
-                  child: CircularProgressIndicator(color: tPrimaryColor,),
+                  child: CircularProgressIndicator(
+                    color: tPrimaryColor,
+                  ),
                 );
               }
             },

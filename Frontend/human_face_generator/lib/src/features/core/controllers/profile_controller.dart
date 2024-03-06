@@ -9,6 +9,14 @@ class ProfileController extends GetxController {
   final _authRepo = Get.put(AuthenticationRepository());
   final _userRepo = Get.put(UserRepository());
 
+  bool isValidEmail(String email) {
+    // Regular expression for email validation
+    // You can customize this regex as per your requirements
+    String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    RegExp regex = RegExp(emailPattern);
+    return regex.hasMatch(email);
+  }
+
   getUserData() {
     final email = _authRepo.firebaseUser.value!.email;
     print(email);

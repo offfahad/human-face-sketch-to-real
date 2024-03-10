@@ -65,19 +65,19 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
-# flutter_native_splash:
-#   color: "#f7f6f1"
-#   color_dark: "272727"
-#   image: assets/images/starting_logo.png
-#   image_dark: assets/images/starting_logo.png
+flutter_native_splash:
+  color: "#f7f6f1"
+  color_dark: "272727"
+  image: assets/images/splash-screen-image.png
+  image_dark: assets/images/splash-screen-image.png
 
-#   android_12:
-#     image: assets/images/starting_logo.png
-#     icon_background_color: "#f7f6f1"
-#     image_dark: assets/images/starting_logo.png
-#     icon_background_color_dark: "#272727"
+  android_12:
+    image: assets/images/splash-screen-image.png
+    icon_background_color: "#f7f6f1"
+    image_dark: assets/images/splash-screen-image.png
+    icon_background_color_dark: "#272727"
 
-#     web: true
+    web: true
     
 
 

@@ -205,6 +205,17 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
             },
             child: const Icon(Icons.clear_all),
           ),
+          const SizedBox(width: 16),
+          FloatingActionButton(
+            backgroundColor: tPrimaryColor,
+            heroTag: "Save",
+            onPressed: () {
+              setState(() {
+                //drawingPoints.clear();
+              });
+            },
+            child: const Icon(Icons.download),
+          ),
         ],
       ),
     );

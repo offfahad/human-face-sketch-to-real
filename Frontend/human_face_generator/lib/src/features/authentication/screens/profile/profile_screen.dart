@@ -196,6 +196,9 @@ class ProfileScreen extends StatelessWidget {
                             child: const Text("No")),
                       );
                     }),
+                const Divider(),
+                const SizedBox(height: 10),
+                Text('Developed By @offfahad', style: Theme.of(context).textTheme.bodyMedium,)
               ],
             ),
           ),

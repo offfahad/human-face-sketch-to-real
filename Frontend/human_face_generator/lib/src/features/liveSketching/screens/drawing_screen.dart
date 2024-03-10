@@ -304,7 +304,7 @@ class _Screen2State extends State<DrawingScreen> {
           ),
         ),
         title: Text(
-          "Face Sketch To Real Mode",
+          "Face Sketch To Real Image Mode",
           style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,

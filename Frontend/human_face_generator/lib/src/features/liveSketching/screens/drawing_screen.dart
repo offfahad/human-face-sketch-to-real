@@ -35,12 +35,12 @@ class _Screen2State extends State<DrawingScreen> {
   DrawingPoint? currentDrawingPoint;
   Widget? imageOutput = Container();
   Uint8List? convertedBytes;
-  var listBytes;
   final GlobalKey imageKey = GlobalKey();
   File? file;
   PlatformFile? _imageFile;
   bool show = true;
 
+  var listBytes;
   void saveToImage(List<DrawingPoint?> points) async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(
@@ -298,13 +298,13 @@ class _Screen2State extends State<DrawingScreen> {
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.settings, color: Colors.white),
+          icon: const Icon(Icons.menu, color: Colors.white),
           onPressed: () => Get.to(
             () => const ProfileScreen(),
           ),
         ),
         title: Text(
-          "Face Sketch To Real Image Mode",
+          "Face Sketch To Real",
           style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,

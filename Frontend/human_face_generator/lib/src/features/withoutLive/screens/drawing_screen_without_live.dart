@@ -1,9 +1,14 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:human_face_generator/src/common_widgets/dialogs/dialog_helper.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
 import 'package:human_face_generator/src/features/withoutLive/models/drawing_point_without_live.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class DrawingScreenWithoutLive extends StatefulWidget {
@@ -32,6 +37,42 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
   var selectedWidth = 2.0;
 
   DrawingPointWithoutLive? currentDrawingPoint;
+  var listBytes;
+
+  void saveToImage(List<DrawingPointWithoutLive?> points) async {
+    final recorder = ui.PictureRecorder();
+    final size = MediaQuery.of(context).size;
+    final canvas = Canvas(
+      recorder,
+      Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
+    );
+    Paint paint = Paint()
+      ..color = selectedColor
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = selectedWidth;
+    final paint2 = Paint()
+      ..style = PaintingStyle.fill
+      ..color = Colors.white;
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint2);
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != null && points[i + 1] != null) {
+        for (int j = 0; j < points[i]!.offsets.length - 1; j++) {
+          canvas.drawLine(
+            points[i]!.offsets[j],
+            points[i]!.offsets[j + 1],
+            paint,
+          );
+        }
+      }
+    }
+    final picture = recorder.endRecording();
+    final img = await picture.toImage(size.width.toInt(), size.height.toInt());
+    final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
+    listBytes = Uint8List.view(pngBytes!.buffer);
+    //File file = await writeBytes(listBytes);
+    //String base64 = base64Encode(listBytes);
+    //fetchResponse(base64);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +128,8 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
               });
             },
             onPanEnd: (_) {
+              saveToImage(drawingPoints);
+
               currentDrawingPoint = null;
             },
             child: CustomPaint(
@@ -211,7 +254,19 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
             heroTag: "Save",
             onPressed: () {
               setState(() {
-                //drawingPoints.clear();
+                setState(() {
+                  if (drawingPoints.isNotEmpty) {
+                    final result = ImageGallerySaver.saveImage(
+                        Uint8List.fromList(listBytes));
+                    if (result != null) {
+                      DialogHelper.showImageSavedDialog(context);
+                    } else {
+                      DialogHelper.showImageNotSavedDialog(context);
+                    }
+                  } else {
+                    DialogHelper.showImageNotSavedDialog(context);
+                  }
+                });
               });
             },
             child: const Icon(Icons.download),

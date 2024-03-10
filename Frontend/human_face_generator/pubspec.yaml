@@ -36,7 +36,7 @@ dependencies:
   cached_network_image:
   http: ^1.1.0
   google_fonts: ^6.1.0
-  
+  flutter_native_splash: ^2.2.7
   get: ^4.6.6
   liquid_swipe: ^3.0.0
   smooth_page_indicator: ^1.0.0+2
@@ -52,6 +52,7 @@ dependencies:
   cloud_firestore: ^4.14.0
   google_sign_in: ^6.0.2
   intl_phone_field: ^3.2.0
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:

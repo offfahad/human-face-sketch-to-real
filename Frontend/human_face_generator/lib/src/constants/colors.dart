@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-const tPrimaryColor = Color.fromARGB(255, 101, 81, 74);
+const tPrimaryColor = Color.fromARGB(255, 141, 124, 98);
 const tSecondaryColor =Color.fromARGB(255, 52, 52, 52);
 const tAccentColor = Color(0xFF001BFF);
 

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:human_face_generator/drawing_point.dart';
+import 'package:human_face_generator/src/features/liveSketching/models/drawing_point.dart';
 
 class DrawingPainter extends CustomPainter {
   final List<DrawingPoint> drawingPoints;

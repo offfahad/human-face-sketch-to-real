@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:human_face_generator/drawing_screen.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_screen.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';

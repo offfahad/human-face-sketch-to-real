@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:human_face_generator/drawing_screen.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_screen.dart';
 import 'package:human_face_generator/src/features/authentication/screens/on_boarding/on_boarding_screen.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/exceptions/t_exceptions.dart';
 

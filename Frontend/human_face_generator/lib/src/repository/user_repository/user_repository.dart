@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
+import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserRepository extends GetxController {
   static UserRepository get instance => Get.find();
@@ -84,5 +89,17 @@ class UserRepository extends GetxController {
           colorText: Colors.white);
       print(error.toString());
     });
+  }
+
+  Future<String> uploadImage(String path, XFile image) async {
+    try {
+      final ref = FirebaseStorage.instance.ref(path).child(image.name);
+      await ref.putFile(File(image.path));
+      final url = await ref.getDownloadURL();
+      return url;
+    } catch (e) {
+      print(e);
+      return 'Something went wrong';
+    }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:human_face_generator/drawing_screen.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_screen.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 
 class OTPController extends GetxController {

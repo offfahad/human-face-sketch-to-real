@@ -8,7 +8,10 @@ import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_menu_widget.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/update_profile_screen.dart';
-import 'package:human_face_generator/src/features/core/controllers/profile_controller.dart';
+import 'package:human_face_generator/src/features/authentication/controllers/profile_controller.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_screen.dart';
+import 'package:human_face_generator/src/features/withoutLive/models/drawing_point_without_live.dart';
+import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -58,24 +61,24 @@ class ProfileScreen extends StatelessWidget {
                       height: 120,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
-                          child: const Image(image: AssetImage(tProfileImage))),
+                          child: const Image(image: AssetImage(tUserImage))),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: tPrimaryColor),
-                        child: const Icon(
-                          LineAwesomeIcons.alternate_pencil,
-                          color: tWhiteColor,
-                          size: 20,
-                        ),
-                      ),
-                    ),
+                    // Positioned(
+                    //   bottom: 0,
+                    //   right: 0,
+                    //   child: Container(
+                    //     width: 35,
+                    //     height: 35,
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(100),
+                    //         color: tPrimaryColor),
+                    //     child: const Icon(
+                    //       LineAwesomeIcons.alternate_pencil,
+                    //       color: tWhiteColor,
+                    //       size: 20,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -140,18 +143,27 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 10),
 
                 /// -- MENU
+                // ProfileMenuWidget(
+                //     title: "Settings",
+                //     icon: LineAwesomeIcons.cog,
+                //     onPress: () {}),
+                // ProfileMenuWidget(
+                //     title: "Billing Details",
+                //     icon: LineAwesomeIcons.wallet,
+                //     onPress: () {}),
                 ProfileMenuWidget(
-                    title: "Settings",
-                    icon: LineAwesomeIcons.cog,
-                    onPress: () {}),
+                    title: "Drawing Focus Mode",
+                    icon: Icons.draw,
+                    onPress: () {
+                      Get.to(() => const DrawingScreenWithoutLive());
+                    }),
                 ProfileMenuWidget(
-                    title: "Billing Details",
-                    icon: LineAwesomeIcons.wallet,
-                    onPress: () {}),
-                ProfileMenuWidget(
-                    title: "User Management",
-                    icon: LineAwesomeIcons.user_check,
-                    onPress: () {}),
+                    title: "Face Sketch To Real Mode",
+                    icon: LineAwesomeIcons.pen_square,
+                    onPress: () {
+                      Get.to(() => const DrawingScreen());
+                    }),
+
                 const Divider(),
                 const SizedBox(height: 10),
                 ProfileMenuWidget(

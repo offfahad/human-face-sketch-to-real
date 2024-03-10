@@ -6,7 +6,7 @@ import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
-import 'package:human_face_generator/src/features/core/controllers/profile_controller.dart';
+import 'package:human_face_generator/src/features/authentication/controllers/profile_controller.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
@@ -69,7 +69,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: const Image(
-                                    image: AssetImage(tProfileImage))),
+                                    image: AssetImage(tUserImage))),
                           ),
                           Positioned(
                             bottom: 0,

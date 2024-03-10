@@ -10,8 +10,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:human_face_generator/custom_painter.dart';
-import 'package:human_face_generator/drawing_point.dart';
+import 'package:human_face_generator/src/common_widgets/dialogs/dialog_helper.dart';
+import 'package:human_face_generator/src/constants/server_url.dart';
+import 'package:human_face_generator/src/features/liveSketching/models/custom_painter.dart';
+import 'package:human_face_generator/src/features/liveSketching/models/drawing_point.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
@@ -75,7 +77,7 @@ class _Screen2State extends State<DrawingScreen> {
 
   void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
-    var url = Uri.parse("http://192.168.160.56:5000/predict");
+    var url = Uri.parse(Constants.serverUrl);
 
     Map<String, String> headers = {
       'Content-type': 'application/json',
@@ -122,48 +124,8 @@ class _Screen2State extends State<DrawingScreen> {
     });
   }
 
-  void showImageSavedDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Image Saved'),
-          content: const Text('Image Stored In Gallery.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void showImageNotSavedDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('No Image Found'),
-          content: const Text('Draw A Sketch First.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void saveRealImageToGallery() async {
-    if (imageOutput != null) {
+    if (imageOutput != null && show==false) {
       RenderRepaintBoundary boundary =
           imageKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 3.0);
@@ -176,12 +138,12 @@ class _Screen2State extends State<DrawingScreen> {
           await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
       // Check if the image was saved successfully
       if (result != null) {
-        showImageSavedDialog(context);
+        DialogHelper.showImageSavedDialog(context);
       } else {
-        showImageNotSavedDialog(context);
+        DialogHelper.showImageNotSavedDialog(context);
       }
     } else {
-      showImageNotSavedDialog(context);
+      DialogHelper.showImageNotSavedDialog(context);
     }
   }
 
@@ -286,26 +248,6 @@ class _Screen2State extends State<DrawingScreen> {
     }
   }
 
-  void showImageNotSupportedDialog(context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Image Not Supported'),
-          content: const Text(
-              'Please choose a sketch image which you saved from this application.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   // Method to pick and display an image file
   Future<void> _pickImage(context) async {
@@ -322,7 +264,7 @@ class _Screen2State extends State<DrawingScreen> {
         file = File(result.files.single.path!);
         final decodedImage = await decodeImageFromFile(file!);
         if (decodedImage!.width != 256 && decodedImage.height != 256) {
-          showImageNotSupportedDialog(context);
+          DialogHelper.showImageNotSupportedDialog(context);
           return;
         }
         var base64String = await fileToBase64(file!);
@@ -332,7 +274,7 @@ class _Screen2State extends State<DrawingScreen> {
         _imageFile = result.files.first;
         final decodedImage = await decodeImageFromPlatformFile(_imageFile!);
         if (decodedImage!.width != 256 && decodedImage.height != 256) {
-          showImageNotSupportedDialog(context);
+          DialogHelper.showImageNotSupportedDialog(context);
           _imageFile = null;
           return;
         }
@@ -362,7 +304,7 @@ class _Screen2State extends State<DrawingScreen> {
           ),
         ),
         title: Text(
-          "Face Sketch To Real",
+          "Face Sketch To Real Mode",
           style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,
@@ -560,12 +502,12 @@ class _Screen2State extends State<DrawingScreen> {
                                   final result = ImageGallerySaver.saveImage(
                                       Uint8List.fromList(listBytes));
                                   if (result != null) {
-                                    showImageSavedDialog(context);
+                                    DialogHelper.showImageSavedDialog(context);
                                   } else {
-                                    showImageNotSavedDialog(context);
+                                    DialogHelper.showImageNotSavedDialog(context);
                                   }
                                 } else {
-                                  showImageNotSavedDialog(context);
+                                  DialogHelper.showImageNotSavedDialog(context);
                                 }
                               });
                             },

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ import 'package:human_face_generator/src/features/withoutLive/screens/result_scr
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:universal_html/html.dart' as html;
 
 class DrawingScreenWithoutLive extends StatefulWidget {
   const DrawingScreenWithoutLive({super.key});
@@ -43,6 +45,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
 
   DrawingPointWithoutLive? currentDrawingPoint;
   var listBytes;
+  var storeListByte;
   String? base64;
 
   void saveToImage(List<DrawingPointWithoutLive?> points) async {
@@ -53,12 +56,12 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
       Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
     );
     Paint paint = Paint()
-      ..color = Colors.white
+      ..color = selectedColor
       ..strokeCap = StrokeCap.round
       ..strokeWidth = selectedWidth;
     final paint2 = Paint()
       ..style = PaintingStyle.fill
-      ..color = Colors.black;
+      ..color = Colors.white;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint2);
     for (int i = 0; i < points.length - 1; i++) {
       if (points[i] != null && points[i + 1] != null) {
@@ -119,6 +122,49 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
         imageBytes: convertedBytes,
       ),
     );
+  }
+
+  // Method for saving image on web
+  void saveSketchImageWeb() async {
+    if (drawingPoints.isNotEmpty) {
+      // Convert the image bytes to base64
+      String base64Image = base64Encode(Uint8List.fromList(listBytes));
+
+      // Create an anchor element
+      final anchor = html.AnchorElement(
+        href: 'data:application/octet-stream;base64,$base64Image',
+      )
+        ..setAttribute('download', 'image.png')
+        ..style.display = 'none';
+
+      // Add the anchor element to the document body
+      html.document.body!.children.add(anchor);
+
+      // Trigger a click event on the anchor element
+      anchor.click();
+
+      // Remove the anchor element from the document body
+      html.document.body!.children.remove(anchor);
+
+      DialogHelper.showImageSavedDialogWb(context);
+    } else {
+      DialogHelper.showImageNotSavedDialog(context);
+    }
+  }
+
+// Method for saving image on mobile
+  void saveSketchImageToGallery() async {
+    if (drawingPoints.isNotEmpty) {
+      final result =
+          await ImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
+      if (result != null) {
+        DialogHelper.showImageSavedDialog(context);
+      } else {
+        DialogHelper.showImageNotSavedDialog(context);
+      }
+    } else {
+      DialogHelper.showImageNotSavedDialog(context);
+    }
   }
 
   @override
@@ -302,16 +348,10 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
             onPressed: () {
               setState(() {
                 setState(() {
-                  if (drawingPoints.isNotEmpty) {
-                    final result = ImageGallerySaver.saveImage(
-                        Uint8List.fromList(listBytes));
-                    if (result != null) {
-                      DialogHelper.showImageSavedDialog(context);
-                    } else {
-                      DialogHelper.showImageNotSavedDialog(context);
-                    }
+                  if (kIsWeb) {
+                    saveSketchImageWeb();
                   } else {
-                    DialogHelper.showImageNotSavedDialog(context);
+                    saveSketchImageToGallery();
                   }
                 });
               });
@@ -323,9 +363,9 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
             backgroundColor: tPrimaryColor,
             heroTag: "Process",
             onPressed: () {
-              if (drawingPoints.isNotEmpty) {
-                fetchResponse(base64);
-              }
+              //if (drawingPoints.isNotEmpty) {
+              //  fetchResponse(base64);
+              // }
             },
             child: const Icon(Icons.navigate_next_rounded),
           ),

@@ -37,10 +37,11 @@ class _LoginFormState extends State<LoginForm> {
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
-                if (value == null || value.isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return 'Email field cannot be empty!';
                 }
-                if (!controller.isValidEmail(value)) {
+                String trimmedValue = value.trim();
+                if (!controller.isValidEmail(trimmedValue)) {
                   return 'Please enter a valid email address!';
                 }
                 return null;
@@ -69,10 +70,11 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               validator: (value) {
-                if (value == null || value.isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return 'Password field cannot be empty!';
                 }
-                if (value.length < 7) {
+                String trimmedValuePass = value.trim();
+                if (trimmedValuePass.length < 7) {
                   return 'Password must be at least 7 characters long!';
                 }
                 return null;

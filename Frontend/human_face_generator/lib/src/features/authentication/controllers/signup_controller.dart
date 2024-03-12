@@ -19,9 +19,11 @@ class SignUpController extends GetxController {
   bool isValidEmail(String email) {
     // Regular expression for email validation
     // You can customize this regex as per your requirements
-    String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    String emailPattern = r'^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$';
     RegExp regex = RegExp(emailPattern);
-    return regex.hasMatch(email);
+
+    // Check if the email matches the pattern and does not contain any uppercase letters
+    return regex.hasMatch(email) && !email.contains(RegExp(r'[A-Z]'));
   }
 
   Future<String?> registerUser(String email, String password) async {
@@ -39,12 +41,11 @@ class SignUpController extends GetxController {
   Future<void> createUser(UserModel user) async {
     String? error = await registerUser(user.email, user.password);
     if (error != null) {
-      Get.showSnackbar(GetSnackBar(
-        message: error.toString(),
-        duration: Duration(seconds: 3),
-        backgroundColor: tPrimaryColor,
-        snackPosition: SnackPosition.BOTTOM,
-      ));
+      Get.snackbar("Error", error.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3));
     }
     if (error == null) {
       // String? error2 = await phoneAuthentication(user.phoneNo);

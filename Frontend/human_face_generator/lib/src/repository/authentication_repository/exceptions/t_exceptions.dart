@@ -1,6 +1,6 @@
 class TException {
   final String message;
-  const TException([this.message = "An Unkown error occured."]);
+  const TException([this.message = "Provided credentials are wrong!"]);
   factory TException.fromCode(String code) {
     switch (code) {
       case 'email-already-in-use':

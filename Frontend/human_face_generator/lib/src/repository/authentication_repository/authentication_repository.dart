@@ -169,13 +169,20 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-  Future<void> logout() async {
-    if (GoogleSignIn().currentUser != null) {
-      await GoogleSignIn().signOut();
-      await GoogleSignIn().disconnect();
+Future<void> logout() async {
+  // Check if the current user is signed in with Google
+  if (FirebaseAuth.instance.currentUser?.providerData.any((info) => info.providerId == 'google.com') ?? false) {
+    try {
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut(); // Sign out from Google
+    } catch (e) {
+      print('Error signing out: $e');
     }
+  } else {
+    // Handle sign-out for other providers (if any)
     await FirebaseAuth.instance.signOut();
   }
+}
 
   // Future<void> sendEmailVerification() async {
   //   try {

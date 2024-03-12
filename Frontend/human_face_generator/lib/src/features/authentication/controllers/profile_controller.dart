@@ -12,9 +12,11 @@ class ProfileController extends GetxController {
   bool isValidEmail(String email) {
     // Regular expression for email validation
     // You can customize this regex as per your requirements
-    String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    String emailPattern = r'^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$';
     RegExp regex = RegExp(emailPattern);
-    return regex.hasMatch(email);
+
+    // Check if the email matches the pattern and does not contain any uppercase letters
+    return regex.hasMatch(email) && !email.contains(RegExp(r'[A-Z]'));
   }
 
   getUserData() {

@@ -25,6 +25,29 @@ class DialogHelper {
     );
   }
 
+  static void showImageSavedDialogWb(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Image has been downloaded'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(color: tPrimaryColor),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   static void showImageNotSupportedDialog(context) {
     showDialog(
       context: context,

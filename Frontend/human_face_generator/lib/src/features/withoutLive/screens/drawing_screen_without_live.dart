@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -6,10 +7,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:human_face_generator/src/common_widgets/dialogs/dialog_helper.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
+import 'package:human_face_generator/src/constants/server_url.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
 import 'package:human_face_generator/src/features/withoutLive/models/drawing_point_without_live.dart';
+import 'package:human_face_generator/src/features/withoutLive/screens/result_screen.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class DrawingScreenWithoutLive extends StatefulWidget {
   const DrawingScreenWithoutLive({super.key});
@@ -29,7 +33,8 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
     Colors.pink,
     Colors.indigo,
   ];
-
+  final GlobalKey imageKey = GlobalKey();
+  Widget? imageOutput = Container();
   var historyDrawingPoints = <DrawingPointWithoutLive>[];
   var drawingPoints = <DrawingPointWithoutLive>[];
 
@@ -38,6 +43,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
 
   DrawingPointWithoutLive? currentDrawingPoint;
   var listBytes;
+  String? base64;
 
   void saveToImage(List<DrawingPointWithoutLive?> points) async {
     final recorder = ui.PictureRecorder();
@@ -47,12 +53,12 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
       Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
     );
     Paint paint = Paint()
-      ..color = selectedColor
+      ..color = Colors.white
       ..strokeCap = StrokeCap.round
       ..strokeWidth = selectedWidth;
     final paint2 = Paint()
       ..style = PaintingStyle.fill
-      ..color = Colors.white;
+      ..color = Colors.black;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint2);
     for (int i = 0; i < points.length - 1; i++) {
       if (points[i] != null && points[i + 1] != null) {
@@ -70,8 +76,49 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
     final pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
     listBytes = Uint8List.view(pngBytes!.buffer);
     //File file = await writeBytes(listBytes);
-    //String base64 = base64Encode(listBytes);
+    base64 = base64Encode(listBytes);
     //fetchResponse(base64);
+  }
+
+  void fetchResponse(var base64Image) async {
+    var data = {"Image": base64Image};
+    var url = Uri.parse(Constants.serverUrl);
+
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Connection': "Keep-Alive",
+    };
+    var body = json.encode(data);
+    try {
+      var response = await http.post(url, body: body, headers: headers);
+
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      String outputBytes = responseData['Image'];
+
+      displayResponseImage(outputBytes.substring(2, outputBytes.length - 1));
+    } catch (e) {
+      // ignore: avoid_print
+      // Display a Snackbar when an error occurs
+      Get.showSnackbar(const GetSnackBar(
+        message: "Server is down try again.",
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+      ));
+
+      print(" *Error has Occured: $e");
+      return null;
+    }
+  }
+
+  void displayResponseImage(String bytes) async {
+    Uint8List convertedBytes = base64Decode(bytes);
+
+    Get.to(
+      ResultImage(
+        imageBytes: convertedBytes,
+      ),
+    );
   }
 
   @override
@@ -270,6 +317,17 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
               });
             },
             child: const Icon(Icons.download),
+          ),
+          const SizedBox(width: 16),
+          FloatingActionButton(
+            backgroundColor: tPrimaryColor,
+            heroTag: "Process",
+            onPressed: () {
+              if (drawingPoints.isNotEmpty) {
+                fetchResponse(base64);
+              }
+            },
+            child: const Icon(Icons.navigate_next_rounded),
           ),
         ],
       ),

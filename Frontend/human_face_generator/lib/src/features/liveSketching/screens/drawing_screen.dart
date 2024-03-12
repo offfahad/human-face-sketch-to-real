@@ -18,6 +18,7 @@ import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:universal_html/html.dart' as html;
 
 class DrawingScreen extends StatefulWidget {
   const DrawingScreen({super.key});
@@ -108,8 +109,7 @@ class _Screen2State extends State<DrawingScreen> {
 
   void displayResponseImage(String bytes) async {
     Uint8List convertedBytes = base64Decode(bytes);
-    if(convertedBytes.isNotEmpty)
-    {
+    if (convertedBytes.isNotEmpty) {
       show = false;
     }
     setState(() {
@@ -125,7 +125,7 @@ class _Screen2State extends State<DrawingScreen> {
   }
 
   void saveRealImageToGallery() async {
-    if (imageOutput != null && show==false) {
+    if (imageOutput != null && show == false) {
       RenderRepaintBoundary boundary =
           imageKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 3.0);
@@ -248,7 +248,6 @@ class _Screen2State extends State<DrawingScreen> {
     }
   }
 
-
   // Method to pick and display an image file
   Future<void> _pickImage(context) async {
     try {
@@ -289,6 +288,47 @@ class _Screen2State extends State<DrawingScreen> {
           content: Text(e.toString()),
         ),
       );
+    }
+  }
+
+// Method for web platforms
+  void saveImageToGalleryWeb() async {
+    try {
+      if (imageOutput != null && show == false) {
+        RenderRepaintBoundary boundary = imageKey.currentContext!
+            .findRenderObject() as RenderRepaintBoundary;
+        ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+        ByteData? byteData =
+            await image.toByteData(format: ui.ImageByteFormat.png);
+        Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+        // Convert the image bytes to base64
+        String base64Image = base64Encode(pngBytes);
+
+        // Create an anchor element
+        final anchor = html.AnchorElement(
+            href: 'data:application/octet-stream;base64,$base64Image')
+          ..setAttribute('download', 'image.png')
+          ..style.display = 'none';
+
+        // Add the anchor element to the document body
+        html.document.body!.children.add(anchor);
+
+        // Trigger a click event on the anchor element
+        anchor.click();
+
+        // Remove the anchor element from the document body
+        html.document.body!.children.remove(anchor);
+
+        // Show a success message
+        DialogHelper.showImageSavedDialogWb(context);
+      } else {
+        DialogHelper.showImageNotSavedDialog(context);
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Error saving image: $e');
+      DialogHelper.showImageNotSavedDialog;
     }
   }
 
@@ -340,7 +380,6 @@ class _Screen2State extends State<DrawingScreen> {
                         child: _imageFile == null
                             ? GestureDetector(
                                 onPanStart: (details) {
-                                  
                                   setState(() {
                                     currentDrawingPoint = DrawingPoint(
                                       id: DateTime.now().microsecondsSinceEpoch,
@@ -504,7 +543,8 @@ class _Screen2State extends State<DrawingScreen> {
                                   if (result != null) {
                                     DialogHelper.showImageSavedDialog(context);
                                   } else {
-                                    DialogHelper.showImageNotSavedDialog(context);
+                                    DialogHelper.showImageNotSavedDialog(
+                                        context);
                                   }
                                 } else {
                                   DialogHelper.showImageNotSavedDialog(context);
@@ -559,7 +599,14 @@ class _Screen2State extends State<DrawingScreen> {
                             height: 0,
                           ),
                           IconButton(
-                            onPressed: saveRealImageToGallery,
+                            onPressed: () {
+                              if (kIsWeb) {
+                                saveImageToGalleryWeb();
+                              }
+                              if (!kIsWeb) {
+                                saveRealImageToGallery();
+                              }
+                            },
                             icon: const Icon(
                               Icons.download,
                               color: Colors.white,

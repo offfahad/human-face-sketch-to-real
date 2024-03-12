@@ -332,6 +332,49 @@ class _Screen2State extends State<DrawingScreen> {
     }
   }
 
+  // Method for saving image on web
+  void saveSketchImageWeb() async {
+    if (drawingPoints.isNotEmpty) {
+      // Convert the image bytes to base64
+      String base64Image = base64Encode(Uint8List.fromList(listBytes));
+
+      // Create an anchor element
+      final anchor = html.AnchorElement(
+        href: 'data:application/octet-stream;base64,$base64Image',
+      )
+        ..setAttribute('download', 'image.png')
+        ..style.display = 'none';
+
+      // Add the anchor element to the document body
+      html.document.body!.children.add(anchor);
+
+      // Trigger a click event on the anchor element
+      anchor.click();
+
+      // Remove the anchor element from the document body
+      html.document.body!.children.remove(anchor);
+
+      DialogHelper.showImageSavedDialogWb(context);
+    } else {
+      DialogHelper.showImageNotSavedDialog(context);
+    }
+  }
+
+// Method for saving image on mobile
+  void saveSketchImageToGallery() async {
+    if (drawingPoints.isNotEmpty) {
+      final result =
+          await ImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
+      if (result != null) {
+        DialogHelper.showImageSavedDialog(context);
+      } else {
+        DialogHelper.showImageNotSavedDialog(context);
+      }
+    } else {
+      DialogHelper.showImageNotSavedDialog(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -537,17 +580,10 @@ class _Screen2State extends State<DrawingScreen> {
                           IconButton(
                             onPressed: () {
                               setState(() {
-                                if (drawingPoints.isNotEmpty) {
-                                  final result = ImageGallerySaver.saveImage(
-                                      Uint8List.fromList(listBytes));
-                                  if (result != null) {
-                                    DialogHelper.showImageSavedDialog(context);
-                                  } else {
-                                    DialogHelper.showImageNotSavedDialog(
-                                        context);
-                                  }
+                                if (kIsWeb) {
+                                  saveSketchImageWeb();
                                 } else {
-                                  DialogHelper.showImageNotSavedDialog(context);
+                                  saveSketchImageToGallery();
                                 }
                               });
                             },

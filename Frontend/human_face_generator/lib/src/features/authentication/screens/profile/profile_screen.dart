@@ -15,9 +15,14 @@ import 'package:human_face_generator/src/features/withoutLive/screens/drawing_sc
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
@@ -175,35 +180,43 @@ class ProfileScreen extends StatelessWidget {
                     icon: LineAwesomeIcons.alternate_sign_out,
                     textColor: Colors.red,
                     endIcon: false,
-                    onPress: () {
-                      Get.defaultDialog(
-                        title: "LOGOUT",
-                        titleStyle: const TextStyle(fontSize: 20),
-                        content: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
-                          child: Text("Are you sure, you want to Logout?"),
-                        ),
-                        confirm: ElevatedButton(
-                          onPressed: () =>
-                              AuthenticationRepository.instance.logout(),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: tPrimaryColor,
-                              side: BorderSide.none),
-                          child: const Text("Yes"),
-                        ),
-                        cancel: OutlinedButton(
-                            onPressed: () => Get.back(),
-                            child: const Text("No")),
-                      );
+                    onPress: () async {
+                      await _showLogoutDialog();
                     }),
                 const Divider(),
                 const SizedBox(height: 10),
-                Text('Developed By @offfahad', style: Theme.of(context).textTheme.bodyMedium,)
+                Text(
+                  'Developed By @offfahad',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                )
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _showLogoutDialog() async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('LOGOUT'),
+            content: const Text('Are you sure, you want to Logout?'),
+            actions: [
+              OutlinedButton(
+                onPressed: () => Get.back(),
+                child: const Text("No"),
+              ),
+              ElevatedButton(
+                onPressed: () => AuthenticationRepository.instance.logout(),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: tPrimaryColor, side: BorderSide.none),
+                child: const Text("Yes"),
+              ),
+            ],
+          );
+        });
   }
 }

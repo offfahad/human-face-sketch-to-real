@@ -21,6 +21,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   bool _isPasswordVisible = false;
   final controller = Get.put(SignUpController());
   final _formKey = GlobalKey<FormState>();
+  bool _isSigningUp = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -140,13 +141,16 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     //   SignUpController.instance.registerUser(controller.email.text.trim(), controller.password.text.trim());
                     //SignUpController.instance
                     //    .phoneAuthentication(controller.phoneNo.text.trim());
                     //Get.to(() => const OTPScreen());
                     // }
+                    setState(() {
+                      _isSigningUp = true;
+                    });
                     final user = UserModel(
                       fullName: controller.fullName.text.trim(),
                       email: controller.email.text.trim(),
@@ -154,10 +158,13 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                       password: controller.password.text.trim(),
                       profileImage: tNetworkProfileImage,
                     );
-                    SignUpController.instance.createUser(user);
+                    await SignUpController.instance.createUser(user);
+                    setState(() {
+                      _isSigningUp = false;
+                    });
                   }
                 },
-                child: Text(tSignup.toUpperCase()),
+                child: _isSigningUp ? const CircularProgressIndicator(color: Colors.white,) : Text(tSignup.toUpperCase()),
               ),
             ),
             const SizedBox(height: tFormHeight - 10),

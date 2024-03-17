@@ -262,7 +262,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   onPressed: () async {
                                     final uuid = const Uuid().v4();
                                     if (_formKey.currentState!.validate()) {
-                                      FocusScope.of(context).unfocus();
+                                      //FocusScope.of(context).unfocus();
                                       setState(() {
                                         // Set a flag to indicate that the update process is in progress
                                         isUpdating = true;

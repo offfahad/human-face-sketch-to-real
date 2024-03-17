@@ -66,6 +66,17 @@ class AuthenticationRepository extends GetxController {
     return null;
   }
 
+  Future<String?> forgetPasswordWithEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseException catch (error) {
+      return error.message.toString();
+    } catch (e) {
+      return e.toString();
+    }
+    return null;
+  }
+
   Future<String?> phoneAuthentication(String phoneNo) async {
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNo,
@@ -169,20 +180,22 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-Future<void> logout() async {
-  // Check if the current user is signed in with Google
-  if (FirebaseAuth.instance.currentUser?.providerData.any((info) => info.providerId == 'google.com') ?? false) {
-    try {
+  Future<void> logout() async {
+    // Check if the current user is signed in with Google
+    if (FirebaseAuth.instance.currentUser?.providerData
+            .any((info) => info.providerId == 'google.com') ??
+        false) {
+      try {
+        await FirebaseAuth.instance.signOut();
+        await GoogleSignIn().signOut(); // Sign out from Google
+      } catch (e) {
+        print('Error signing out: $e');
+      }
+    } else {
+      // Handle sign-out for other providers (if any)
       await FirebaseAuth.instance.signOut();
-      await GoogleSignIn().signOut(); // Sign out from Google
-    } catch (e) {
-      print('Error signing out: $e');
     }
-  } else {
-    // Handle sign-out for other providers (if any)
-    await FirebaseAuth.instance.signOut();
   }
-}
 
   // Future<void> sendEmailVerification() async {
   //   try {
@@ -199,7 +212,7 @@ Future<void> logout() async {
 
 void checkUserSignInMethod() {
   User? user = FirebaseAuth.instance.currentUser;
-  
+
   if (user != null) {
     // Iterate through the user's provider data to check the sign-in method
     for (UserInfo userInfo in user.providerData) {

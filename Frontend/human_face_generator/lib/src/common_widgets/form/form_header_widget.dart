@@ -32,6 +32,7 @@ class FormHeaderWidget extends StatelessWidget {
         SizedBox(height: heightBetween),
 
         Text(title, style: Theme.of(context).textTheme.displayLarge),
+        SizedBox(height: 5,),
         Text(subTitle, textAlign: textAlign, style: Theme.of(context).textTheme.bodyLarge),
       ],
     );

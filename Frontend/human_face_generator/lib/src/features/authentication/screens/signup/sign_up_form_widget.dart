@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
+import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/signup_controller.dart';
@@ -151,6 +152,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                       email: controller.email.text.trim(),
                       phoneNo: controller.phoneNo.text.trim(),
                       password: controller.password.text.trim(),
+                      profileImage: tNetworkProfileImage,
                     );
                     SignUpController.instance.createUser(user);
                   }

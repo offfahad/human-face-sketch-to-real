@@ -6,6 +6,7 @@ import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
+import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_mail/forget_password_mail.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_menu_widget.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/update_profile_screen.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/profile_controller.dart';
@@ -59,71 +60,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 /// -- IMAGE
-                Stack(
-                  children: [
-                    SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: const Image(image: AssetImage(tUserImage))),
-                    ),
-                    // Positioned(
-                    //   bottom: 0,
-                    //   right: 0,
-                    //   child: Container(
-                    //     width: 35,
-                    //     height: 35,
-                    //     decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(100),
-                    //         color: tPrimaryColor),
-                    //     child: const Icon(
-                    //       LineAwesomeIcons.alternate_pencil,
-                    //       color: tWhiteColor,
-                    //       size: 20,
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-                const SizedBox(height: 20),
                 FutureBuilder(
-                    future: controller.getUserData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData) {
-                          UserModel userData = snapshot.data as UserModel;
-                          final email = userData.email;
-                          final fullname = userData.fullName;
-                          return Column(
-                            children: [
-                              Text(fullname,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium),
-                              Text(email,
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium),
-                            ],
-                          );
-                        } else if (snapshot.hasError) {
-                          return Center(
-                            child: Text(snapshot.error.toString()),
-                          );
-                        } else {
-                          return const Center(
-                            child:
-                                Text('Too Slow Internet Connection Try Again.'),
-                          );
-                        }
+                  future: controller.getUserData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        UserModel userData = snapshot.data as UserModel;
+                        final email = userData.email;
+                        final fullname = userData.fullName;
+                        final profileUrl = userData.profileImage;
+                        return Column(
+                          children: [
+                            SizedBox(
+                                width: 120,
+                                height: 120,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.network(
+                                    profileUrl,
+                                    fit: BoxFit.fill,
+                                  ),
+                                )),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(fullname,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium),
+                            Text(email,
+                                style: Theme.of(context).textTheme.bodyMedium),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
                       } else {
                         return const Center(
-                          child: CircularProgressIndicator(
-                            color: tPrimaryColor,
-                          ),
+                          child:
+                              Text('Too Slow Internet Connection Try Again.'),
                         );
                       }
-                    }),
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: tPrimaryColor,
+                        ),
+                      );
+                    }
+                  },
+                ),
 
                 const SizedBox(height: 20),
 
@@ -172,9 +158,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Divider(),
                 const SizedBox(height: 10),
                 ProfileMenuWidget(
-                    title: "Information",
-                    icon: LineAwesomeIcons.info,
-                    onPress: () {}),
+                    title: "Reset Password",
+                    icon: Icons.password,
+                    onPress: () {
+                      Get.to(() => const ForgetPasswordMailScreen());
+                    }),
                 ProfileMenuWidget(
                     title: "Logout",
                     icon: LineAwesomeIcons.alternate_sign_out,

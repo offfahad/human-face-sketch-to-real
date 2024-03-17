@@ -1,5 +1,7 @@
 
 
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -8,20 +10,23 @@ class UserModel {
   String email;
   String phoneNo;
   String password;
+  String profileImage;
 
   UserModel(
       {this.id,
       required this.fullName,
       required this.email,
       required this.phoneNo,
-      required this.password});
+      required this.password,
+      required this.profileImage});
 
   toJason() {
     return {
       "FullName": fullName,
       "Email": email,
       "Phone": phoneNo,
-      "Password": password
+      "Password": password,
+      "ProfileImage": profileImage,
     };
   }
 
@@ -33,6 +38,8 @@ class UserModel {
         fullName: data["FullName"],
         email: data["Email"],
         phoneNo: data["Phone"],
-        password: data["Password"]);
+        password: data["Password"],
+        profileImage: data["ProfileImage"]
+        );
   }
 }

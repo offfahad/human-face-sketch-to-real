@@ -80,6 +80,7 @@ Future<void> addGmailToCollection() async {
         String fullName = '';
         String phoneNo = '';
         String password = '';
+        String profileImage = tNetworkProfileImage;
 
         // Query Firestore to check if the user's email already exists in the collection
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -92,7 +93,8 @@ Future<void> addGmailToCollection() async {
               fullName: fullName,
               email: email,
               phoneNo: phoneNo,
-              password: password);
+              password: password,
+              profileImage: profileImage);
           await userRepo.createUserOnCollection(user);
         } else {
           print('User already exists in collection');

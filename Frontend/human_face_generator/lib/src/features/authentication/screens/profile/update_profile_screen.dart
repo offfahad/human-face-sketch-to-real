@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +12,9 @@ import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/profile_controller.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({Key? key}) : super(key: key);
@@ -20,6 +27,39 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool _isPasswordVisible = false;
   final controller = Get.put(ProfileController());
   final _formKey = GlobalKey<FormState>();
+  File? _pickedImage;
+  Uint8List webImage = Uint8List(8);
+  String? imageUrl;
+
+  Future<void> _pickImage() async {
+    if (!kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          _pickedImage = selected;
+        });
+      } else {
+        print('No image has been picked');
+      }
+    } else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          _pickedImage = File('a');
+        });
+      } else {
+        print('No image has been picked');
+      }
+    } else {
+      print('Something went wrong');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +90,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 if (snapshot.hasData) {
                   UserModel userData = snapshot.data as UserModel;
                   final userId = userData.id!;
-                  print(userId);
+                  final fetchedImage = userData.profileImage;
+                  print(fetchedImage);
                   final email = TextEditingController(text: userData.email);
                   final password =
                       TextEditingController(text: userData.password);
@@ -67,21 +108,44 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             width: 120,
                             height: 120,
                             child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: const Image(
-                                    image: AssetImage(tUserImage))),
+                              borderRadius: BorderRadius.circular(100),
+                              child: _pickedImage == null
+                                  ? Image.network(
+                                      fetchedImage,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : kIsWeb
+                                      ? Image.memory(webImage,
+                                          fit: BoxFit.cover)
+                                      : Image.file(
+                                          _pickedImage!,
+                                          fit: BoxFit.cover,
+                                        ),
+                              // child: ClipRRect(
+                              //   borderRadius: BorderRadius.circular(100),
+                              //   child: Image.network(
+                              //     fetchedImage, // Assuming fetchedImage is a valid URL
+                              //     fit: BoxFit.cover,
+                              //   ),
+                              // ),
+                            ),
                           ),
                           Positioned(
                             bottom: 0,
                             right: 0,
                             child: Container(
-                              width: 35,
-                              height: 35,
+                              width: 40,
+                              height: 40,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
                                   color: tPrimaryColor),
-                              child: const Icon(LineAwesomeIcons.camera,
-                                  color: tWhiteColor),
+                              child: IconButton(
+                                icon: const Icon(LineAwesomeIcons.camera,
+                                    color: tWhiteColor),
+                                onPressed: () {
+                                  _pickImage();
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -193,15 +257,34 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               width: 200,
                               child: ElevatedButton(
                                 onPressed: () async {
+                                  final uuid = const Uuid().v4();
                                   if (_formKey.currentState!.validate()) {
-                                    final userData = UserModel(
-                                      id: userId,
-                                      fullName: fullname.text.trim(),
-                                      email: email.text.trim(),
-                                      phoneNo: phoneNo.text.trim(),
-                                      password: password.text.trim(),
-                                    );
-                                    await controller.updateRecord(userData);
+                                    FocusScope.of(context).unfocus();
+                                    if (_pickedImage == null) {
+                                      Get.snackbar('Opps',
+                                          'Select a profile picture to update information.',
+                                          duration: const Duration(seconds: 3));
+                                    } else {
+                                      final ref = FirebaseStorage.instance
+                                          .ref()
+                                          .child('userProfileImage')
+                                          .child('$uuid.jpg');
+                                      if (kIsWeb) {
+                                        await ref.putData(webImage);
+                                      } else {
+                                        await ref.putFile(_pickedImage!);
+                                      }
+                                      imageUrl = await ref.getDownloadURL();
+                                      final userData = UserModel(
+                                        id: userId,
+                                        fullName: fullname.text.trim(),
+                                        email: email.text.trim(),
+                                        phoneNo: phoneNo.text.trim(),
+                                        password: password.text.trim(),
+                                        profileImage: imageUrl.toString(),
+                                      );
+                                      await controller.updateRecord(userData);
+                                    }
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

@@ -17,3 +17,5 @@ const String tForgetPasswordImage = "assets/forget-password/forget-password.png"
 const String tUserImage = "assets/logo/user-image.png";
 
 const String tProfileImage = "assets/images/pro.jpg";
+
+const String tNetworkProfileImage = "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png";

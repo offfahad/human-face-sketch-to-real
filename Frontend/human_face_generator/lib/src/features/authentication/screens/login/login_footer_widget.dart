@@ -88,7 +88,8 @@ Future<void> addGmailToCollection() async {
               fullName: fullName,
               email: email,
               phoneNo: phoneNo,
-              password: password);
+              password: password,
+              profileImage: tNetworkProfileImage);
           await userRepo.createUserOnCollection(user);
         } else {
           print('User already exists in collection');

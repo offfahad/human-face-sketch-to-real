@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:human_face_generator/src/common_widgets/form/form_header_widget.dart';
+import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/constants/image_strings.dart';
 import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
+import 'package:human_face_generator/src/features/authentication/controllers/forget_password_controller.dart';
 import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_otp/otp_screen.dart';
 
 class ForgetPasswordMailScreen extends StatefulWidget {
@@ -16,11 +18,20 @@ class ForgetPasswordMailScreen extends StatefulWidget {
 
 class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
   String userEmail = "";
+  var Controller = Get.put(ForgetPasswordController());
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: tPrimaryColor,),
+            onPressed: () => Get.back(),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(tDefaultSize),
@@ -30,7 +41,7 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
                 FormHeaderWidget(
                   image: tForgetPasswordImage,
                   title: tForgetPassword.toUpperCase(),
-                  subTitle: tForgetPasswordSubTitle,
+                  subTitle: tForgetMailSubTitle2, 
                   crossAxisAlignment: CrossAxisAlignment.center,
                   heightBetween: 30.0,
                   textAlign: TextAlign.center,
@@ -50,7 +61,7 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Email field cannot be empty!';
                           }
-                          if (!isValidEmail(value)) {
+                          if (!Controller.isValidEmail(value)) {
                             return 'Please enter a valid email address!';
                           }
                           return null;
@@ -71,10 +82,15 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
                     onPressed: () {
                       print(userEmail);
                       if (_formKey.currentState!.validate()) {
-                        Get.to(() => OTPScreen(fetchedEmail: userEmail));
+                        //Get.to(() => OTPScreen(fetchedEmail: userEmail));
+                        setState(() {
+                          Controller.resetPassword(
+                            userEmail.trim().toString(),
+                          );
+                        });
                       }
                     },
-                    child: const Text(tNext),
+                    child: const Text("Send"),
                   ),
                 ),
               ],
@@ -84,12 +100,4 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
       ),
     );
   }
-}
-
-bool isValidEmail(String email) {
-  // Regular expression for email validation
-  // You can customize this regex as per your requirements
-  String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-  RegExp regex = RegExp(emailPattern);
-  return regex.hasMatch(email);
 }

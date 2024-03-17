@@ -30,6 +30,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   File? _pickedImage;
   Uint8List webImage = Uint8List(8);
   String? imageUrl;
+  bool isUpdating = false;
 
   Future<void> _pickImage() async {
     if (!kIsWeb) {
@@ -258,50 +259,65 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             SizedBox(
                               width: 200,
                               child: ElevatedButton(
-                                onPressed: () async {
-                                  final uuid = const Uuid().v4();
-                                  if (_formKey.currentState!.validate()) {
-                                    FocusScope.of(context).unfocus();
-                                    if (_pickedImage == null) {
-                                      final userData = UserModel(
-                                        id: userId,
-                                        fullName: fullname.text.trim(),
-                                        email: email.text.trim(),
-                                        phoneNo: phoneNo.text.trim(),
-                                        password: password.text.trim(),
-                                        profileImage: fetchedImage.toString(),
-                                      );
-                                      await controller.updateRecord(userData);
-                                    } else {
-                                      final ref = FirebaseStorage.instance
-                                          .ref()
-                                          .child('userProfileImage')
-                                          .child('$uuid.jpg');
-                                      if (kIsWeb) {
-                                        await ref.putData(webImage);
-                                      } else {
-                                        await ref.putFile(_pickedImage!);
+                                  onPressed: () async {
+                                    final uuid = const Uuid().v4();
+                                    if (_formKey.currentState!.validate()) {
+                                      FocusScope.of(context).unfocus();
+                                      setState(() {
+                                        // Set a flag to indicate that the update process is in progress
+                                        isUpdating = true;
+                                      });
+                                      try {
+                                        if (_pickedImage == null) {
+                                          final userData = UserModel(
+                                            id: userId,
+                                            fullName: fullname.text.trim(),
+                                            email: email.text.trim(),
+                                            phoneNo: phoneNo.text.trim(),
+                                            password: password.text.trim(),
+                                            profileImage:
+                                                fetchedImage.toString(),
+                                          );
+                                          await controller
+                                              .updateRecord(userData);
+                                        } else {
+                                          final ref = FirebaseStorage.instance
+                                              .ref()
+                                              .child('userProfileImage')
+                                              .child('$uuid.jpg');
+                                          if (kIsWeb) {
+                                            await ref.putData(webImage);
+                                          } else {
+                                            await ref.putFile(_pickedImage!);
+                                          }
+                                          imageUrl = await ref.getDownloadURL();
+                                          final userData = UserModel(
+                                            id: userId,
+                                            fullName: fullname.text.trim(),
+                                            email: email.text.trim(),
+                                            phoneNo: phoneNo.text.trim(),
+                                            password: password.text.trim(),
+                                            profileImage: imageUrl.toString(),
+                                          );
+                                          await controller
+                                              .updateRecord(userData);
+                                        }
+                                      } finally {
+                                        setState(() {
+                                          // Reset the flag when the update process is completed
+                                          isUpdating = false;
+                                        });
                                       }
-                                      imageUrl = await ref.getDownloadURL();
-                                      final userData = UserModel(
-                                        id: userId,
-                                        fullName: fullname.text.trim(),
-                                        email: email.text.trim(),
-                                        phoneNo: phoneNo.text.trim(),
-                                        password: password.text.trim(),
-                                        profileImage: imageUrl.toString(),
-                                      );
-                                      await controller.updateRecord(userData);
                                     }
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
+                                  },
+                                  style: ElevatedButton.styleFrom(
                                     backgroundColor: tPrimaryColor,
                                     side: BorderSide.none,
-                                    shape: const StadiumBorder()),
-                                child: const Text(tEditProfile,
-                                    style: TextStyle(color: tWhiteColor)),
-                              ),
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  child: isUpdating
+                                      ? const CircularProgressIndicator(color: Colors.white,)
+                                      : const Text(tEditProfile)),
                             ),
                             const SizedBox(height: tFormHeight),
 

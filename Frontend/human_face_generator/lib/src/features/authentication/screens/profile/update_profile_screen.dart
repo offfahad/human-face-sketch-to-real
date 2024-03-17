@@ -172,23 +172,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             ),
                             const SizedBox(height: tFormHeight - 20),
                             TextFormField(
-                              controller: email,
-                              decoration: const InputDecoration(
-                                label: Text(tEmail),
-                                prefixIcon: Icon(LineAwesomeIcons.envelope_1),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Email field cannot be empty!';
-                                }
-                                if (!controller.isValidEmail(value)) {
-                                  return 'Please enter a valid email address!';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: tFormHeight - 20),
-                            TextFormField(
                               controller: phoneNo,
                               decoration: const InputDecoration(
                                 label: Text(tPhoneNo),
@@ -219,7 +202,26 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             ),
                             const SizedBox(height: tFormHeight - 20),
                             TextFormField(
+                              controller: email,
+                              enabled: false,
+                              decoration: const InputDecoration(
+                                label: Text(tEmail),
+                                prefixIcon: Icon(LineAwesomeIcons.envelope_1),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Email field cannot be empty!';
+                                }
+                                if (!controller.isValidEmail(value)) {
+                                  return 'Please enter a valid email address!';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: tFormHeight - 20),
+                            TextFormField(
                               controller: password,
+                              enabled: false,
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(Icons.fingerprint),
                                 labelText: tPassword,
@@ -261,9 +263,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   if (_formKey.currentState!.validate()) {
                                     FocusScope.of(context).unfocus();
                                     if (_pickedImage == null) {
-                                      Get.snackbar('Opps',
-                                          'Select a profile picture to update information.',
-                                          duration: const Duration(seconds: 3));
+                                      final userData = UserModel(
+                                        id: userId,
+                                        fullName: fullname.text.trim(),
+                                        email: email.text.trim(),
+                                        phoneNo: phoneNo.text.trim(),
+                                        password: password.text.trim(),
+                                        profileImage: fetchedImage.toString(),
+                                      );
+                                      await controller.updateRecord(userData);
                                     } else {
                                       final ref = FirebaseStorage.instance
                                           .ref()

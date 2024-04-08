@@ -12,23 +12,26 @@ class SignUpScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(tDefaultSize + 10),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // FormHeaderWidget(
-                //   image: tWelcomeScreenImage,
-                //   title: tSignUpTitle,
-                //   subTitle: tSignUpSubTitle,
-                //   imageHeight: 0.2,
-                //   heightBetween: 10,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                // ),
-                SignUpHeaderWidget(),
-                SignUpFormWidget(),
-                SignUpFooterWidget(),
-              ],
+          child: Center(
+            child: Container(
+              width: 450,
+              padding: const EdgeInsets.all(tDefaultSize + 10),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // FormHeaderWidget(
+                  //   image: tWelcomeScreenImage,
+                  //   title: tSignUpTitle,
+                  //   subTitle: tSignUpSubTitle,
+                  //   imageHeight: 0.2,
+                  //   heightBetween: 10,
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  // ),
+                  SignUpHeaderWidget(),
+                  SignUpFormWidget(),
+                  SignUpFooterWidget(),
+                ],
+              ),
             ),
           ),
         ),

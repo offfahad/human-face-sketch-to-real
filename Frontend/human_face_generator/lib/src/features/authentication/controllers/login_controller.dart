@@ -7,7 +7,7 @@ class LoginController extends GetxController {
 
   final email = TextEditingController();
   final password = TextEditingController();
-  final isLoading = false.obs;
+  //final isLoading = false.obs;
 
   bool isValidEmail(String email) {
     // Regular expression for email validation
@@ -20,37 +20,30 @@ class LoginController extends GetxController {
   }
 
   Future<void> login() async {
-    try {
-      isLoading.value = true; // Set isLoading to true before login process
-
-      String? error =
-          await AuthenticationRepository.instance.loginWithEmailAndPassword(
-        email.text.trim(),
-        password.text.trim(),
-      );
-      if (error == null) {
-        Get.snackbar("Success", "Welcome Back",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 3));
-      }
-      if (error != null) {
-        Get.snackbar("Error", error.toString(),
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 3));
-      }
-    } finally {
-      isLoading.value =
-          false; // Set isLoading back to false after login process
+    String? error =
+        await AuthenticationRepository.instance.loginWithEmailAndPassword(
+      email.text.trim(),
+      password.text.trim(),
+    );
+    if (error == null) {
+      Get.snackbar("Success", "Welcome Back",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3));
+    }
+    if (error != null) {
+      Get.snackbar("Error", error.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3));
     }
   }
 
   Future<void> googleSignIn() async {
     try {
-      isLoading.value = true;
+      //sisLoading.value = true;
       final userCredential =
           await AuthenticationRepository.instance.signInWithGoogle();
 
@@ -79,26 +72,26 @@ class LoginController extends GetxController {
       );
     } finally {
       // Regardless of success or failure, set isLoading to false
-      isLoading.value = false;
+      //isLoading.value = false;
     }
   }
 
   Future<void> googleSignInWeb() async {
     try {
-      isLoading.value = true;
+      //isLoading.value = true;
       await AuthenticationRepository.instance.signInWithGoogleWb();
       // If the sign-in process completes successfully, no further action is needed here
     } catch (e) {
       // Handle exceptions and errors
       print('Error during web Google sign-in: $e');
-      isLoading.value = false;
+      //isLoading.value = false;
       Get.showSnackbar(GetSnackBar(
         message: e.toString(),
         duration: const Duration(seconds: 3),
       ));
     } finally {
       // Ensure isLoading is always set to false regardless of success or failure
-      isLoading.value = false;
+      //isLoading.value = false;
     }
   }
 }

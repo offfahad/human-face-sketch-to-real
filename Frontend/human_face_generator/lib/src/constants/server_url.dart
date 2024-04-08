@@ -1,3 +1,3 @@
 class Constants {
-  static const String serverUrl = "http://192.168.132.56:5000/predict";
+  static const String serverUrl = "http://10.109.50.246:5000/predict";
 }

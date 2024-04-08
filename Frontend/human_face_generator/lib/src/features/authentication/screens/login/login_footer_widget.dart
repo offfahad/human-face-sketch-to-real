@@ -12,11 +12,17 @@ import 'package:human_face_generator/src/features/authentication/models/user_mod
 import 'package:human_face_generator/src/features/authentication/screens/signup/sign_up_screen.dart';
 import 'package:human_face_generator/src/repository/user_repository/user_repository.dart';
 
-class LoginFooterWidget extends StatelessWidget {
+class LoginFooterWidget extends StatefulWidget {
   const LoginFooterWidget({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<LoginFooterWidget> createState() => _LoginFooterWidgetState();
+}
+
+class _LoginFooterWidgetState extends State<LoginFooterWidget> {
+    bool _isSigningIn = false;
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
@@ -31,14 +37,26 @@ class LoginFooterWidget extends StatelessWidget {
             icon: const Image(image: AssetImage(tGoogleLogoImage), width: 20.0),
             onPressed: () async {
               if (kIsWeb) {
+                setState(() {
+                  _isSigningIn = true;
+                });
                 await controller.googleSignInWeb();
                 await addGmailToCollection();
+                setState(() {
+                  _isSigningIn = false;
+                });
               } else {
+                setState(() {
+                  _isSigningIn = true;
+                });
                 await controller.googleSignIn();
                 await addGmailToCollection();
+                setState(() {
+                  _isSigningIn = false;
+                });
               }
             },
-            label: const Text(tSignInWithGoogle),
+            label: _isSigningIn ? const CircularProgressIndicator(color: Colors.black,)  : const Text(tSignInWithGoogle),
           ),
         ),
         const SizedBox(height: tFormHeight - 20),

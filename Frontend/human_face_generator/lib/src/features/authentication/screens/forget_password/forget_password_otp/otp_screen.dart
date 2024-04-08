@@ -17,63 +17,67 @@ class OTPScreen extends StatelessWidget {
     var otp;
     print(fetchedEmail);
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(tDefaultSize),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              tOtpTitle,
-              style: GoogleFonts.montserrat(
-                  fontWeight: FontWeight.bold, fontSize: 80.0),
-            ),
-            Text(tOtpSubTitle.toUpperCase(),
-                style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 40.0),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  const TextSpan(
-                    text: "$tOtpMessage",
-                    style: TextStyle(
-                      // Define your style for tOtpMessage here
-                      fontWeight: FontWeight.normal,
-                      // Add any other styles you need
-                    ),
-                  ),
-                  TextSpan(
-                    text: fetchedEmail,
-                    style: const TextStyle(
-                      // Make fetchedEmail bold
-                      fontWeight: FontWeight.bold,
-                      // Add any other styles you need
-                    ),
-                  ),
-                ],
+      body: Center(
+        child: Container(
+          
+          width: 450,
+          padding: const EdgeInsets.all(tDefaultSize),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                tOtpTitle,
+                style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold, fontSize: 80.0),
               ),
-            ),
-            const SizedBox(height: 20.0),
-            OtpTextField(
-                mainAxisAlignment: MainAxisAlignment.center,
-                numberOfFields: 6,
-                fillColor: Colors.black.withOpacity(0.1),
-                filled: true,
-                cursorColor: Colors.black,
-                onSubmit: (code) {
-                  otp = code;
-                  OTPController.instance.verifyOTP(otp);
-                }),
-            const SizedBox(height: 20.0),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                  onPressed: () {
+              Text(tOtpSubTitle.toUpperCase(),
+                  style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 40.0),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "$tOtpMessage",
+                      style: TextStyle(
+                        // Define your style for tOtpMessage here
+                        fontWeight: FontWeight.normal,
+                        // Add any other styles you need
+                      ),
+                    ),
+                    TextSpan(
+                      text: fetchedEmail,
+                      style: const TextStyle(
+                        // Make fetchedEmail bold
+                        fontWeight: FontWeight.bold,
+                        // Add any other styles you need
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              OtpTextField(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  numberOfFields: 6,
+                  fillColor: Colors.black.withOpacity(0.1),
+                  filled: true,
+                  cursorColor: Colors.black,
+                  onSubmit: (code) {
+                    otp = code;
                     OTPController.instance.verifyOTP(otp);
-                  },
-                  child: const Text(tNext)),
-            ),
-          ],
+                  }),
+              const SizedBox(height: 20.0),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: () {
+                      OTPController.instance.verifyOTP(otp);
+                    },
+                    child: const Text(tNext)),
+              ),
+            ],
+          ),
         ),
       ),
     );

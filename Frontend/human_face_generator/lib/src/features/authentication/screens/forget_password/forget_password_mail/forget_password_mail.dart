@@ -33,67 +33,69 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
           elevation: 0,
         ),
         body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(tDefaultSize),
-            child: Column(
-              children: [
-                const SizedBox(height: tDefaultSize * 4),
-                FormHeaderWidget(
-                  image: tForgetPasswordImage,
-                  title: tForgetPassword.toUpperCase(),
-                  subTitle: tForgetMailSubTitle2, 
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  heightBetween: 30.0,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: tFormHeight),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          label: Text(tEmail),
-                          hintText: tEmail,
-                          prefixIcon: Icon(Icons.mail_outline_rounded),
+          child: Center(
+            child: Container(
+              width: 450,
+              child: Column(
+                children: [
+                  const SizedBox(height: tDefaultSize * 4),
+                  FormHeaderWidget(
+                    image: tForgetPasswordImage,
+                    title: tForgetPassword.toUpperCase(),
+                    subTitle: tForgetMailSubTitle2, 
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    heightBetween: 30.0,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: tFormHeight),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            label: Text(tEmail),
+                            hintText: tEmail,
+                            prefixIcon: Icon(Icons.mail_outline_rounded),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Email field cannot be empty!';
+                            }
+                            if (!Controller.isValidEmail(value)) {
+                              return 'Please enter a valid email address!';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              userEmail = value;
+                            });
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Email field cannot be empty!';
-                          }
-                          if (!Controller.isValidEmail(value)) {
-                            return 'Please enter a valid email address!';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print(userEmail);
+                        if (_formKey.currentState!.validate()) {
+                          //Get.to(() => OTPScreen(fetchedEmail: userEmail));
                           setState(() {
-                            userEmail = value;
+                            Controller.resetPassword(
+                              userEmail.trim().toString(),
+                            );
                           });
-                        },
-                      ),
-                    ],
+                        }
+                      },
+                      child: const Text("Send"),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20.0),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      print(userEmail);
-                      if (_formKey.currentState!.validate()) {
-                        //Get.to(() => OTPScreen(fetchedEmail: userEmail));
-                        setState(() {
-                          Controller.resetPassword(
-                            userEmail.trim().toString(),
-                          );
-                        });
-                      }
-                    },
-                    child: const Text("Send"),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

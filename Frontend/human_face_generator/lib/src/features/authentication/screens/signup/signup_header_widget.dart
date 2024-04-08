@@ -14,7 +14,7 @@ class SignUpHeaderWidget extends StatelessWidget {
       children: [
         const SizedBox(height: 10,),
         Image(
-            image: const AssetImage(tWelcomeScreenImage),
+            image: const AssetImage(tOnBoardingImage3),
             height: size.height * 0.2),
         //const SizedBox(height: 10,),
         Text(tSignUpTitle, style: Theme.of(context).textTheme.displayLarge),

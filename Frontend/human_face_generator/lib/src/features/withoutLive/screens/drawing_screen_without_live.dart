@@ -287,7 +287,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
                 value: selectedWidth,
                 thumbColor: tPrimaryColor,
                 activeColor: tPrimaryColor,
-                secondaryActiveColor: tCardBgColor,
+                //secondaryActiveColor: tCardBgColor,
                 min: 1,
                 max: 20,
                 onChanged: (value) {

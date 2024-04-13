@@ -85,7 +85,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         child: Center(
           child: Container(
             width: 450,
-            padding: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.all(tDefaultSize + 10),
             child: FutureBuilder(
               future: controller.getUserData(),
               builder: (context, snapshot) {

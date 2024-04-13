@@ -41,20 +41,20 @@ dependencies:
   liquid_swipe: ^3.0.0
   smooth_page_indicator: ^1.0.0+2
   flutter_otp_text_field: ^1.1.0+2
-  file_picker: ^6.1.1
+  file_picker: ^8.0.0+1
   line_awesome_flutter: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  firebase_core: ^2.24.2
-  firebase_auth: ^4.16.0
-  cloud_firestore: ^4.14.0
+  firebase_core: ^2.29.0
+  firebase_auth: ^4.19.1
+  cloud_firestore: ^4.16.1
   google_sign_in: ^6.0.2
   intl_phone_field: ^3.2.0
-  firebase_storage: ^11.6.0
+  firebase_storage: ^11.7.1
   universal_html: ^2.2.4
-  uuid: ^3.0.6
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +65,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.2
 
 flutter_native_splash:
   color: "#f7f6f1"

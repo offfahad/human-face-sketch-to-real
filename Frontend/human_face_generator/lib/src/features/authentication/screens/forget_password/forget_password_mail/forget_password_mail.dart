@@ -36,6 +36,7 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
           child: Center(
             child: Container(
               width: 450,
+              padding: const EdgeInsets.all(tDefaultSize + 10),
               child: Column(
                 children: [
                   const SizedBox(height: tDefaultSize * 4),

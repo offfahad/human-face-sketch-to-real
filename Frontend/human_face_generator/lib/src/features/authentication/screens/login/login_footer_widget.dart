@@ -89,11 +89,11 @@ Future<void> addGmailToCollection() async {
     for (UserInfo userInfo in currentUser.providerData) {
       if (userInfo.providerId == 'google.com') {
         // User signed in with Google, reset other fields except for the Gmail account
-        String email = currentUser.email ?? '';
-        print(email);
-        String fullName = 'Add Your Name';
+        String email = currentUser.email ?? 'User Email';
+        String fullName = currentUser.displayName ?? 'User Name';
         String phoneNo = 'Add Add Your Phone Number';
         String password = 'Add Your Password';
+        String profileImage = currentUser.photoURL ?? tNetworkProfileImage;
 
         // Query Firestore to check if the user's email already exists in the collection
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -107,7 +107,7 @@ Future<void> addGmailToCollection() async {
               email: email,
               phoneNo: phoneNo,
               password: password,
-              profileImage: tNetworkProfileImage);
+              profileImage: profileImage);
           await userRepo.createUserOnCollection(user);
         } else {
           print('User already exists in collection');

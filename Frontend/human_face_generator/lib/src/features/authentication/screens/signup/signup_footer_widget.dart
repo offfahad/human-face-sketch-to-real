@@ -77,10 +77,10 @@ Future<void> addGmailToCollection() async {
         // User signed in with Google, reset other fields except for the Gmail account
         String email = currentUser.email ?? '';
         print(email);
-        String fullName = '';
+        String fullName = currentUser.displayName ?? 'User Name';
         String phoneNo = '';
         String password = '';
-        String profileImage = tNetworkProfileImage;
+        String profileImage = currentUser.photoURL ?? tNetworkProfileImage;
 
         // Query Firestore to check if the user's email already exists in the collection
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance

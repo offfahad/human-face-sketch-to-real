@@ -33,7 +33,7 @@ class _LoginFooterWidgetState extends State<LoginFooterWidget> {
         const SizedBox(height: tFormHeight - 10),
         SizedBox(
           width: double.infinity,
-          child: OutlinedButton.icon(
+          child: _isSigningIn ? const CircularProgressIndicator(color: Colors.black,) : OutlinedButton.icon(
             icon: const Image(image: AssetImage(tGoogleLogoImage), width: 20.0),
             onPressed: () async {
               if (kIsWeb) {
@@ -56,7 +56,7 @@ class _LoginFooterWidgetState extends State<LoginFooterWidget> {
                 });
               }
             },
-            label: _isSigningIn ? const CircularProgressIndicator(color: Colors.black,)  : const Text(tSignInWithGoogle),
+            label: const Text(tSignInWithGoogle),
           ),
         ),
         const SizedBox(height: tFormHeight - 20),

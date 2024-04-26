@@ -27,7 +27,7 @@ const String tEmail = "E-Mail";
 const String tPassword = "Password";
 const String tFullName = "Full Name";
 const String tPhoneNo = "Phone No";
-const String tSignInWithGoogle = "Sign-In With Google";
+const String tSignInWithGoogle = "Continue With Google";
 
 const String tSignUpTitle = "Get On Board";
 const String tSignUpSubTitle = "Create your profile to start your Journey.";

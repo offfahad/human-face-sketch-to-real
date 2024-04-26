@@ -59,7 +59,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -69,7 +68,7 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#f7f6f1"
-  #color_dark: "272727"
+  color_dark: "272727"
   image: assets/images/starting_logo.png
   image_dark: assets/images/starting_logo.png
 
@@ -77,7 +76,7 @@ flutter_native_splash:
     image: assets/images/starting_logo.png
     icon_background_color: "#f7f6f1"
     image_dark: assets/images/starting_logo.png
-    #icon_background_color_dark: "#272727"
+    icon_background_color_dark: "#272727"
 
     web: true
     

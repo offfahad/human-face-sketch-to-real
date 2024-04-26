@@ -115,7 +115,7 @@ class _LoginFormState extends State<LoginForm> {
                       ? const CircularProgressIndicator(
                           color: Colors.white,
                         )
-                      : Text(tLogin.toUpperCase()),
+                      : const Text(tLogin),
                 ),
               ),
             ],

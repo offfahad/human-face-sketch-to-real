@@ -164,7 +164,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                     });
                   }
                 },
-                child: _isSigningUp ? const CircularProgressIndicator(color: Colors.white,) : Text(tSignup.toUpperCase()),
+                child: _isSigningUp ? const CircularProgressIndicator(color: Colors.white,) : const Text(tSignup),
               ),
             ),
             const SizedBox(height: tFormHeight - 10),

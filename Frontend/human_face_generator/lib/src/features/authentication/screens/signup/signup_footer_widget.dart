@@ -36,7 +36,7 @@ class SignUpFooterWidget extends StatelessWidget {
               image: AssetImage(tGoogleLogoImage),
               width: 20.0,
             ),
-            label: Text(tSignInWithGoogle.toUpperCase()),
+            label: const Text(tSignInWithGoogle),
           ),
         ),
         const SizedBox(
@@ -54,9 +54,9 @@ class SignUpFooterWidget extends StatelessWidget {
                 ),
                 const TextSpan(
                     text: ' '), // Add another space between the texts
-                TextSpan(
-                  text: tLogin.toUpperCase(),
-                  style: const TextStyle(color: Colors.blue),
+                const TextSpan(
+                  text: tLogin,
+                  style: TextStyle(color: Colors.blue),
                 ),
               ],
             ),

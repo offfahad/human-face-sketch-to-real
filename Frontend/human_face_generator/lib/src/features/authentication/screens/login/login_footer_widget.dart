@@ -22,7 +22,7 @@ class LoginFooterWidget extends StatefulWidget {
 }
 
 class _LoginFooterWidgetState extends State<LoginFooterWidget> {
-    bool _isSigningIn = false;
+  bool _isSigningIn = false;
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
@@ -33,31 +33,39 @@ class _LoginFooterWidgetState extends State<LoginFooterWidget> {
         const SizedBox(height: tFormHeight - 10),
         SizedBox(
           width: double.infinity,
-          child: _isSigningIn ? const CircularProgressIndicator(color: Colors.black,) : OutlinedButton.icon(
-            icon: const Image(image: AssetImage(tGoogleLogoImage), width: 20.0),
-            onPressed: () async {
-              if (kIsWeb) {
-                setState(() {
-                  _isSigningIn = true;
-                });
-                await controller.googleSignInWeb();
-                await addGmailToCollection();
-                setState(() {
-                  _isSigningIn = false;
-                });
-              } else {
-                setState(() {
-                  _isSigningIn = true;
-                });
-                await controller.googleSignIn();
-                await addGmailToCollection();
-                setState(() {
-                  _isSigningIn = false;
-                });
-              }
-            },
-            label: const Text(tSignInWithGoogle),
-          ),
+          child: _isSigningIn
+              ? OutlinedButton(
+                  onPressed: () {},
+                  child: const CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                )
+              : OutlinedButton.icon(
+                  icon: const Image(
+                      image: AssetImage(tGoogleLogoImage), width: 20.0),
+                  onPressed: () async {
+                    if (kIsWeb) {
+                      setState(() {
+                        _isSigningIn = true;
+                      });
+                      await controller.googleSignInWeb();
+                      await addGmailToCollection();
+                      setState(() {
+                        _isSigningIn = false;
+                      });
+                    } else {
+                      setState(() {
+                        _isSigningIn = true;
+                      });
+                      await controller.googleSignIn();
+                      await addGmailToCollection();
+                      setState(() {
+                        _isSigningIn = false;
+                      });
+                    }
+                  },
+                  label: const Text(tSignInWithGoogle),
+                ),
         ),
         const SizedBox(height: tFormHeight - 20),
         TextButton(

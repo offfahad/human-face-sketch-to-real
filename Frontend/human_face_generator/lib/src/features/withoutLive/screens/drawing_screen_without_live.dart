@@ -238,7 +238,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
 
           /// color pallet
           Positioned(
-            top: MediaQuery.of(context).padding.top,
+            //top: 5,
             left: 16,
             right: 16,
             child: SizedBox(
@@ -279,7 +279,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
           /// pencil size
           Positioned(
             top: MediaQuery.of(context).padding.top + 80,
-            right: 0,
+            right: 5,
             bottom: 150,
             child: RotatedBox(
               quarterTurns: 3, // 270 degree
@@ -287,7 +287,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
                 value: selectedWidth,
                 thumbColor: tPrimaryColor,
                 activeColor: tPrimaryColor,
-                //secondaryActiveColor: tCardBgColor,
+                secondaryActiveColor: tCardBgColor,
                 min: 1,
                 max: 20,
                 onChanged: (value) {
@@ -313,7 +313,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
                 });
               }
             },
-            child: const Icon(Icons.undo),
+            child: const Icon(Icons.undo, color: Colors.white,),
           ),
           const SizedBox(width: 16),
           FloatingActionButton(
@@ -328,7 +328,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
                 }
               });
             },
-            child: const Icon(Icons.redo),
+            child: const Icon(Icons.redo, color: Colors.white),
           ),
           const SizedBox(width: 16),
           FloatingActionButton(
@@ -339,7 +339,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
                 drawingPoints.clear();
               });
             },
-            child: const Icon(Icons.clear_all),
+            child: const Icon(Icons.delete_outline, color: Colors.white),
           ),
           const SizedBox(width: 16),
           FloatingActionButton(
@@ -356,7 +356,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
                 });
               });
             },
-            child: const Icon(Icons.download),
+            child: const Icon(Icons.download, color: Colors.white),
           ),
           const SizedBox(width: 16),
           FloatingActionButton(
@@ -367,7 +367,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
               //  fetchResponse(base64);
               // }
             },
-            child: const Icon(Icons.navigate_next_rounded),
+            child: const Icon(Icons.navigate_next_rounded, color: Colors.white),
           ),
         ],
       ),

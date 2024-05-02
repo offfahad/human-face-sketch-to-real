@@ -12,7 +12,7 @@ class LoginHeaderWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 30),
+        const SizedBox(height: 10),
         Image(
             image: const AssetImage(tOnBoardingImage3),
             height: size.height * 0.2),
@@ -22,7 +22,7 @@ class LoginHeaderWidget extends StatelessWidget {
         Text(tLoginTitle, style: Theme.of(context).textTheme.displayLarge),
         Text(tLoginSubTitle, style: Theme.of(context).textTheme.bodyLarge),
         const SizedBox(
-          height: 10,
+          height: 5,
         ),
       ],
     );

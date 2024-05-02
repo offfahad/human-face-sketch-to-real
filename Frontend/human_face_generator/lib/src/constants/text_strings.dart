@@ -16,7 +16,7 @@ const String tWelcomeTitle = "Unlock Your Creativity!";
 const String tWelcomeSubTitle = "Join the creative journey where your sketches come to life! Transform your face sketches into stunning images with the power of AI.";
 
 const String tLogin = "Login";
-const String tSignup = "Signup";
+const String tSignup = "Sign Up";
 
 const String tLoginTitle = "Welcome Back,";
 const String tLoginSubTitle = "Make it work, make it right, make it fast.";
@@ -42,6 +42,7 @@ const String tResetViaPhone = "Reset Via Phone Verification.";
 const String tForgetPhoneSubTitle = "Enter your registered Phone No to receive OPT.";
 const String tForgetMailSubTitle = "Enter your registered E-Mail to receive OTP.";
 const String tForgetMailSubTitle2 = "Enter your registered E-Mail to receive link to reset yout password.";
+const String tForgetPhoneSubTitle2 = "Enter your registered Mobile Number to receive OTP to reset yout password.";
 
 const String tNext = "Next";
 

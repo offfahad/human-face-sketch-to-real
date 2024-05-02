@@ -4,6 +4,7 @@ import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_mail/forget_password_mail.dart';
 import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_options/forget_password_btn_widget.dart';
+import 'package:human_face_generator/src/features/authentication/screens/forget_password/forget_password_phone/forget_password_phone.dart';
 
 class ForgetPasswordScreen {
   static Future<dynamic> buildShowModalBottomSheet(BuildContext context) {
@@ -31,7 +32,10 @@ class ForgetPasswordScreen {
             ),
             const SizedBox(height: 20.0),
             ForgetPasswordBtnWidget(
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Get.to(()=> const ForgetPasswordPhoneScreen());
+              },
               title: tPhoneNo,
               subTitle: tResetViaPhone,
               btnIcon: Icons.mobile_friendly_rounded,

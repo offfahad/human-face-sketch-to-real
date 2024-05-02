@@ -10,7 +10,7 @@ import 'package:human_face_generator/src/features/authentication/screens/forget_
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_menu_widget.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/update_profile_screen.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/profile_controller.dart';
-import 'package:human_face_generator/src/features/liveSketching/screens/drawing_screen.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_layout_responsive.dart';
 import 'package:human_face_generator/src/features/withoutLive/models/drawing_point_without_live.dart';
 import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
@@ -148,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //     icon: LineAwesomeIcons.wallet,
                   //     onPress: () {}),
                   ProfileMenuWidget(
-                      title: "Drawing Focus Mode",
+                      title: "Drawing Practice Mode",
                       icon: Icons.draw,
                       onPress: () {
                         Get.to(() => const DrawingScreenWithoutLive());
@@ -156,10 +156,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   const SizedBox(height: 10),
                   ProfileMenuWidget(
-                      title: "Face Sketch To Real Mode",
+                      title: "Face Sketch2Real Mode",
                       icon: LineAwesomeIcons.pen_square,
                       onPress: () {
-                        Get.to(() => const DrawingScreen());
+                        Get.to(() => const DrawingResponsiveLayout());
                       }),
 
                   const Divider(),

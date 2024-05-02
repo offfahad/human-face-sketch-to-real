@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:human_face_generator/src/features/liveSketching/screens/drawing_screen.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_layout_responsive.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 
 class OTPController extends GetxController {
@@ -7,6 +7,6 @@ class OTPController extends GetxController {
 
   void verifyOTP(String otp) async {
     var isVerified = await AuthenticationRepository.instance.verifyOTP(otp);
-    isVerified ? Get.offAll(const DrawingScreen()) : Get.back();
+    isVerified ? Get.offAll(const DrawingResponsiveLayout()) : Get.back();
   }
 }

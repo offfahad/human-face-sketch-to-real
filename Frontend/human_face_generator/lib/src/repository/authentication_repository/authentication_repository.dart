@@ -3,8 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:human_face_generator/src/features/liveSketching/screens/drawing_screen.dart';
 import 'package:human_face_generator/src/features/authentication/screens/on_boarding/on_boarding_screen.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_layout_responsive.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/exceptions/t_exceptions.dart';
 
 class AuthenticationRepository extends GetxController {
@@ -28,7 +28,7 @@ class AuthenticationRepository extends GetxController {
   _setInitialScreen(User? user) {
     user == null
         ? Get.offAll(() => const OnBoardingScreen())
-        : Get.offAll(() => const DrawingScreen());
+        : Get.offAll(() => const DrawingResponsiveLayout());
   }
 
   //FUNC
@@ -38,7 +38,7 @@ class AuthenticationRepository extends GetxController {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       firebaseUser.value != null
-          ? Get.offAll(() => const DrawingScreen())
+          ? Get.offAll(() => const DrawingResponsiveLayout())
           : Get.to(() => const OnBoardingScreen());
     } on FirebaseAuthException catch (e) {
       final ex = TException.fromCode(e.code);

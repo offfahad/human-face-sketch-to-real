@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:human_face_generator/src/constants/image_strings.dart';
-import 'package:human_face_generator/src/features/liveSketching/screens/drawing_screen.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_layout_responsive.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:human_face_generator/src/repository/user_repository/user_repository.dart';
 
@@ -64,7 +64,7 @@ class SignUpController extends GetxController {
       // }
       //Get.to(() => const DrawingScreen());
       await userRepo.createUserOnCollection(user);
-      Get.to(() => const DrawingScreen());
+      Get.to(() => const DrawingResponsiveLayout());
     }
   }
 

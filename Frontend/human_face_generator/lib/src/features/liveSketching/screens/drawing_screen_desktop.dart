@@ -20,16 +20,16 @@ import 'package:human_face_generator/src/repository/authentication_repository/au
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:universal_html/html.dart' as html;
 
-class DrawingScreen extends StatefulWidget {
-  const DrawingScreen({super.key});
+class DrawingScreenDesktop extends StatefulWidget {
+  const DrawingScreenDesktop({super.key});
 
   @override
-  State<DrawingScreen> createState() => _Screen2State();
+  State<DrawingScreenDesktop> createState() => _Screen2State();
 }
 
-class _Screen2State extends State<DrawingScreen> {
+class _Screen2State extends State<DrawingScreenDesktop> {
   var selectedColor = Colors.black;
-  var selectedWidth = 1.0;
+  var selectedWidth = 2.0;
 
   var historyDrawingPoints = <DrawingPoint>[];
   var drawingPoints = <DrawingPoint>[];
@@ -51,7 +51,7 @@ class _Screen2State extends State<DrawingScreen> {
     Paint paint = Paint()
       ..color = const ui.Color.fromARGB(255, 255, 255, 255)
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 1.0;
+      ..strokeWidth = 2.0;
     final paint2 = Paint()
       ..style = PaintingStyle.fill
       ..color = const ui.Color.fromARGB(255, 0, 0, 0);
@@ -397,263 +397,247 @@ class _Screen2State extends State<DrawingScreen> {
         backgroundColor: tPrimaryColor,
       ),
       body: Center(
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
+            Container(
+              width: 257,
+              height: 257,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(0),
+                ),
+                color: Colors.white,
+                border: Border.all(
+                  color: const Color.fromARGB(
+                      255, 0, 0, 0), // Set the border color here
+                  width: 1, // Set the border width here
+                ),
+              ),
+              child: _imageFile == null
+                  ? GestureDetector(
+                      onPanStart: (details) {
+                        setState(() {
+                          currentDrawingPoint = DrawingPoint(
+                            id: DateTime.now().microsecondsSinceEpoch,
+                            offsets: [
+                              details.localPosition,
+                            ],
+                            color: selectedColor,
+                            width: selectedWidth,
+                          );
+                          if (currentDrawingPoint == null) return;
+                          drawingPoints.add(currentDrawingPoint!);
+                          historyDrawingPoints = List.of(drawingPoints);
+                        });
+                      },
+                      onPanUpdate: (details) {
+                        setState(() {
+                          if (currentDrawingPoint == null) return;
+                          currentDrawingPoint = currentDrawingPoint?.copyWith(
+                            offsets: currentDrawingPoint!.offsets
+                              ..add(details.localPosition),
+                          );
+                          drawingPoints.last = currentDrawingPoint!;
+                          historyDrawingPoints = List.of(drawingPoints);
+                        });
+                      },
+                      onPanEnd: (details) {
+                        saveToImage(drawingPoints);
+                        currentDrawingPoint = null;
+                      },
+                      child: CustomPaint(
+                        painter: DrawingPainter(
+                          drawingPoints: drawingPoints,
+                        ),
+                        size: const Size(256, 256),
+                      ),
+                    )
+                  : kIsWeb
+                      ? Image.memory(
+                          Uint8List.fromList(_imageFile!.bytes!),
+                          fit: BoxFit.fill,
+                        )
+                      : Image.file(file!),
+            ),
+            const SizedBox(width: 20),
+            Container(
+              height: 256,
+              width: 40,
+              decoration: const BoxDecoration(
+                color: tPrimaryColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(0),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      if (drawingPoints.isNotEmpty &&
+                          historyDrawingPoints.isNotEmpty) {
+                        setState(() {
+                          drawingPoints.removeLast();
+                          saveToImage(drawingPoints);
+                        });
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.undo,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 0,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (drawingPoints.length <
+                          historyDrawingPoints.length) {
+                        // 6 length 7
+                        final index = drawingPoints.length;
+                        drawingPoints.add(historyDrawingPoints[index]);
+                        saveToImage(drawingPoints);
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.redo,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 0,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      drawingPoints.clear();
+                      historyDrawingPoints.clear();
+                      setState(() {
+                        file = null;
+                        _imageFile = null;
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 0,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (kIsWeb) {
+                          saveSketchImageWeb();
+                        } else {
+                          saveSketchImageToGallery();
+                        }
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.download,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 0,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      _pickImage(context);
+                    },
+                    icon: const Icon(
+                      Icons.upload,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 50,),
+            if (show)
+              Container(
+                width: 257,
+                height: 257,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 1.0),
+                ),
+                child: const Center(
+                    child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                        width: 257,
-                        height: 257,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(0),
-                          ),
-                          color: Colors.white,
-                          border: Border.all(
-                            color: const Color.fromARGB(
-                                255, 0, 0, 0), // Set the border color here
-                            width: 1, // Set the border width here
-                          ),
-                        ),
-                        child: _imageFile == null
-                            ? GestureDetector(
-                                onPanStart: (details) {
-                                  setState(() {
-                                    currentDrawingPoint = DrawingPoint(
-                                      id: DateTime.now().microsecondsSinceEpoch,
-                                      offsets: [
-                                        details.localPosition,
-                                      ],
-                                      color: selectedColor,
-                                      width: selectedWidth,
-                                    );
-                                    if (currentDrawingPoint == null) return;
-                                    drawingPoints.add(currentDrawingPoint!);
-                                    historyDrawingPoints =
-                                        List.of(drawingPoints);
-                                  });
-                                },
-                                onPanUpdate: (details) {
-                                  setState(() {
-                                    if (currentDrawingPoint == null) return;
-                                    currentDrawingPoint =
-                                        currentDrawingPoint?.copyWith(
-                                      offsets: currentDrawingPoint!.offsets
-                                        ..add(details.localPosition),
-                                    );
-                                    drawingPoints.last = currentDrawingPoint!;
-                                    historyDrawingPoints =
-                                        List.of(drawingPoints);
-                                  });
-                                },
-                                onPanEnd: (details) {
-                                  saveToImage(drawingPoints);
-                                  currentDrawingPoint = null;
-                                },
-                                child: CustomPaint(
-                                  painter: DrawingPainter(
-                                    drawingPoints: drawingPoints,
-                                  ),
-                                  size: const Size(256, 256),
-                                ),
-                              )
-                            : kIsWeb
-                                ? Image.memory(
-                                    Uint8List.fromList(_imageFile!.bytes!),
-                                    fit: BoxFit.fill,
-                                  )
-                                : Image.file(file!)),
-                    const SizedBox(height: 50),
-                    if (show)
-                      Container(
-                        width: 257,
-                        height: 257,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1.0),
-                        ),
-                        child: const Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "No AI generated image yet\nDraw a face sketch first\nIn the above box!",
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        )),
-                      ),
-                    if (show == false)
-                      Container(
-                        width: 257,
-                        height: 257,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1.0),
-                        ),
-                        child: imageOutput ??
-                            const Center(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "No AI generated image yet\nDraw a face sketch first\nIn the above box!",
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            )),
-                      ),
-                  ],
-                ),
-                const SizedBox(width: 20),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 256,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        color: tPrimaryColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(0),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              if (drawingPoints.isNotEmpty &&
-                                  historyDrawingPoints.isNotEmpty) {
-                                setState(() {
-                                  drawingPoints.removeLast();
-                                  saveToImage(drawingPoints);
-                                });
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.undo,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 0,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (drawingPoints.length <
-                                  historyDrawingPoints.length) {
-                                // 6 length 7
-                                final index = drawingPoints.length;
-                                drawingPoints.add(historyDrawingPoints[index]);
-                                saveToImage(drawingPoints);
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.redo,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 0,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              drawingPoints.clear();
-                              historyDrawingPoints.clear();
-                              setState(() {
-                                file = null;
-                                _imageFile = null;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 0,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                if (kIsWeb) {
-                                  saveSketchImageWeb();
-                                } else {
-                                  saveSketchImageToGallery();
-                                }
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.download,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 0,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              _pickImage(context);
-                            },
-                            icon: const Icon(
-                              Icons.upload,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    Container(
-                      height: 256,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        color: tPrimaryColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(0),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                imageOutput = null;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 0,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (kIsWeb) {
-                                saveImageToGalleryWeb();
-                              }
-                              if (!kIsWeb) {
-                                saveRealImageToGallery();
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.download,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                    Text(
+                      "No AI generated image yet\nDraw a face sketch first\nIn the left box!",
+                      textAlign: TextAlign.center,
                     ),
                   ],
+                )),
+              ),
+            
+            if (show == false)
+              Container(
+                width: 257,
+                height: 257,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 1.0),
                 ),
-              ],
+                child: imageOutput ??
+                    const Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "No AI generated image yet\nDraw a face sketch first\nIn the above box!",
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )),
+              ),
+            const SizedBox(width: 20),
+            Container(
+              height: 256,
+              width: 40,
+              decoration: const BoxDecoration(
+                color: tPrimaryColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(0),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        imageOutput = null;
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 0,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (kIsWeb) {
+                        saveImageToGalleryWeb();
+                      }
+                      if (!kIsWeb) {
+                        saveRealImageToGallery();
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.download,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

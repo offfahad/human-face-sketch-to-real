@@ -45,3 +45,8 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ## Conclusion
 
 Sketch2Real represents the culmination of a Bachelor of Science in Computer Science degree, showcasing the developer's proficiency in deep learning, mobile application development, and software engineering. By harnessing cutting-edge technologies and implementing them in a real-world application, Sketch2Real exemplifies innovation and excellence in computer science research and development.
+
+## Credits
+Owner of the project is Muhammad Fahad.
+Gmail: mughalfahad544@gmail.com 
+If you need the fully trained model which is used in the project yoh can contact me :) 

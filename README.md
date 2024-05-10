@@ -36,6 +36,11 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ### Home Screen (Draw Sketch Like This And Make It Into Realistic Face Image)
 ![5c345f034d3fe947a5eaa2a733c30e097abd6a4a-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/c4a8d275-dc01-4a2b-8737-66f1ed49dd55)
 
+### Edit Profile and Drawing Practice Screen
+![WhatsApp Image 2024-05-10 at 21 25 48_11a8484b-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/b061e606-4cf2-4dc1-916f-8d6fb4c4acc3)
+
+
+
 
 ## Conclusion
 

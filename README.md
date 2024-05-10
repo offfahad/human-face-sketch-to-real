@@ -6,7 +6,7 @@
 #### - Complete user interface code of the application.
 
 # UI Of The Application
-## OnBorading Screen
+## Onborading Screens
 
-![3-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/a1144023-190f-4f39-b56a-994de7c92510)
-
+## Login and Sign Up Screens
+![71f9d12f6b23abf842031c5487d19245c574fbf9-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/c4628f56-b374-42ff-8905-5cf7cf87d512)

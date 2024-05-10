@@ -8,5 +8,5 @@
 # UI Of The Application
 ## OnBorading Screen
 
-![3-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/894ec3f3-b5b5-4093-82e5-9e0cd662fda1)
+![3-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/a1144023-190f-4f39-b56a-994de7c92510)
 

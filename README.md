@@ -33,6 +33,9 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ### Forgot Password and OTP Screens
 ![Forgot Password and OTP Screens](https://github.com/offfahad/Sketch2Real/assets/19569802/0ed24d83-ed26-4826-a153-60b3cadfe1c5)
 
+### Home Screen (Draw Sketch Like This And Make It Into Realistic Face Image)
+![5c345f034d3fe947a5eaa2a733c30e097abd6a4a-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/c4a8d275-dc01-4a2b-8737-66f1ed49dd55)
+
 
 ## Conclusion
 

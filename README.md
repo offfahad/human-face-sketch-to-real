@@ -39,8 +39,22 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ### Edit Profile and Drawing Practice Screen
 ![WhatsApp Image 2024-05-10 at 21 25 48_11a8484b-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/b061e606-4cf2-4dc1-916f-8d6fb4c4acc3)
 
+# Model Training Results
 
-
+![20epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/d2c7c5c3-b84f-4b6d-85d4-af038df273bf)
+![100Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/93465c02-604f-4ddb-a95d-9ce4eb939482)
+![200Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/d65c7f5b-70ec-4963-9b1e-077836743bab)
+![300Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/3920b432-53f1-40f9-9142-43dff2e3fd6a)
+![600Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/479b5a12-6570-411e-abb8-f546c85890eb)
+![800Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/2b8de586-c910-491a-99cf-584db54c4879)
+![1500Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/c63d6cc8-3d05-45b4-9293-73381bc75f4c)
+![1800Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/efff6cb5-cacb-423e-8320-a0768a7fd7ac)
+![2500Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/5e80456d-be76-40f7-954d-9b47cb03eeaa)
+![3000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/4a23497b-e50b-49eb-85fb-6ec7852b1bde)
+![3500Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/47118745-50d0-44f1-908c-6db48103f4dd)
+![4500Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/2f649eec-1617-485f-a599-84a701f91385)
+![5000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/771895cf-fd73-44ef-8829-6300011d9ec5)
+![10000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/64513749-fcbf-4d29-9581-cf836a85802c)
 
 ## Conclusion
 
@@ -49,4 +63,4 @@ Sketch2Real represents the culmination of a Bachelor of Science in Computer Scie
 ## Credits
 Owner of the project is Muhammad Fahad.
 Gmail: mughalfahad544@gmail.com 
-If you need the fully trained model which is used in the project yoh can contact me :) 
+If you need the full trained model which is used in the project you can contact me :) 

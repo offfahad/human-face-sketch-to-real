@@ -53,9 +53,9 @@ class DialogHelper {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Image Not Supported'),
+          title: const Text('Invalid Sketch Image '),
           content: const Text(
-              'Please choose a sketch image which you saved from this application.'),
+              'Choose a sketch image which you saved from this application or follow guidelines.\n1) Sketch must be straight face sketch.\n2) Sketch must be drawn with white lines on black background.\n3) It should be in dimension of 256X256.'),
           actions: [
             TextButton(
               onPressed: () {

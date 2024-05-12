@@ -2,15 +2,15 @@
 
 ## Introduction
 
-Sketch2Real is a pioneering image translation application I developed as my final year project for a Bachelor of Science in Computer Science degree. The project was conceived and implemented by a single developer, demonstrating comprehensive skills in machine learning, mobile application development, and backend integration.
+Sketch2Real is a innovative image translation application which I developed for my final year project of BS Computer Science degree. All the project documentation and implementation of coding was made by a single developer, demonstrating comprehensive skills in machine learning, mobile application development, and backend integration.
 
 ## Project Overview
 
-Sketch2Real leverages state-of-the-art deep learning techniques, specifically Generative Adversarial Networks (GANs) and the Pix2Pix algorithm, to translate hand-drawn human face sketches into realistic images. The application targets both mobile and web platforms, offering users an intuitive and interactive interface for creating lifelike portraits from rough sketches.
+Sketch2Real leverages state-of-the-art deep learning techniques, specifically Generative Adversarial Networks (GANs) and the Image-To-Image Translation Alogorithm, to translate hand-drawn human face sketches into realistic images. The application targets both mobile and web platforms, offering users an intuitive and interactive interface for creating lifelike portraits from rough sketches.
 
 ## Key Features
 
-- **Advanced Deep Learning Model:** The heart of Sketch2Real is a meticulously crafted deep learning model trained on a custom dataset comprising approximately 5000 samples of human face sketches and their corresponding real images. The model has undergone extensive training for over 10,000 epochs, ensuring exceptional accuracy and realism in image translation.
+- **Advanced Deep Learning Model:** The heart of Sketch2Real is a deep learning model trained on a custom dataset which I made by myself comprising approximately 5000 samples of human face sketches and their corresponding real images and all human faces images are AI Generted (No person exists in real life). The model has been trained for over 10,000 epochs, ensuring exceptional accuracy and realism in image translation. More epochs more accurate results in this model arcitecture.
 
 - **Cross-Platform Compatibility:** Built using the Flutter framework, Sketch2Real seamlessly caters to both mobile and web users, providing a consistent user experience across different devices and platforms.
 
@@ -40,7 +40,7 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ![WhatsApp Image 2024-05-10 at 21 25 48_11a8484b-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/b061e606-4cf2-4dc1-916f-8d6fb4c4acc3)
 
 # Model Training Results
-
+## Test Dataset Images
 ![20epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/d2c7c5c3-b84f-4b6d-85d4-af038df273bf)
 ![100Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/93465c02-604f-4ddb-a95d-9ce4eb939482)
 ![200Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/d65c7f5b-70ec-4963-9b1e-077836743bab)
@@ -55,6 +55,11 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ![4500Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/2f649eec-1617-485f-a599-84a701f91385)
 ![5000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/771895cf-fd73-44ef-8829-6300011d9ec5)
 ![10000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/64513749-fcbf-4d29-9581-cf836a85802c)
+
+# Unseen Imgae Result
+I try to draw my face sketch and give it to model and results was very accurate and mind blowing!
+
+![10000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/f5a4e116-b28e-40a6-b2be-5c2e6fe7637f)
 
 ## Conclusion
 

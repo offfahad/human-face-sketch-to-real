@@ -95,13 +95,22 @@ class _ForgetPasswordPhoneScreenState extends State<ForgetPasswordPhoneScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Get.to(() => OTPScreen(fetchedEmail: phoneNumber ?? ''));
-                          // setState(() {
-                          //   Controller.resetPassword(
-                          //     userEmail.trim().toString(),
-                          //   );
-                          // });
+                        if (phoneNumber == null) {
+                          Get.snackbar("Error", "Plase enter a mobile number.",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor:
+                                  const Color.fromARGB(255, 255, 0, 0),
+                              colorText: Colors.white);
+                        } else {
+                          if (_formKey.currentState!.validate()) {
+                            Get.to(() =>
+                                OTPScreen(fetchedEmail: phoneNumber ?? ''));
+                            // setState(() {
+                            //   Controller.resetPassword(
+                            //     userEmail.trim().toString(),
+                            //   );
+                            // });
+                          }
                         }
                       },
                       child: const Text("Send"),

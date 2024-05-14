@@ -60,7 +60,7 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 # Unseen Imgae Result
 I try to draw my face sketch and give it to model and results was very accurate and mind blowing!
 
-![10000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/f5a4e116-b28e-40a6-b2be-5c2e6fe7637f)
+![10000Epochs](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/33549348-c3f3-4767-b5e4-4728f3f7aa3d)
 
 ## Credits
 - I took the model architecture concept from this paper named as "Image-To-Image Translation With Conditional Generative Adversarial Neural Networks" from https://arxiv.org/abs/1611.07004 because they have provided a commom framework you just have to change the dataset.

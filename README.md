@@ -54,7 +54,8 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ![3500Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/47118745-50d0-44f1-908c-6db48103f4dd)
 ![4500Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/2f649eec-1617-485f-a599-84a701f91385)
 ![5000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/771895cf-fd73-44ef-8829-6300011d9ec5)
-![10000Epochs](https://github.com/offfahad/Sketch2Real-FYP/assets/19569802/64513749-fcbf-4d29-9581-cf836a85802c)
+![7500Epochs](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/60a0f06d-b891-417e-b355-9f1ebb4ddf46)
+![10000Epochs](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/50b7014a-cd50-4e78-9a22-f9ff517c0120)
 
 # Unseen Imgae Result
 I try to draw my face sketch and give it to model and results was very accurate and mind blowing!

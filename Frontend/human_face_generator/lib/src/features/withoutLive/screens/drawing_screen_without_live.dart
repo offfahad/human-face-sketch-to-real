@@ -34,6 +34,19 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
     Colors.brown,
     Colors.pink,
     Colors.indigo,
+    Colors.orange,
+    Colors.purple,
+    Colors.cyan,
+    Colors.grey,
+    Colors.lime,
+    Colors.teal,
+    Colors.yellow,
+    Colors.deepOrange,
+    Colors.deepPurple,
+    Colors.lightBlue,
+    Colors.lightGreen,
+    Colors.blueGrey,
+    Colors.white,
   ];
   final GlobalKey imageKey = GlobalKey();
   Widget? imageOutput = Container();
@@ -169,25 +182,29 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-            icon: const Icon(
-              LineAwesomeIcons.angle_left,
-              color: tWhiteColor,
-            ),
-            onPressed: () => Get.back()),
-        title: Text(
-          "Drawing Focus Mode",
-          style: GoogleFonts.poppins(
-            fontSize: 16.0,
-            fontWeight: FontWeight.w600,
-            color: tWhiteColor,
-          ),
-        ),
-        backgroundColor: tPrimaryColor,
-      ),
+      backgroundColor: Colors.white,
+      appBar: screenWidth >= 800
+          ? AppBar(
+              centerTitle: true,
+              leading: IconButton(
+                  icon: const Icon(
+                    LineAwesomeIcons.angle_left,
+                    color: tWhiteColor,
+                  ),
+                  onPressed: () => Get.back()),
+              title: Text(
+                "Drawing Practice Mode",
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  color: tWhiteColor,
+                ),
+              ),
+              backgroundColor: tPrimaryColor,
+            )
+          : null,
       body: Stack(
         children: [
           /// Canvas
@@ -238,7 +255,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
 
           /// color pallet
           Positioned(
-            //top: 5,
+            top: 30,
             left: 16,
             right: 16,
             child: SizedBox(
@@ -313,7 +330,10 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
                 });
               }
             },
-            child: const Icon(Icons.undo, color: Colors.white,),
+            child: const Icon(
+              Icons.undo,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(width: 16),
           FloatingActionButton(

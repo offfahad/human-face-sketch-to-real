@@ -28,168 +28,175 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: tPrimaryColor,
-        leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(
-              LineAwesomeIcons.angle_left,
-              color: tWhiteColor,
-            )),
-        title: Text(
-          tProfile,
-          style: GoogleFonts.poppins(
-            fontSize: 16.0,
-            fontWeight: FontWeight.w600,
-            color: tWhiteColor,
-          ),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            width: 450,
-            padding: const EdgeInsets.all(tDefaultSize),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Column(
-                children: [
-                  /// -- IMAGE
-                  FutureBuilder(
-                    future: controller.getUserData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData) {
-                          UserModel userData = snapshot.data as UserModel;
-                          final email = userData.email;
-                          final fullname = userData.fullName;
-                          final profileUrl = userData.profileImage;
-                          return Column(
-                            children: [
-                              SizedBox(
-                                  width: 120,
-                                  height: 120,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Image.network(
-                                      profileUrl,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  )),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(fullname,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium),
-                              Text(email,
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium),
-                            ],
-                          );
-                        } else if (snapshot.hasError) {
-                          return Center(
-                            child: Text(snapshot.error.toString()),
-                          );
-                        } else {
-                          return const Center(
-                            child:
-                                Text('Too Slow Internet Connection Try Again.'),
-                          );
-                        }
+      backgroundColor: Colors.white,
+      appBar: screenWidth >= 800
+          ? AppBar(
+              centerTitle: true,
+              backgroundColor: tPrimaryColor,
+              leading: IconButton(
+                  onPressed: () => Get.back(),
+                  icon: const Icon(
+                    LineAwesomeIcons.angle_left,
+                    color: tWhiteColor,
+                  )),
+              title: Text(
+                tProfile,
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  color: tWhiteColor,
+                ),
+              ),
+              actions: [
+                IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                        isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
+              ],
+            )
+          : null,
+      body: Center(
+        child: Container(
+          width: 450,
+          padding: const EdgeInsets.all(tDefaultSize),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              children: [
+                /// -- IMAGE
+                if (screenWidth <= 800)
+                const SizedBox(height: 150,),
+                FutureBuilder(
+                  future: controller.getUserData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        UserModel userData = snapshot.data as UserModel;
+                        final email = userData.email;
+                        final fullname = userData.fullName;
+                        final profileUrl = userData.profileImage;
+                        return Column(
+                          children: [
+                            SizedBox(
+                                width: 120,
+                                height: 120,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.network(
+                                    profileUrl,
+                                    fit: BoxFit.fill,
+                                  ),
+                                )),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(fullname,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium),
+                            Text(email,
+                                style:
+                                    Theme.of(context).textTheme.bodyMedium),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
                       } else {
                         return const Center(
-                          child: CircularProgressIndicator(
-                            color: tPrimaryColor,
-                          ),
+                          child:
+                              Text('Too Slow Internet Connection Try Again.'),
                         );
                       }
-                    },
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  /// -- BUTTON
-                  SizedBox(
-                    width: 200,
-                    child: ElevatedButton(
-                      onPressed: () =>
-                          Get.to(() => const UpdateProfileScreen()),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: tPrimaryColor,
-                        side: BorderSide.none,
-                        shape: const StadiumBorder(),
-                      ),
-                      child: const Text(
-                        tEditProfile,
-                        style: TextStyle(color: tWhiteColor),
-                      ),
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: tPrimaryColor,
+                        ),
+                      );
+                    }
+                  },
+                ),
+      
+                const SizedBox(height: 20),
+      
+                /// -- BUTTON
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () =>
+                        Get.to(() => const UpdateProfileScreen()),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: tPrimaryColor,
+                      side: BorderSide.none,
+                      shape: const StadiumBorder(),
+                    ),
+                    child: const Text(
+                      tEditProfile,
+                      style: TextStyle(color: tWhiteColor),
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  const Divider(),
-                  const SizedBox(height: 10),
-
-                  /// -- MENU
-                  // ProfileMenuWidget(
-                  //     title: "Settings",
-                  //     icon: LineAwesomeIcons.cog,
-                  //     onPress: () {}),
-                  // ProfileMenuWidget(
-                  //     title: "Billing Details",
-                  //     icon: LineAwesomeIcons.wallet,
-                  //     onPress: () {}),
+                ),
+                const SizedBox(height: 30),
+                const Divider(),
+                const SizedBox(height: 10),
+      
+                /// -- MENU
+                // ProfileMenuWidget(
+                //     title: "Settings",
+                //     icon: LineAwesomeIcons.cog,
+                //     onPress: () {}),
+                // ProfileMenuWidget(
+                //     title: "Billing Details",
+                //     icon: LineAwesomeIcons.wallet,
+                //     onPress: () {}),
+                if (screenWidth >= 800)
                   ProfileMenuWidget(
                       title: "Drawing Practice Mode",
                       icon: Icons.draw,
                       onPress: () {
                         Get.to(() => const DrawingScreenWithoutLive());
                       }),
-
-                  const SizedBox(height: 10),
+                if (screenWidth >= 800) const SizedBox(height: 10),
+                if (screenWidth >= 800)
                   ProfileMenuWidget(
-                      title: "Face Sketch2Real Mode",
-                      icon: LineAwesomeIcons.pen_square,
-                      onPress: () {
-                        Get.to(() => const DrawingResponsiveLayout());
-                      }),
-
-                  const Divider(),
-                  const SizedBox(height: 10),
-                  ProfileMenuWidget(
-                      title: "Reset Password",
-                      icon: Icons.password,
-                      onPress: () {
-                        Get.to(() => const ForgetPasswordMailScreen());
-                      }),
-
-                  const SizedBox(height: 10),
-                  ProfileMenuWidget(
-                    title: "Logout",
-                    icon: LineAwesomeIcons.alternate_sign_out,
-                    textColor: Colors.red,
-                    endIcon: false,
-                    onPress: () async {
-                      await _showLogoutDialog();
+                    title: "Sketch To Real Mode",
+                    icon: LineAwesomeIcons.pen_square,
+                    onPress: () {
+                      Get.to(() => const DrawingResponsiveLayout());
                     },
                   ),
-
-                  const Divider(),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Developed By @offfahad',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )
-                ],
-              ),
+                if (screenWidth >= 800) const Divider(),
+                const SizedBox(height: 10),
+                ProfileMenuWidget(
+                    title: "Reset Password",
+                    icon: Icons.password,
+                    onPress: () {
+                      Get.to(() => const ForgetPasswordMailScreen());
+                    }),
+      
+                const SizedBox(height: 10),
+                ProfileMenuWidget(
+                  title: "Logout",
+                  icon: LineAwesomeIcons.alternate_sign_out,
+                  textColor: Colors.red,
+                  endIcon: false,
+                  onPress: () async {
+                    await _showLogoutDialog();
+                  },
+                ),
+      
+                const Divider(),
+                const SizedBox(height: 10),
+                Text(
+                  'Developed By @offfahad',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                )
+              ],
             ),
           ),
         ),

@@ -266,6 +266,7 @@ class _Screen2State extends State<DrawingScreen> {
           DialogHelper.showImageNotSupportedDialog(context);
           return;
         }
+        _imageFile = result.files.first;
         var base64String = await fileToBase64(file!);
         fetchResponse(base64String);
       }
@@ -378,24 +379,25 @@ class _Screen2State extends State<DrawingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
-          onPressed: () => Get.to(
-            () => const ProfileScreen(),
-          ),
-        ),
-        title: Text(
-          "Sketch2Real",
-          style: GoogleFonts.poppins(
-            fontSize: 16.0,
-            fontWeight: FontWeight.w600,
-            color: tWhiteColor,
-          ),
-        ),
-        backgroundColor: tPrimaryColor,
-      ),
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.menu, color: Colors.white),
+      //     onPressed: () => Get.to(
+      //       () => const ProfileScreen(),
+      //     ),
+      //   ),
+      //   title: Text(
+      //     "Home",
+      //     style: GoogleFonts.poppins(
+      //       fontSize: 16.0,
+      //       fontWeight: FontWeight.w600,
+      //       color: tWhiteColor,
+      //     ),
+      //   ),
+      //   backgroundColor: tPrimaryColor,
+      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

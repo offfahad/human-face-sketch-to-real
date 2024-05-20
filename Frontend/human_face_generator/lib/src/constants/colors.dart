@@ -4,7 +4,7 @@ const tPrimaryColor = Color.fromARGB(255, 129, 97, 76);
 const tSecondaryColor =Color.fromARGB(255, 52, 52, 52);
 const tAccentColor = Color.fromARGB(255, 255, 255, 255);
 
-const tCardBgColor = Color(0xFFF7F6F1);
+const tCardBgColor = Color.fromARGB(255, 255, 255, 255);
 const tWhiteColor = Color(0xffffffff);
 const tDarkColor = Color(0xFF000000);
 

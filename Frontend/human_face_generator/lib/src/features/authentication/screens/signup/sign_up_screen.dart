@@ -11,11 +11,12 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Center(
             child: Container(
               width: 450,
-              padding: const EdgeInsets.all(tDefaultSize + 20),
+              padding: const EdgeInsets.all(tDefaultSize + 30),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

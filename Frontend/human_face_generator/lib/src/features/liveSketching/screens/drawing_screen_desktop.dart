@@ -266,6 +266,7 @@ class _Screen2State extends State<DrawingScreenDesktop> {
           DialogHelper.showImageNotSupportedDialog(context);
           return;
         }
+        _imageFile = result.files.first;
         var base64String = await fileToBase64(file!);
         fetchResponse(base64String);
       }
@@ -378,6 +379,7 @@ class _Screen2State extends State<DrawingScreenDesktop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(

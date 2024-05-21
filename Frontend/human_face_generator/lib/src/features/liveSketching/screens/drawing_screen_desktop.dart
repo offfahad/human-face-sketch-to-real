@@ -389,7 +389,7 @@ class _Screen2State extends State<DrawingScreenDesktop> {
           ),
         ),
         title: Text(
-          "Sketch2Real",
+          "Home",
           style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,

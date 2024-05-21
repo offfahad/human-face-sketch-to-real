@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 /// -- IMAGE
-                if (screenWidth <= 800)
+                if (!kIsWeb)
                 const SizedBox(height: 150,),
                 FutureBuilder(
                   future: controller.getUserData(),

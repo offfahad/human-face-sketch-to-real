@@ -15,6 +15,6 @@ class DrawingResponsiveLayout extends StatefulWidget {
 class _DrawingResponsiveLayoutState extends State<DrawingResponsiveLayout> {
   @override
   Widget build(BuildContext context) {
-    return const ResponsiveLayout(mobileBody: BottomBarScreen(), desktopBody: DrawingScreenDesktop());
+    return const ResponsiveLayout(mobileBody: DrawingScreen(), desktopBody: DrawingScreenDesktop());
   }
 }

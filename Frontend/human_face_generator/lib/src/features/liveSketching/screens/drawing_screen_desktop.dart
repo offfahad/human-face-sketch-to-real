@@ -16,6 +16,7 @@ import 'package:human_face_generator/src/features/liveSketching/models/custom_pa
 import 'package:human_face_generator/src/features/liveSketching/models/drawing_point.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
+import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:universal_html/html.dart' as html;
@@ -388,6 +389,19 @@ class _Screen2State extends State<DrawingScreenDesktop> {
             () => const ProfileScreen(),
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+                onPressed: () => Get.to(
+                      () => const DrawingScreenWithoutLive(),
+                    ),
+                icon: const Icon(
+                  Icons.draw_outlined,
+                  color: Colors.white,
+                )),
+          )
+        ],
         title: Text(
           "Home",
           style: GoogleFonts.poppins(
@@ -495,8 +509,7 @@ class _Screen2State extends State<DrawingScreenDesktop> {
                   ),
                   IconButton(
                     onPressed: () {
-                      if (drawingPoints.length <
-                          historyDrawingPoints.length) {
+                      if (drawingPoints.length < historyDrawingPoints.length) {
                         // 6 length 7
                         final index = drawingPoints.length;
                         drawingPoints.add(historyDrawingPoints[index]);
@@ -558,7 +571,9 @@ class _Screen2State extends State<DrawingScreenDesktop> {
                 ],
               ),
             ),
-            const SizedBox(width: 50,),
+            const SizedBox(
+              width: 50,
+            ),
             if (show)
               Container(
                 width: 257,
@@ -577,7 +592,6 @@ class _Screen2State extends State<DrawingScreenDesktop> {
                   ],
                 )),
               ),
-            
             if (show == false)
               Container(
                 width: 257,

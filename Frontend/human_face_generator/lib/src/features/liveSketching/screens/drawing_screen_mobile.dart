@@ -16,6 +16,7 @@ import 'package:human_face_generator/src/features/liveSketching/models/custom_pa
 import 'package:human_face_generator/src/features/liveSketching/models/drawing_point.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
+import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:universal_html/html.dart' as html;
@@ -380,24 +381,30 @@ class _Screen2State extends State<DrawingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.menu, color: Colors.white),
-      //     onPressed: () => Get.to(
-      //       () => const ProfileScreen(),
-      //     ),
-      //   ),
-      //   title: Text(
-      //     "Home",
-      //     style: GoogleFonts.poppins(
-      //       fontSize: 16.0,
-      //       fontWeight: FontWeight.w600,
-      //       color: tWhiteColor,
-      //     ),
-      //   ),
-      //   backgroundColor: tPrimaryColor,
-      // ),
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          onPressed: () => Get.to(
+            () => const ProfileScreen(),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(onPressed: () => Get.to(()=> const DrawingScreenWithoutLive(),), icon: const Icon(Icons.draw_outlined, color: Colors.white,)),
+          )
+        ],
+        title: Text(
+          "Home",
+          style: GoogleFonts.poppins(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+            color: tWhiteColor,
+          ),
+        ),
+        backgroundColor: tPrimaryColor,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -23,7 +23,9 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: tPrimaryColor,),

@@ -185,26 +185,24 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: screenWidth >= 800
-          ? AppBar(
-              centerTitle: true,
-              leading: IconButton(
-                  icon: const Icon(
-                    LineAwesomeIcons.angle_left,
-                    color: tWhiteColor,
-                  ),
-                  onPressed: () => Get.back()),
-              title: Text(
-                "Drawing Practice Mode",
-                style: GoogleFonts.poppins(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                  color: tWhiteColor,
-                ),
-              ),
-              backgroundColor: tPrimaryColor,
-            )
-          : null,
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+            icon: const Icon(
+              LineAwesomeIcons.angle_left,
+              color: tWhiteColor,
+            ),
+            onPressed: () => Get.back()),
+        title: Text(
+          "Drawing Practice Mode",
+          style: GoogleFonts.poppins(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+            color: tWhiteColor,
+          ),
+        ),
+        backgroundColor: tPrimaryColor,
+      ),
       body: Stack(
         children: [
           /// Canvas
@@ -255,7 +253,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
 
           /// color pallet
           Positioned(
-            top: 30,
+            top: 5,
             left: 16,
             right: 16,
             child: SizedBox(

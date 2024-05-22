@@ -26,6 +26,7 @@ class _ForgetPasswordPhoneScreenState extends State<ForgetPasswordPhoneScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(

@@ -392,7 +392,7 @@ class _Screen2State extends State<DrawingScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: IconButton(onPressed: () => Get.to(()=> const DrawingScreenWithoutLive(),), icon: const Icon(Icons.draw_outlined, color: Colors.white,)),
+            child: IconButton(onPressed: () => Get.to(()=> const DrawingScreenWithoutLive(),), icon: const Icon(Icons.draw, color: Colors.white,)),
           )
         ],
         title: Text(

@@ -397,7 +397,7 @@ class _Screen2State extends State<DrawingScreenDesktop> {
                       () => const DrawingScreenWithoutLive(),
                     ),
                 icon: const Icon(
-                  Icons.draw_outlined,
+                  Icons.draw,
                   color: Colors.white,
                 )),
           )

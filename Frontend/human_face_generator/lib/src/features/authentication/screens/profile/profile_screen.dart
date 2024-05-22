@@ -33,32 +33,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: screenWidth >= 800
-          ? AppBar(
-              centerTitle: true,
-              backgroundColor: tPrimaryColor,
-              leading: IconButton(
-                  onPressed: () => Get.back(),
-                  icon: const Icon(
-                    LineAwesomeIcons.angle_left,
-                    color: tWhiteColor,
-                  )),
-              title: Text(
-                tProfile,
-                style: GoogleFonts.poppins(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                  color: tWhiteColor,
-                ),
-              ),
-              actions: [
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                        isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
-              ],
-            )
-          : null,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: tPrimaryColor,
+        leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(
+              LineAwesomeIcons.angle_left,
+              color: tWhiteColor,
+            )),
+        title: Text(
+          tProfile,
+          style: GoogleFonts.poppins(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+            color: tWhiteColor,
+          ),
+        ),
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {},
+        //       icon: Icon(
+        //           isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
+        // ],
+      ),
       body: Center(
         child: Container(
           width: 450,
@@ -68,8 +66,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 /// -- IMAGE
-                if (!kIsWeb)
-                const SizedBox(height: 150,),
+                //if (!kIsWeb)
+                //const SizedBox(height: 150,),
                 FutureBuilder(
                   future: controller.getUserData(),
                   builder: (context, snapshot) {
@@ -95,12 +93,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 20,
                             ),
                             Text(fullname,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium),
-                            Text(email,
                                 style:
-                                    Theme.of(context).textTheme.bodyMedium),
+                                    Theme.of(context).textTheme.headlineMedium),
+                            Text(email,
+                                style: Theme.of(context).textTheme.bodyMedium),
                           ],
                         );
                       } else if (snapshot.hasError) {
@@ -122,15 +118,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }
                   },
                 ),
-      
+
                 const SizedBox(height: 20),
-      
+
                 /// -- BUTTON
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: () =>
-                        Get.to(() => const UpdateProfileScreen()),
+                    onPressed: () => Get.to(() => const UpdateProfileScreen()),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: tPrimaryColor,
                       side: BorderSide.none,
@@ -145,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 30),
                 const Divider(),
                 const SizedBox(height: 10),
-      
+
                 /// -- MENU
                 // ProfileMenuWidget(
                 //     title: "Settings",
@@ -155,31 +150,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 //     title: "Billing Details",
                 //     icon: LineAwesomeIcons.wallet,
                 //     onPress: () {}),
-                if (screenWidth >= 800)
-                  ProfileMenuWidget(
-                      title: "Drawing Practice Mode",
-                      icon: Icons.draw,
-                      onPress: () {
-                        Get.to(() => const DrawingScreenWithoutLive());
-                      }),
-                if (screenWidth >= 800) const SizedBox(height: 10),
-                if (screenWidth >= 800)
-                  ProfileMenuWidget(
-                    title: "Sketch To Real Mode",
-                    icon: LineAwesomeIcons.pen_square,
+                //if (screenWidth >= 800)
+                ProfileMenuWidget(
+                  title: "Face Sketch To Real Mode",
+                  icon: LineAwesomeIcons.pen_square,
+                  onPress: () {
+                    Get.to(() => const DrawingResponsiveLayout());
+                  },
+                ),
+                ProfileMenuWidget(
+                    title: "Drawing Practice Mode",
+                    icon: Icons.draw,
                     onPress: () {
-                      Get.to(() => const DrawingResponsiveLayout());
-                    },
-                  ),
-                if (screenWidth >= 800) const Divider(),
-                const SizedBox(height: 10),
+                      Get.to(() => const DrawingScreenWithoutLive());
+                    }),
+                //if (screenWidth >= 800) const SizedBox(height: 10),
+                //if (screenWidth >= 800)
+
+                //if (screenWidth >= 800) const Divider(),
+                //const SizedBox(height: 10),
                 ProfileMenuWidget(
                     title: "Reset Password",
                     icon: Icons.password,
                     onPress: () {
                       Get.to(() => const ForgetPasswordMailScreen());
                     }),
-      
+
                 const SizedBox(height: 10),
                 ProfileMenuWidget(
                   title: "Logout",
@@ -190,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     await _showLogoutDialog();
                   },
                 ),
-      
+
                 const Divider(),
                 const SizedBox(height: 10),
                 Text(
@@ -210,6 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: Colors.white,
             title: const Text('LOGOUT'),
             content: const Text('Are you sure, you want to Logout?'),
             actions: [

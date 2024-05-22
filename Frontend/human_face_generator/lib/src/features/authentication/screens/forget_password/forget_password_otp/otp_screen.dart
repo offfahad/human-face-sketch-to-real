@@ -18,6 +18,7 @@ class OTPScreen extends StatelessWidget {
     var otp;
     print(fetchedEmail);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(

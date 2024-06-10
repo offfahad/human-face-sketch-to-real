@@ -384,7 +384,7 @@ class _Screen2State extends State<DrawingScreen> {
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.dashboard, color: Colors.white),
           onPressed: () => Get.to(
             () => const ProfileScreen(),
           ),

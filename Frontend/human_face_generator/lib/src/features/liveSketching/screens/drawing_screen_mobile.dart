@@ -219,8 +219,9 @@ class _Screen2State extends State<DrawingScreen> {
       String base64Image = base64Encode(Uint8List.fromList(convertedBytes!));
 
       // Generate a timestamp
+
       String formattedDate =
-          DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+          DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
 
       // Create an anchor element
       final anchor = html.AnchorElement(
@@ -246,33 +247,35 @@ class _Screen2State extends State<DrawingScreen> {
 
   // Method for saving sketch image on web
   void downloadSketchImageWeb() async {
-  if (drawingPoints.isNotEmpty) {
-    // Convert the image bytes to base64
-    String base64Image = base64Encode(Uint8List.fromList(listBytes));
+    if (drawingPoints.isNotEmpty) {
+      // Convert the image bytes to base64
+      String base64Image = base64Encode(Uint8List.fromList(listBytes));
 
-    // Generate a timestamp
-    String formattedDate = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+      // Generate a timestamp
 
-    // Create an anchor element
-    final anchor = html.AnchorElement(
-      href: 'data:application/octet-stream;base64,$base64Image',
-    )
-      ..setAttribute('download', 'sketch_image_$formattedDate.png')
-      ..style.display = 'none';
+      String formattedDate =
+          DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
 
-    // Add the anchor element to the document body
-    html.document.body!.children.add(anchor);
+      // Create an anchor element
+      final anchor = html.AnchorElement(
+        href: 'data:application/octet-stream;base64,$base64Image',
+      )
+        ..setAttribute('download', 'sketch_image_$formattedDate.png')
+        ..style.display = 'none';
 
-    // Trigger a click event on the anchor element
-    anchor.click();
+      // Add the anchor element to the document body
+      html.document.body!.children.add(anchor);
 
-    // Remove the anchor element from the document body
-    html.document.body!.children.remove(anchor);
+      // Trigger a click event on the anchor element
+      anchor.click();
 
-    DialogHelper.showImageSavedDialogWb(context);
-  } else {
-    DialogHelper.showImageNotSavedDialog(context);
-  }
+      // Remove the anchor element from the document body
+      html.document.body!.children.remove(anchor);
+
+      DialogHelper.showImageSavedDialogWb(context);
+    } else {
+      DialogHelper.showImageNotSavedDialog(context);
+    }
   }
 
 // Method for saving image on mobile

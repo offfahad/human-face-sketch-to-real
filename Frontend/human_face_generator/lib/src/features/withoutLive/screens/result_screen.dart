@@ -14,25 +14,27 @@ class ResultImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-        appBar: AppBar(
-          
-          centerTitle: true,
-          leading: IconButton(
-              icon: const Icon(
-                LineAwesomeIcons.angle_left,
-                color: tWhiteColor,
-              ),
-              onPressed: () => Get.back()),
-          title: Text(
-            "Real Image Generated",
-            style: GoogleFonts.poppins(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+            icon: const Icon(
+              LineAwesomeIcons.angle_left,
               color: tWhiteColor,
             ),
+            onPressed: () => Get.back()),
+        title: Text(
+          "Real Image Generated",
+          style: GoogleFonts.poppins(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+            color: tWhiteColor,
           ),
-          backgroundColor: tPrimaryColor,
         ),
-        body: Center(child: Image.memory(imageBytes),));
+        backgroundColor: tPrimaryColor,
+      ),
+      body: Center(
+        child: Image.memory(imageBytes),
+      ),
+    );
   }
 }

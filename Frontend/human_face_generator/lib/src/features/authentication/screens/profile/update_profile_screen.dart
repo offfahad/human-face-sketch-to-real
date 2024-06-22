@@ -319,7 +319,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     ),
                                     child: isUpdating
                                         ? const CircularProgressIndicator(color: Colors.white,)
-                                        : const Text(tEditProfile)),
+                                        : const Text("Update")),
                               ),
                               const SizedBox(height: tFormHeight),
         

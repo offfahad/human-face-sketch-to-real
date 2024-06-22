@@ -274,7 +274,8 @@ class _Screen2State extends State<DrawingScreen> {
       if (kIsWeb) {
         _imageFile = result.files.first;
         final decodedImage = await decodeImageFromPlatformFile(_imageFile!);
-        if (decodedImage!.width != 256 && decodedImage.height != 256) {
+        if (!((decodedImage!.width == 256 && decodedImage.height == 256) ||
+            (decodedImage.width == 324 && decodedImage.height == 324))) {
           DialogHelper.showImageNotSupportedDialog(context);
           _imageFile = null;
           return;
@@ -392,7 +393,14 @@ class _Screen2State extends State<DrawingScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: IconButton(onPressed: () => Get.to(()=> const DrawingScreenWithoutLive(),), icon: const Icon(Icons.draw, color: Colors.white,)),
+            child: IconButton(
+                onPressed: () => Get.to(
+                      () => const DrawingScreenWithoutLive(),
+                    ),
+                icon: const Icon(
+                  Icons.draw,
+                  color: Colors.white,
+                )),
           )
         ],
         title: Text(

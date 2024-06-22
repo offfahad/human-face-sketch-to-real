@@ -19,6 +19,7 @@ import 'package:human_face_generator/src/features/authentication/screens/profile
 import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:intl/intl.dart';
 import 'package:universal_html/html.dart' as html;
 
 class DrawingScreen extends StatefulWidget {
@@ -109,8 +110,8 @@ class _Screen2State extends State<DrawingScreen> {
   }
 
   void displayResponseImage(String bytes) async {
-    Uint8List convertedBytes = base64Decode(bytes);
-    if (convertedBytes.isNotEmpty) {
+    convertedBytes = base64Decode(bytes);
+    if (convertedBytes!.isNotEmpty) {
       show = false;
     }
     setState(() {
@@ -119,33 +120,10 @@ class _Screen2State extends State<DrawingScreen> {
         child: SizedBox(
           width: 256,
           height: 256,
-          child: Image.memory(convertedBytes, fit: BoxFit.contain),
+          child: Image.memory(convertedBytes!, fit: BoxFit.contain),
         ),
       );
     });
-  }
-
-  void saveRealImageToGallery() async {
-    if (imageOutput != null && show == false) {
-      RenderRepaintBoundary boundary =
-          imageKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData? byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-      // Save the image to the device's gallery
-      final result =
-          await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
-      // Check if the image was saved successfully
-      if (result != null) {
-        DialogHelper.showImageSavedDialog(context);
-      } else {
-        DialogHelper.showImageNotSavedDialog(context);
-      }
-    } else {
-      DialogHelper.showImageNotSavedDialog(context);
-    }
   }
 
   Future<ui.Image?> decodeImageFromFile(File imageFile) async {
@@ -167,28 +145,6 @@ class _Screen2State extends State<DrawingScreen> {
     return completer.future;
   }
 
-  // Future<void> loadImage(XFile? file) async {
-  //   try {
-  //     if (file != null) {
-  //       final File pickedImage = File(file.path);
-  //       final decodedImage = await decodeImageFromFile(pickedImage);
-  //       if (decodedImage != null &&
-  //           decodedImage.width == 256 &&
-  //           decodedImage.height == 256) {
-  //         setState(() {
-  //           //UserPickedImage = pickedImage;
-  //         });
-  //         var base64String = await fileToBase64(file);
-  //         fetchResponse(base64String);
-  //       } else {
-  //         showImageNotSupportedDialog();
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print('Error loading image: $e');
-  //   }
-  // }
-
   Future<String> fileToBase64(File file) async {
     try {
       List<int> bytes = await file.readAsBytes();
@@ -208,44 +164,6 @@ class _Screen2State extends State<DrawingScreen> {
     } catch (e) {
       print('Error converting file to base64: $e');
       return '';
-    }
-  }
-
-  // Future<void> _pickImage() async {
-  //   final ImagePicker _picker = ImagePicker();
-  //   XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-  //   if (image != null) {
-  //     if (kIsWeb) {
-  //       var f = await image.readAsBytes();
-  //       setState(() {
-  //         webImage = f;
-  //         //UserPickedImage = File(); // Set to null as it's not being used
-  //       });
-  //     } else {
-  //       var selected = File(image.path);
-  //       setState(() {
-  //         UserPickedImage = selected;
-  //       });
-  //     }
-  //   } else {
-  //     print('No image has been picked');
-  //   }
-  // }
-
-  File? selectRandomImage() {
-    const int totalImages = 10;
-    Random random = Random();
-    int randomIndex = random.nextInt(totalImages) + 1;
-    String imagePath = 'assets/Sketches/$randomIndex.jpg';
-    // Check if the image file exists
-    File imageFile = File(imagePath);
-    if (imageFile.existsSync()) {
-      return imageFile;
-    } else {
-      // Handle the case when the image file doesn't exist
-      print('Image file not found: $imagePath');
-      return null;
     }
   }
 
@@ -295,57 +213,20 @@ class _Screen2State extends State<DrawingScreen> {
   }
 
 // Method for web platforms
-  void saveImageToGalleryWeb() async {
-    try {
-      if (imageOutput != null && show == false) {
-        RenderRepaintBoundary boundary = imageKey.currentContext!
-            .findRenderObject() as RenderRepaintBoundary;
-        ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-        ByteData? byteData =
-            await image.toByteData(format: ui.ImageByteFormat.png);
-        Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-        // Convert the image bytes to base64
-        String base64Image = base64Encode(pngBytes);
-
-        // Create an anchor element
-        final anchor = html.AnchorElement(
-            href: 'data:application/octet-stream;base64,$base64Image')
-          ..setAttribute('download', 'image.png')
-          ..style.display = 'none';
-
-        // Add the anchor element to the document body
-        html.document.body!.children.add(anchor);
-
-        // Trigger a click event on the anchor element
-        anchor.click();
-
-        // Remove the anchor element from the document body
-        html.document.body!.children.remove(anchor);
-
-        // Show a success message
-        DialogHelper.showImageSavedDialogWb(context);
-      } else {
-        DialogHelper.showImageNotSavedDialog(context);
-      }
-    } catch (e) {
-      // Handle any exceptions
-      print('Error saving image: $e');
-      DialogHelper.showImageNotSavedDialog;
-    }
-  }
-
-  // Method for saving image on web
-  void saveSketchImageWeb() async {
+  void downaloadRealImageWeb() async {
     if (drawingPoints.isNotEmpty) {
       // Convert the image bytes to base64
-      String base64Image = base64Encode(Uint8List.fromList(listBytes));
+      String base64Image = base64Encode(Uint8List.fromList(convertedBytes!));
+
+      // Generate a timestamp
+      String formattedDate =
+          DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
 
       // Create an anchor element
       final anchor = html.AnchorElement(
         href: 'data:application/octet-stream;base64,$base64Image',
       )
-        ..setAttribute('download', 'image.png')
+        ..setAttribute('download', 'real_image_$formattedDate.png')
         ..style.display = 'none';
 
       // Add the anchor element to the document body
@@ -363,11 +244,57 @@ class _Screen2State extends State<DrawingScreen> {
     }
   }
 
+  // Method for saving sketch image on web
+  void downloadSketchImageWeb() async {
+  if (drawingPoints.isNotEmpty) {
+    // Convert the image bytes to base64
+    String base64Image = base64Encode(Uint8List.fromList(listBytes));
+
+    // Generate a timestamp
+    String formattedDate = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+
+    // Create an anchor element
+    final anchor = html.AnchorElement(
+      href: 'data:application/octet-stream;base64,$base64Image',
+    )
+      ..setAttribute('download', 'sketch_image_$formattedDate.png')
+      ..style.display = 'none';
+
+    // Add the anchor element to the document body
+    html.document.body!.children.add(anchor);
+
+    // Trigger a click event on the anchor element
+    anchor.click();
+
+    // Remove the anchor element from the document body
+    html.document.body!.children.remove(anchor);
+
+    DialogHelper.showImageSavedDialogWb(context);
+  } else {
+    DialogHelper.showImageNotSavedDialog(context);
+  }
+  }
+
 // Method for saving image on mobile
   void saveSketchImageToGallery() async {
     if (drawingPoints.isNotEmpty) {
       final result =
           await ImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
+      if (result != null) {
+        DialogHelper.showImageSavedDialog(context);
+      } else {
+        DialogHelper.showImageNotSavedDialog(context);
+      }
+    } else {
+      DialogHelper.showImageNotSavedDialog(context);
+    }
+  }
+
+  // Method for saving image on mobile
+  void saveRealImageToGallery() async {
+    if (drawingPoints.isNotEmpty) {
+      final result = await ImageGallerySaver.saveImage(
+          Uint8List.fromList(convertedBytes!));
       if (result != null) {
         DialogHelper.showImageSavedDialog(context);
       } else {
@@ -598,7 +525,7 @@ class _Screen2State extends State<DrawingScreen> {
                             onPressed: () {
                               setState(() {
                                 if (kIsWeb) {
-                                  saveSketchImageWeb();
+                                  downloadSketchImageWeb();
                                 } else {
                                   saveSketchImageToGallery();
                                 }
@@ -654,7 +581,7 @@ class _Screen2State extends State<DrawingScreen> {
                           IconButton(
                             onPressed: () {
                               if (kIsWeb) {
-                                saveImageToGalleryWeb();
+                                downaloadRealImageWeb();
                               }
                               if (!kIsWeb) {
                                 saveRealImageToGallery();

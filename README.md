@@ -64,10 +64,10 @@ I try to draw my face sketch and give it to model and results was very accurate 
 ![sir-naveed-results](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/672bd2b0-778c-4706-9dfc-8e1612090385)
 ![random-girl](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/5200616a-7d70-469a-81f7-fe3d52126d1f)
 
-# How To Run 
-  1 - First run the backend in PyCharm with trained model by getting it from me. 
-  2 - Then you will get your machine ip address on which your model is currently running. 
-  3 - Now add this ip address in to Flutter application so your frontend can talk to backend.
+## How To Run 
+- First run the backend in PyCharm with trained model by getting it from me.
+- Then you will get your machine ip address on which your model is currently running. 
+- Now add this ip address in to Flutter application so your frontend can talk to backend.
 
 ## Credits
 - I took the model architecture concept from this paper named as "Image-To-Image Translation With Conditional Generative Adversarial Neural Networks" from https://arxiv.org/abs/1611.07004 because they have provided a commom framework you just have to change the dataset.

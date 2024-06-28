@@ -110,8 +110,8 @@ class _Screen2State extends State<DrawingScreenDesktop> {
   }
 
   void displayResponseImage(String bytes) async {
-    Uint8List convertedBytes = base64Decode(bytes);
-    if (convertedBytes.isNotEmpty) {
+    convertedBytes = base64Decode(bytes);
+    if (convertedBytes!.isNotEmpty) {
       show = false;
     }
     setState(() {
@@ -120,7 +120,7 @@ class _Screen2State extends State<DrawingScreenDesktop> {
         child: SizedBox(
           width: 256,
           height: 256,
-          child: Image.memory(convertedBytes, fit: BoxFit.contain),
+          child: Image.memory(convertedBytes!, fit: BoxFit.contain),
         ),
       );
     });

@@ -59,7 +59,7 @@ class OnBoardingController extends GetxController {
     // Check if the user has visited 3 pages or more
     if (pagesVisited >= 3) {
       // Navigate to the welcome screen
-      skip();
+      //skip();
     }
   }
 
@@ -72,7 +72,7 @@ class OnBoardingController extends GetxController {
     // Check if the user has visited 3 pages or more
     if (pagesVisited >= 3) {
       // Navigate to the welcome screen
-      skip();
+      //skip();
     }
   }
 }

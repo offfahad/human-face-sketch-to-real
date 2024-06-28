@@ -6,6 +6,7 @@ import 'package:human_face_generator/src/constants/sizes.dart';
 import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/signup_controller.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
+import 'package:human_face_generator/src/features/authentication/screens/signup/termAndCondition.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpFormWidget extends StatefulWidget {
@@ -22,6 +23,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   final controller = Get.put(SignUpController());
   final _formKey = GlobalKey<FormState>();
   bool _isSigningUp = false;
+  bool agreement = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -138,11 +140,38 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               obscureText: !_isPasswordVisible,
             ),
             const SizedBox(height: tFormHeight - 10),
+            Row(
+              children: [
+                Checkbox(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  activeColor: tPrimaryColor,
+                  side: const BorderSide(
+                    color: tSecondaryColor,
+                  ),
+                  value: agreement,
+                  onChanged: (value) {
+                    setState(() {
+                      agreement = value!;
+                    });
+                  },
+                ),
+                InkWell(
+                  onTap: (){
+                    Get.to(const TermAndConditionScreen());
+                  },
+                  child: const Text(
+                    'Accept terms & Condition ?',
+                    style: TextStyle(color: tSecondaryColor),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: tFormHeight - 10),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
+                  if (_formKey.currentState!.validate() && agreement==true) {
                     //   SignUpController.instance.registerUser(controller.email.text.trim(), controller.password.text.trim());
                     //SignUpController.instance
                     //    .phoneAuthentication(controller.phoneNo.text.trim());

@@ -34,7 +34,7 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ![Forgot Password and OTP Screens](https://github.com/offfahad/Sketch2Real/assets/19569802/0ed24d83-ed26-4826-a153-60b3cadfe1c5)
 
 ### Home Screen (Draw Sketch Like This And Make It Into Realistic Face Image)
-![5c345f034d3fe947a5eaa2a733c30e097abd6a4a-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/c4a8d275-dc01-4a2b-8737-66f1ed49dd55)
+![reuslts](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/0f308c24-3401-48bc-83eb-8c0d8d55bc3b)
 
 ### Edit Profile and Drawing Practice Screen
 ![WhatsApp Image 2024-05-10 at 21 25 48_11a8484b-imageonline co-merged](https://github.com/offfahad/Sketch2Real/assets/19569802/b061e606-4cf2-4dc1-916f-8d6fb4c4acc3)
@@ -58,9 +58,11 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 ![10000Epochs](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/50b7014a-cd50-4e78-9a22-f9ff517c0120)
 
 # Unseen Imgae Result
-I try to draw my face sketch and give it to model and results was very accurate and mind blowing!
-
+I try to draw my face sketch and give it to model and results was very accurate and mind blowing! The first one is mine.
 ![10000Epochs](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/33549348-c3f3-4767-b5e4-4728f3f7aa3d)
+## Two More Unseen Images Results
+![sir-naveed-results](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/672bd2b0-778c-4706-9dfc-8e1612090385)
+![random-girl](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/5200616a-7d70-469a-81f7-fe3d52126d1f)
 
 ## Credits
 - I took the model architecture concept from this paper named as "Image-To-Image Translation With Conditional Generative Adversarial Neural Networks" from https://arxiv.org/abs/1611.07004 because they have provided a commom framework you just have to change the dataset.

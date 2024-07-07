@@ -22,6 +22,10 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 
 - **State Management and Performance Optimization:** The application leverages the GetX library for efficient state management, optimizing performance and resource utilization. This approach ensures smooth and responsive user interactions, even when handling complex image processing tasks.
 
+## Quick Demo Video
+
+https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/ca1d41db-810e-43b3-bbec-a70b9b711885
+
 ## UI Of The Application
 
 ### Onboarding Screens

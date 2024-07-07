@@ -24,7 +24,7 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 
 ## Quick Demo Video
 
-https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/ca1d41db-810e-43b3-bbec-a70b9b711885
+https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/c918c75e-8750-4794-bd94-22a40599edf0
 
 ## UI Of The Application
 
@@ -64,9 +64,10 @@ https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/ca1d41db-8
 # Unseen Imgae Result
 I try to draw my face sketch and give it to model and results was very accurate and mind blowing! The first one is mine.
 ![10000Epochs](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/33549348-c3f3-4767-b5e4-4728f3f7aa3d)
-## Two More Unseen Images Results
+## More Unseen Images Results
 ![sir-naveed-results](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/672bd2b0-778c-4706-9dfc-8e1612090385)
 ![random-girl](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/5200616a-7d70-469a-81f7-fe3d52126d1f)
+![sir-zafar-results](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/681a68bb-f8c8-4fd6-90e9-1bcb73683315)
 
 ## How To Run 
 - First run the backend in PyCharm with trained model by getting it from me.

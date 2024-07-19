@@ -78,5 +78,5 @@ I try to draw my face sketch and give it to model and results was very accurate 
 - I took the model architecture concept from this paper named as "Image-To-Image Translation With Conditional Generative Adversarial Neural Networks" from https://arxiv.org/abs/1611.07004 because they have provided a commom framework you just have to change the dataset.
 -  I trained my model on Google Colab around for 3 months just on training phase due to limited GPU computing units even on the premium subscription.
 -  The frontend was also very time taking task due to drawing concepts.
--  If you need the full trained model and dataset which is used in my project you can contact me :)
+-  If you need the full trained model and dataset which is used in my project you can buy from me for 100$.
 -  Gmail: mughalfahad544@gmail.com

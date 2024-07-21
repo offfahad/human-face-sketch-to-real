@@ -1,12 +1,12 @@
-# Sketch2Real: A Deep Learning-Powered Image Translation Application
+# Face Sketch To Real (Sketch2Real): A Deep Learning-Powered Image Translation Application
 
 ## Introduction
 
-Sketch2Real is a innovative image translation application which I developed for my final year project of BS Computer Science degree. All the project documentation and implementation of coding was made by a single developer, demonstrating comprehensive skills in machine learning, mobile application development, and backend integration.
+Face Sketch To Real is a innovative image translation application which I developed for my final year project of BS Computer Science degree. All the project documentation and implementation of coding was made by a single developer, demonstrating comprehensive skills in machine learning, mobile application development, and backend integration.
 
 ## Project Overview
 
-Sketch2Real leverages state-of-the-art deep learning techniques, specifically Generative Adversarial Networks (GANs) and the Image-To-Image Translation Alogorithm, to translate hand-drawn human face sketches into realistic images. The application targets both mobile and web platforms, offering users an intuitive and interactive interface for creating lifelike portraits from rough sketches.
+Face  Sketch To Real leverages state-of-the-art deep learning techniques, specifically Generative Adversarial Networks (GANs) and the Image-To-Image Translation Alogorithm, to translate hand-drawn human face sketches into realistic images. The application targets both mobile and web platforms, offering users an intuitive and interactive interface for creating lifelike portraits from rough sketches.
 
 ## Key Features
 

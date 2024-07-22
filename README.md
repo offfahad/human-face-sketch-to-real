@@ -6,7 +6,7 @@ Face Sketch To Real is a innovative image translation application which I develo
 
 ## Project Overview
 
-Face  Sketch To Real leverages state-of-the-art deep learning techniques, specifically Generative Adversarial Networks (GANs) and the Image-To-Image Translation Alogorithm, to translate hand-drawn human face sketches into realistic images. The application targets both mobile and web platforms, offering users an intuitive and interactive interface for creating lifelike portraits from rough sketches.
+Face  Sketch To Real leverages state-of-the-art deep learning techniques, specifically Conditional Generative Adversarial Networks (CGANs) and the Image-To-Image Translation Alogorithm, to translate hand-drawn human face sketches into realistic images. The application targets both mobile and web platforms, offering users an intuitive and interactive interface for creating lifelike portraits from rough sketches.
 
 ## Key Features
 
@@ -70,13 +70,13 @@ I try to draw my face sketch and give it to model and results was very accurate 
 ![sir-zafar-results](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/681a68bb-f8c8-4fd6-90e9-1bcb73683315)
 
 ## How To Run 
-- First run the backend in PyCharm with trained model by getting it from me.
-- Then you will get your machine ip address on which your model is currently running. 
-- Now add this ip address in to Flutter application so your frontend can talk to backend.
+- First run the Backend in PyCharm with Trained Model by getting it from me.
+- Then you will get your Machine IP Address on which your Model is currently running. 
+- Now add this IP Address in to Flutter application so your frontend can talk to backend.
 
 ## Credits
 - I took the model architecture concept from this paper named as "Image-To-Image Translation With Conditional Generative Adversarial Neural Networks" from https://arxiv.org/abs/1611.07004 because they have provided a commom framework you just have to change the dataset.
--  I trained my model on Google Colab around for 3 months just on training phase due to limited GPU computing units even on the premium subscription.
+-  I trained my model on Google Colab Pro around for 3 months just on training phase due to limited GPU computing units even on the premium subscription.
 -  The frontend was also very time taking task due to drawing concepts.
 -  If you need the full trained model and dataset which is used in my project you can buy from me for 100$.
 -  Gmail: mughalfahad544@gmail.com

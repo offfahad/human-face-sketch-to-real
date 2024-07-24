@@ -1,4 +1,4 @@
-# Face Sketch To Real (Sketch2Real): A Deep Learning-Powered Image Translation Application
+# Face Sketch To Real (Sketch2Face.AI): A Deep Learning-Powered Image Translation Application
 
 ## Introduction
 

@@ -1,12 +1,12 @@
-# Sketch2Real: A Deep Learning-Powered Image Translation Application
+# Face Sketch To Real (Sketch2Face.AI): A Deep Learning-Powered Image Translation Application
 
 ## Introduction
 
-Sketch2Real is a innovative image translation application which I developed for my final year project of BS Computer Science degree. All the project documentation and implementation of coding was made by a single developer, demonstrating comprehensive skills in machine learning, mobile application development, and backend integration.
+Face Sketch To Real is a innovative image translation application which I developed for my final year project of BS Computer Science degree. All the project documentation and implementation of coding was made by a single developer, demonstrating comprehensive skills in machine learning, mobile application development, and backend integration.
 
 ## Project Overview
 
-Sketch2Real leverages state-of-the-art deep learning techniques, specifically Generative Adversarial Networks (GANs) and the Image-To-Image Translation Alogorithm, to translate hand-drawn human face sketches into realistic images. The application targets both mobile and web platforms, offering users an intuitive and interactive interface for creating lifelike portraits from rough sketches.
+Face  Sketch To Real leverages state-of-the-art deep learning techniques, specifically Conditional Generative Adversarial Networks (CGANs) and the Image-To-Image Translation Alogorithm, to translate hand-drawn human face sketches into realistic images. The application targets both mobile and web platforms, offering users an intuitive and interactive interface for creating lifelike portraits from rough sketches.
 
 ## Key Features
 
@@ -21,6 +21,10 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 - **Authentication and Security:** Firebase authentication is integrated into Sketch2Real, ensuring secure user login and data privacy. User authentication mechanisms provide a seamless and secure experience for accessing the application's features and functionalities.
 
 - **State Management and Performance Optimization:** The application leverages the GetX library for efficient state management, optimizing performance and resource utilization. This approach ensures smooth and responsive user interactions, even when handling complex image processing tasks.
+
+## Quick Demo Video
+
+https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/c918c75e-8750-4794-bd94-22a40599edf0
 
 ## UI Of The Application
 
@@ -60,13 +64,16 @@ Sketch2Real leverages state-of-the-art deep learning techniques, specifically Ge
 # Unseen Imgae Result
 I try to draw my face sketch and give it to model and results was very accurate and mind blowing! The first one is mine.
 ![10000Epochs](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/33549348-c3f3-4767-b5e4-4728f3f7aa3d)
-## Two More Unseen Images Results
+## More Unseen Images Results
 ![sir-naveed-results](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/672bd2b0-778c-4706-9dfc-8e1612090385)
 ![random-girl](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/5200616a-7d70-469a-81f7-fe3d52126d1f)
+![sir-zafar-results](https://github.com/offfahad/human-face-sketch-to-real/assets/19569802/681a68bb-f8c8-4fd6-90e9-1bcb73683315)
 
 ## Credits
 - I took the model architecture concept from this paper named as "Image-To-Image Translation With Conditional Generative Adversarial Neural Networks" from https://arxiv.org/abs/1611.07004 because they have provided a commom framework you just have to change the dataset.
--  I trained my model on Google Colab around for 3 months just on training phase due to limited GPU computing units even on the premium subscription.
+-  I trained my model on Google Colab Pro around for 3 months just on training phase due to limited GPU computing units even on the premium subscription.
 -  The frontend was also very time taking task due to drawing concepts.
--  If you need the full trained model and dataset which is used in my project you can contact me :)
 -  Gmail: mughalfahad544@gmail.com
+
+# License
+This project is licensed under the MIT License - see the LICENSE.md file for details.

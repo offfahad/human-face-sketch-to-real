@@ -44,7 +44,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCwUEsUxBNFtIC_EC_IsjQyuUg5eeC1jqk',
+    apiKey: '',
     appId: '1:1094961899386:web:4556ab8dc61207453d98c3',
     messagingSenderId: '1094961899386',
     projectId: 'fyp-human-face-generator',
@@ -53,7 +53,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyChBu5TNCHD4e3XEcKfItgyuLIbgxrJrAU',
+    apiKey: '',
     appId: '1:1094961899386:android:79733e7ea92cadf53d98c3',
     messagingSenderId: '1094961899386',
     projectId: 'fyp-human-face-generator',
@@ -61,7 +61,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBz3_QU3pI-EBEgcclPt3pohTaBdIbcr64',
+    apiKey:'',
     appId: '1:1094961899386:ios:ae544d1718dcac923d98c3',
     messagingSenderId: '1094961899386',
     projectId: 'fyp-human-face-generator',
@@ -72,7 +72,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBz3_QU3pI-EBEgcclPt3pohTaBdIbcr64',
+    apiKey: '',
     appId: '1:1094961899386:ios:8e9a31ce61a874123d98c3',
     messagingSenderId: '1094961899386',
     projectId: 'fyp-human-face-generator',

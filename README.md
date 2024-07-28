@@ -74,3 +74,6 @@ I try to draw my face sketch and give it to model and results was very accurate 
 -  I trained my model on Google Colab Pro around for 3 months just on training phase due to limited GPU computing units even on the premium subscription.
 -  The frontend was also very time taking task due to drawing concepts.
 -  Gmail: mughalfahad544@gmail.com
+
+# License
+This project is licensed under the MIT License - see the LICENSE.md file for details.

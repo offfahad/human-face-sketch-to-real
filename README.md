@@ -76,4 +76,4 @@ I try to draw my face sketch and give it to model and results was very accurate 
 -  Gmail: mughalfahad544@gmail.com
 
 # License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the MIT License - see the LICEMSE.md file for details.

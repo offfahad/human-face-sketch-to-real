@@ -18,7 +18,7 @@ app = Flask(__name__)
 api = Api(app)
 CORS(app)
 
-model = load_model('fully_trained.h5')
+model = load_model('10000epochs.h5')
 print('* Model Loaded')
 
 

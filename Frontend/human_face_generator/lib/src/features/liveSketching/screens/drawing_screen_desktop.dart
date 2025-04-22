@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_image_gallery_saver/flutter_image_gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,6 @@ import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
 import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:intl/intl.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -280,13 +280,8 @@ class _Screen2State extends State<DrawingScreenDesktop> {
 // Method for saving image on mobile
   void saveSketchImageToGallery() async {
     if (drawingPoints.isNotEmpty) {
-      final result =
-          await ImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
-      if (result != null) {
-        DialogHelper.showImageSavedDialog(context);
-      } else {
-        DialogHelper.showImageNotSavedDialog(context);
-      }
+      await FlutterImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
+      DialogHelper.showImageSavedDialog(context);
     } else {
       DialogHelper.showImageNotSavedDialog(context);
     }
@@ -295,13 +290,10 @@ class _Screen2State extends State<DrawingScreenDesktop> {
   // Method for saving image on mobile
   void saveRealImageToGallery() async {
     if (drawingPoints.isNotEmpty) {
-      final result = await ImageGallerySaver.saveImage(
+      await FlutterImageGallerySaver.saveImage(
           Uint8List.fromList(convertedBytes!));
-      if (result != null) {
-        DialogHelper.showImageSavedDialog(context);
-      } else {
-        DialogHelper.showImageNotSavedDialog(context);
-      }
+
+      DialogHelper.showImageSavedDialog(context);
     } else {
       DialogHelper.showImageNotSavedDialog(context);
     }

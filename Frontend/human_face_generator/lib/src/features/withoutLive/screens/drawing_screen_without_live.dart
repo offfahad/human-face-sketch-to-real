@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_gallery_saver/flutter_image_gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:human_face_generator/src/common_widgets/dialogs/dialog_helper.dart';
@@ -12,7 +13,6 @@ import 'package:human_face_generator/src/constants/server_url.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
 import 'package:human_face_generator/src/features/withoutLive/models/drawing_point_without_live.dart';
 import 'package:human_face_generator/src/features/withoutLive/screens/result_screen.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
@@ -168,13 +168,8 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
 // Method for saving image on mobile
   void saveSketchImageToGallery() async {
     if (drawingPoints.isNotEmpty) {
-      final result =
-          await ImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
-      if (result != null) {
-        DialogHelper.showImageSavedDialog(context);
-      } else {
-        DialogHelper.showImageNotSavedDialog(context);
-      }
+      await FlutterImageGallerySaver.saveImage(Uint8List.fromList(listBytes));
+      DialogHelper.showImageSavedDialog(context);
     } else {
       DialogHelper.showImageNotSavedDialog(context);
     }
@@ -189,7 +184,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
         centerTitle: true,
         leading: IconButton(
             icon: const Icon(
-              LineAwesomeIcons.angle_left,
+              LineAwesomeIcons.angle_left_solid,
               color: tWhiteColor,
             ),
             onPressed: () => Get.back()),

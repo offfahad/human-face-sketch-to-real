@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: IconButton(
             onPressed: () => Get.back(),
             icon: const Icon(
-              LineAwesomeIcons.angle_left,
+              LineAwesomeIcons.angle_left_solid,
               color: tWhiteColor,
             )),
         title: Text(
@@ -50,12 +50,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: tWhiteColor,
           ),
         ),
-        // actions: [
-        //   IconButton(
-        //       onPressed: () {},
-        //       icon: Icon(
-        //           isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
-        // ],
       ),
       body: Center(
         child: Container(
@@ -65,58 +59,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.only(top: 20.0),
             child: Column(
               children: [
-                /// -- IMAGE
-                //if (!kIsWeb)
-                //const SizedBox(height: 150,),
-                FutureBuilder(
-                  future: controller.getUserData(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        UserModel userData = snapshot.data as UserModel;
-                        final email = userData.email;
-                        final fullname = userData.fullName;
-                        final profileUrl = userData.profileImage;
-                        return Column(
-                          children: [
-                            SizedBox(
+                SizedBox(
+                  height: 200, // or whatever height you want to reserve
+                  child: FutureBuilder(
+                    future: controller.getUserData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          UserModel userData = snapshot.data as UserModel;
+                          final email = userData.email;
+                          final fullname = userData.fullName;
+                          final profileUrl = userData.profileImage;
+                          return Column(
+                            children: [
+                              SizedBox(
                                 width: 120,
                                 height: 120,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
                                   child: Image.network(
                                     profileUrl,
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Container(
+                                        width: 120,
+                                        height: 120,
+                                        color: Colors.grey.shade200,
+                                        child: const Center(
+                                          child: CircularProgressIndicator(
+                                              strokeWidth: 2),
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        width: 120,
+                                        height: 120,
+                                        color: Colors.grey.shade200,
+                                        child: const Icon(Icons.person,
+                                            size: 60, color: Colors.grey),
+                                      );
+                                    },
                                   ),
-                                )),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(fullname,
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium),
-                            Text(email,
-                                style: Theme.of(context).textTheme.bodyMedium),
-                          ],
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text(snapshot.error.toString()),
-                        );
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(fullname,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
+                              Text(email,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                            ],
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text(snapshot.error.toString()));
+                        } else {
+                          return const Center(
+                              child: Text(
+                                  'Too Slow Internet Connection Try Again.'));
+                        }
                       } else {
                         return const Center(
                           child:
-                              Text('Too Slow Internet Connection Try Again.'),
+                              CircularProgressIndicator(color: tPrimaryColor),
                         );
                       }
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: tPrimaryColor,
-                        ),
-                      );
-                    }
-                  },
+                    },
+                  ),
                 ),
 
                 const SizedBox(height: 20),
@@ -153,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 //if (screenWidth >= 800)
                 ProfileMenuWidget(
                   title: "Face Sketch To Real Mode",
-                  icon: LineAwesomeIcons.pen_square,
+                  icon: LineAwesomeIcons.pen_square_solid,
                   onPress: () {
                     Get.to(() => const DrawingResponsiveLayout());
                   },
@@ -164,11 +177,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onPress: () {
                       Get.to(() => const DrawingScreenWithoutLive());
                     }),
-                //if (screenWidth >= 800) const SizedBox(height: 10),
-                //if (screenWidth >= 800)
-
-                //if (screenWidth >= 800) const Divider(),
-                //const SizedBox(height: 10),
                 ProfileMenuWidget(
                     title: "Reset Password",
                     icon: Icons.password,
@@ -179,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 10),
                 ProfileMenuWidget(
                   title: "Logout",
-                  icon: LineAwesomeIcons.alternate_sign_out,
+                  icon: LineAwesomeIcons.sign_out_alt_solid,
                   textColor: Colors.red,
                   endIcon: false,
                   onPress: () async {

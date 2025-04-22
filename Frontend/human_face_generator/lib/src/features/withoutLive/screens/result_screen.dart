@@ -18,7 +18,7 @@ class ResultImage extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
             icon: const Icon(
-              LineAwesomeIcons.angle_left,
+              LineAwesomeIcons.angle_left_solid,
               color: tWhiteColor,
             ),
             onPressed: () => Get.back()),

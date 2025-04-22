@@ -5,9 +5,11 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -42,3 +44,14 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+# Firebase Android config
+android/app/google-services.json
+
+# Firebase iOS config
+ios/Runner/GoogleService-Info.plist
+ios/firebase_app_id_file.json
+
+# Firebase Dart config (if manually added sensitive data)
+lib/firebase_options.dart

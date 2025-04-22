@@ -1,0 +1,11 @@
+# Firebase Android config
+/Frontend/human_face_generator/android/app/google-services.json
+
+# Firebase iOS config
+/Frontend/human_face_generator/ios/Runner/GoogleService-Info.plist
+/Frontend/human_face_generator/ios/firebase_app_id_file.json
+
+# Firebase Dart config (if manually added sensitive data)
+/Frontend/human_face_generator/lib/firebase_options.dart
+
+/Frontend/human_face_generator/firebase.json

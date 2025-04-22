@@ -47,11 +47,13 @@ app.*.map.json
 
 
 # Firebase Android config
-android/app/google-services.json
+/android/app/google-services.json
 
 # Firebase iOS config
-ios/Runner/GoogleService-Info.plist
-ios/firebase_app_id_file.json
+/ios/Runner/GoogleService-Info.plist
+/ios/firebase_app_id_file.json
 
 # Firebase Dart config (if manually added sensitive data)
-lib/firebase_options.dart
+/lib/firebase_options.dart
+
+/firebase.json

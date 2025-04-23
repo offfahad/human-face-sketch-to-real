@@ -30,11 +30,12 @@ class _ForgetPasswordPhoneScreenState extends State<ForgetPasswordPhoneScreen> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
-            color: tPrimaryColor,
+            color: Colors.white,
           ),
           onPressed: () => Get.back(),
         ),
         elevation: 0,
+        backgroundColor: tPrimaryColor,
       ),
       body: SingleChildScrollView(
         child: Center(

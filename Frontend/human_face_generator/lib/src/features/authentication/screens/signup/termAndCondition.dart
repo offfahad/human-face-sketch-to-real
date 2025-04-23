@@ -13,8 +13,7 @@ class TermAndConditionScreen extends StatefulWidget {
   const TermAndConditionScreen({Key? key}) : super(key: key);
 
   @override
-  State<TermAndConditionScreen> createState() =>
-      _TermAndConditionScreenState();
+  State<TermAndConditionScreen> createState() => _TermAndConditionScreenState();
 }
 
 class _TermAndConditionScreenState extends State<TermAndConditionScreen> {
@@ -31,7 +30,6 @@ class _TermAndConditionScreenState extends State<TermAndConditionScreen> {
             ),
             onPressed: () => Get.back(),
           ),
-          backgroundColor: Colors.transparent,
           elevation: 0,
         ),
         body: Center(
@@ -49,7 +47,11 @@ class _TermAndConditionScreenState extends State<TermAndConditionScreen> {
                 ),
                 Text(
                   textAlign: TextAlign.justify,
-                    'By accepting the checkbox your are giving you provided information while signing up to us. Your provided information is secured and save and no other user of application can have the access of it.', style: TextStyle(fontSize: 20,),),
+                  'By accepting the checkbox your are giving you provided information while signing up to us. Your provided information is secured and save and no other user of application can have the access of it.',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
               ],
             ),
           ),

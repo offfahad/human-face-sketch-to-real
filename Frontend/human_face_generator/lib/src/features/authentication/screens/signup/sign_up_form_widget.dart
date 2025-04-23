@@ -7,6 +7,7 @@ import 'package:human_face_generator/src/constants/text_strings.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/signup_controller.dart';
 import 'package:human_face_generator/src/features/authentication/models/user_model.dart';
 import 'package:human_face_generator/src/features/authentication/screens/signup/termAndCondition.dart';
+import 'package:human_face_generator/src/features/liveSketching/screens/drawing_layout_responsive.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpFormWidget extends StatefulWidget {
@@ -156,7 +157,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                   },
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     Get.to(const TermAndConditionScreen());
                   },
                   child: const Text(
@@ -171,15 +172,9 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  if (_formKey.currentState!.validate() && agreement==true) {
-                    //   SignUpController.instance.registerUser(controller.email.text.trim(), controller.password.text.trim());
-                    //SignUpController.instance
-                    //    .phoneAuthentication(controller.phoneNo.text.trim());
-                    //Get.to(() => const OTPScreen());
-                    // }
-                    setState(() {
-                      _isSigningUp = true;
-                    });
+                  if (_formKey.currentState!.validate() && agreement == true) {
+                    if (mounted) setState(() => _isSigningUp = true);
+
                     final user = UserModel(
                       fullName: controller.fullName.text.trim(),
                       email: controller.email.text.trim(),
@@ -187,13 +182,25 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                       password: controller.password.text.trim(),
                       profileImage: tNetworkProfileImage,
                     );
-                    await SignUpController.instance.createUser(user);
-                    setState(() {
-                      _isSigningUp = false;
-                    });
+
+                    final success =
+                        await SignUpController.instance.createUser(user);
+
+                    if (!mounted) return;
+
+                    setState(() => _isSigningUp = false);
+
+                    if (success) {
+                      Get.to(() =>
+                          const DrawingResponsiveLayout()); // or Navigator.pushReplacement
+                    }
                   }
                 },
-                child: _isSigningUp ? const CircularProgressIndicator(color: Colors.white,) : const Text(tSignup),
+                child: _isSigningUp
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : const Text(tSignup),
               ),
             ),
             const SizedBox(height: tFormHeight - 10),

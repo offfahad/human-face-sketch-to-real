@@ -22,83 +22,82 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: tPrimaryColor,),
-            onPressed: () => Get.back(),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: tPrimaryColor,
           ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          onPressed: () => Get.back(),
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              width: 450,
-              padding: const EdgeInsets.all(tDefaultSize + 10),
-              child: Column(
-                children: [
-                  const SizedBox(height: tDefaultSize * 4),
-                  FormHeaderWidget(
-                    image: tForgetPasswordImage,
-                    title: tForgetPassword.toUpperCase(),
-                    subTitle: tForgetMailSubTitle2, 
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    heightBetween: 30.0,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: tFormHeight),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            label: Text(tEmail),
-                            hintText: tEmail,
-                            prefixIcon: Icon(Icons.mail_outline_rounded),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Email field cannot be empty!';
-                            }
-                            if (!Controller.isValidEmail(value)) {
-                              return 'Please enter a valid email address!';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              userEmail = value;
-                            });
-                          },
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(tDefaultSize + 10),
+            child: Column(
+              children: [
+                const SizedBox(height: tDefaultSize * 4),
+                FormHeaderWidget(
+                  image: tForgetPasswordImage,
+                  title: tForgetPassword.toUpperCase(),
+                  subTitle: tForgetMailSubTitle2,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  heightBetween: 30.0,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: tFormHeight),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          label: Text(tEmail),
+                          hintText: tEmail,
+                          prefixIcon: Icon(Icons.mail_outline_rounded),
                         ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        print(userEmail);
-                        if (_formKey.currentState!.validate()) {
-                          //Get.to(() => OTPScreen(fetchedEmail: userEmail));
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Email field cannot be empty!';
+                          }
+                          if (!Controller.isValidEmail(value)) {
+                            return 'Please enter a valid email address!';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
                           setState(() {
-                            Controller.resetPassword(
-                              userEmail.trim().toString(),
-                            );
+                            userEmail = value;
                           });
-                        }
-                      },
-                      child: const Text("Send"),
-                    ),
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20.0),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      print(userEmail);
+                      if (_formKey.currentState!.validate()) {
+                        //Get.to(() => OTPScreen(fetchedEmail: userEmail));
+                        setState(() {
+                          Controller.resetPassword(
+                            userEmail.trim().toString(),
+                          );
+                        });
+                      }
+                    },
+                    child: const Text("Send"),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

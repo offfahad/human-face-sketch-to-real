@@ -98,7 +98,7 @@ class _DrawingRoomScreenState extends State<DrawingScreenWithoutLive> {
 
   void fetchResponse(var base64Image) async {
     var data = {"Image": base64Image};
-    var url = Uri.parse(Constants.serverUrl);
+    var url = Uri.parse('${Constants.serverUrl}/predict');
 
     Map<String, String> headers = {
       'Content-type': 'application/json',

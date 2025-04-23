@@ -28,7 +28,8 @@ class OnBoardingScreen extends StatelessWidget {
             child: OutlinedButton(
               onPressed: () => obController.animateToNextSlide(),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, side: const BorderSide(color: Colors.black26),
+                foregroundColor: Colors.white,
+                side: const BorderSide(color: Colors.black26),
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(20),
               ),
@@ -45,11 +46,12 @@ class OnBoardingScreen extends StatelessWidget {
             right: 20,
             child: TextButton(
               onPressed: () => obController.skip(),
-              child: const Text("Skip", style: TextStyle(color: Colors.black, fontSize: 18)),
+              child: const Text("Skip",
+                  style: TextStyle(color: Colors.black, fontSize: 18)),
             ),
           ),
           Obx(
-                () => Positioned(
+            () => Positioned(
               bottom: 20,
               child: AnimatedSmoothIndicator(
                 count: 3,

@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -131,7 +130,7 @@ class AuthenticationRepository extends GetxController {
       if (googleUser != null) {
         // Obtain the auth details from the request
         final GoogleSignInAuthentication? googleAuth =
-            await googleUser?.authentication;
+            await googleUser.authentication;
 
         if (googleAuth != null) {
           // Create a new credential

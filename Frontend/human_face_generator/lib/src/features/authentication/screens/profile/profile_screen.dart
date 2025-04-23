@@ -12,6 +12,7 @@ import 'package:human_face_generator/src/features/authentication/screens/profile
 import 'package:human_face_generator/src/features/authentication/screens/profile/update_profile_screen.dart';
 import 'package:human_face_generator/src/features/authentication/controllers/profile_controller.dart';
 import 'package:human_face_generator/src/features/liveSketching/screens/drawing_layout_responsive.dart';
+import 'package:human_face_generator/src/features/sketchify/sketchify_screen.dart';
 import 'package:human_face_generator/src/features/withoutLive/models/drawing_point_without_live.dart';
 import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
@@ -164,11 +165,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 //     icon: LineAwesomeIcons.wallet,
                 //     onPress: () {}),
                 //if (screenWidth >= 800)
+                // ProfileMenuWidget(
+                //   title: "Face Sketch To Real Mode",
+                //   icon: LineAwesomeIcons.pen_square_solid,
+                //   onPress: () {
+                //     Get.to(() => const DrawingResponsiveLayout());
+                //   },
+                // ),
                 ProfileMenuWidget(
-                  title: "Face Sketch To Real Mode",
+                  title: "Image To Sketch Mode",
                   icon: LineAwesomeIcons.pen_square_solid,
                   onPress: () {
-                    Get.to(() => const DrawingResponsiveLayout());
+                    Get.to(() => const SketchifyScreen());
                   },
                 ),
                 ProfileMenuWidget(

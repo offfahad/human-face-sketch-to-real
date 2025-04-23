@@ -10,22 +10,22 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Get the size in LoginHeaderWidget()
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(tDefaultSize + 20),
-              width: 450,
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20,),
-                  LoginHeaderWidget(),
-                  LoginForm(),
-                  LoginFooterWidget(),
-                ],
-              ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(tDefaultSize + 20),
+            width: 450,
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                LoginHeaderWidget(),
+                LoginForm(),
+                LoginFooterWidget(),
+              ],
             ),
           ),
         ),

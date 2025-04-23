@@ -39,7 +39,7 @@ class SignUpController extends GetxController {
     return error;
   }
 
-  Future<void> createUser(UserModel user) async {
+  Future<bool> createUser(UserModel user) async {
     String? error = await registerUser(user.email, user.password);
     if (error != null) {
       Get.snackbar("Error", error.toString(),
@@ -47,25 +47,11 @@ class SignUpController extends GetxController {
           backgroundColor: Colors.red,
           colorText: Colors.white,
           duration: const Duration(seconds: 3));
+      return false;
     }
-    if (error == null) {
-      // String? error2 = await phoneAuthentication(user.phoneNo);
-      // if (error2 != null) {
-      //   Get.showSnackbar(GetSnackBar(
-      //     message: error.toString(),
-      //     duration: Duration(seconds: 3),
-      //     backgroundColor: tPrimaryColor,
-      //     snackPosition: SnackPosition.BOTTOM,
-      //   ));
-      // }
-      // if (error2 == null) {
-      //   Get.to(() => const OTPScreen());
-      //   await userRepo.createUser(user);
-      // }
-      //Get.to(() => const DrawingScreen());
-      await userRepo.createUserOnCollection(user);
-      Get.to(() => const DrawingResponsiveLayout());
-    }
+
+    await userRepo.createUserOnCollection(user);
+    return true;
   }
 
   Future<void> createGmailUser(UserModel user) async {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:human_face_generator/firebase_options.dart';
-import 'package:human_face_generator/src/features/authentication/controllers/opt_controller.dart';
 import 'package:human_face_generator/src/features/authentication/screens/on_boarding/on_boarding_screen.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:human_face_generator/src/utlis/theme/theme.dart';

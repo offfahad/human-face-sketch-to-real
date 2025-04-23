@@ -27,7 +27,6 @@ class OTPScreen extends StatelessWidget {
           ),
           onPressed: () => Get.back(),
         ),
-        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: Center(

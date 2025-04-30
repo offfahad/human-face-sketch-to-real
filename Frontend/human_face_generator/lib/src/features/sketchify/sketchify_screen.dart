@@ -31,6 +31,7 @@ class _SketchifyScreenState extends State<SketchifyScreen> {
   Widget? imageOutput = Container();
   File? file;
   PlatformFile? _imageFile;
+  bool generateForModel = false;
 
   Future<void> pickAndCropImage() async {
     if (kIsWeb) {
@@ -149,7 +150,8 @@ class _SketchifyScreenState extends State<SketchifyScreen> {
     final response = await http.post(
       Uri.parse('${Constants.serverUrl}/sketchify'),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"Image": base64Image}),
+      body: jsonEncode(
+          {"Image": base64Image, "generate_for_model": generateForModel}),
     );
 
     if (response.statusCode == 200) {
@@ -214,7 +216,7 @@ class _SketchifyScreenState extends State<SketchifyScreen> {
         ),
         centerTitle: true,
         title: Text(
-          "Image To Sketch",
+          "Face Image To Sketch",
           style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,
@@ -223,156 +225,189 @@ class _SketchifyScreenState extends State<SketchifyScreen> {
         ),
         backgroundColor: tPrimaryColor,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 45.0, vertical: 30.0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 257,
-                      height: 257,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(0),
-                        ),
-                        color: Colors.white,
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 0, 0, 0),
-                          width: 1,
-                        ),
-                      ),
-                      child: kIsWeb
-                          ? (_imageFile != null
-                              ? Image.memory(_imageFile!.bytes!,
-                                  fit: BoxFit.contain)
-                              : const Center(
-                                  child: Text(
-                                    "Original Image",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ))
-                          : (selectedImage != null
-                              ? Image.file(selectedImage!, fit: BoxFit.contain)
-                              : const Center(
-                                  child: Text(
-                                    "Original Image",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )),
+                Flexible(
+                  child: Text(
+                    "Check to generate a skech to real face model compatible sketch.",
+                    style: GoogleFonts.poppins(
+                      fontSize: 14.0,
                     ),
-                    const SizedBox(height: 50),
-                    Container(
-                      width: 256,
-                      height: 256,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1.0),
-                      ),
-                      child: show
-                          ? const Center(
-                              child: Text(
-                                "Sketch Image\nWill appear here",
-                                textAlign: TextAlign.center,
-                              ),
-                            )
-                          : imageOutput,
-                    ),
-                  ],
+                    textAlign: TextAlign.justify,
+                  ),
                 ),
-                const SizedBox(width: 20),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 256,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        color: tPrimaryColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(0),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                selectedImage = null;
-                                _imageFile = null;
-                                resultImageBase64 = null;
-                                convertedBytes = null;
-                                // show = true;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 0),
-                          IconButton(
-                            onPressed: pickAndCropImage,
-                            icon: const Icon(
-                              Icons.upload,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    Container(
-                      height: 256,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                        color: tPrimaryColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(0),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                imageOutput = null;
-                                show = true;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 0),
-                          IconButton(
-                            onPressed: () {
-                              if (kIsWeb) {
-                                downaloadRealImageWeb();
-                              } else {
-                                saveRealImageToGallery();
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.download,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                const SizedBox(width: 8),
+                Checkbox(
+                  activeColor: tPrimaryColor,
+                  checkColor: Colors.white,
+                  side: const BorderSide(
+                    color: tPrimaryColor,
+                    width: 1.5,
+                  ),
+                  value: generateForModel,
+                  onChanged: (value) {
+                    setState(() {
+                      generateForModel = value ?? false;
+                    });
+                  },
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 257,
+                    height: 257,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(0),
+                      ),
+                      color: Colors.white,
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                        width: 1,
+                      ),
+                    ),
+                    child: kIsWeb
+                        ? (_imageFile != null
+                            ? Image.memory(_imageFile!.bytes!,
+                                fit: BoxFit.contain)
+                            : const Center(
+                                child: Text(
+                                  "Original Image",
+                                  textAlign: TextAlign.center,
+                                ),
+                              ))
+                        : (selectedImage != null
+                            ? Image.file(selectedImage!, fit: BoxFit.contain)
+                            : const Center(
+                                child: Text(
+                                  "Original Image",
+                                  textAlign: TextAlign.center,
+                                ),
+                              )),
+                  ),
+                  const SizedBox(height: 50),
+                  Container(
+                    width: 256,
+                    height: 256,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1.0),
+                    ),
+                    child: show
+                        ? const Center(
+                            child: Text(
+                              "Sketch Image\nWill appear here",
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        : imageOutput,
+                  ),
+                ],
+              ),
+              const SizedBox(width: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 256,
+                    width: 40,
+                    decoration: const BoxDecoration(
+                      color: tPrimaryColor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(0),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedImage = null;
+                              _imageFile = null;
+                              resultImageBase64 = null;
+                              convertedBytes = null;
+                              // show = true;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 0),
+                        IconButton(
+                          onPressed: pickAndCropImage,
+                          icon: const Icon(
+                            Icons.upload,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+                  Container(
+                    height: 256,
+                    width: 40,
+                    decoration: const BoxDecoration(
+                      color: tPrimaryColor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(0),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              imageOutput = null;
+                              show = true;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 0),
+                        IconButton(
+                          onPressed: () {
+                            if (kIsWeb) {
+                              downaloadRealImageWeb();
+                            } else {
+                              saveRealImageToGallery();
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.download,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -13,6 +13,7 @@ class DialogHelper {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 8),

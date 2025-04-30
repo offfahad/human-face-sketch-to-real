@@ -17,6 +17,7 @@ import 'package:human_face_generator/src/features/liveSketching/models/custom_pa
 import 'package:human_face_generator/src/features/liveSketching/models/drawing_point.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
+import 'package:human_face_generator/src/features/sketchify/sketchify_screen.dart';
 import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
 import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:intl/intl.dart';
@@ -315,17 +316,18 @@ class _Screen2State extends State<DrawingScreenDesktop> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
+                tooltip: "Sketchify",
                 onPressed: () => Get.to(
-                      () => const DrawingScreenWithoutLive(),
+                      () => const SketchifyScreen(),
                     ),
                 icon: const Icon(
-                  Icons.draw,
+                  Icons.swipe,
                   color: Colors.white,
                 )),
           )
         ],
         title: Text(
-          "Home",
+          "Sketch To Real Face",
           style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,

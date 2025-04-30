@@ -1,11 +1,9 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_image_gallery_saver/flutter_image_gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +15,9 @@ import 'package:human_face_generator/src/features/liveSketching/models/custom_pa
 import 'package:human_face_generator/src/features/liveSketching/models/drawing_point.dart';
 import 'package:human_face_generator/src/constants/colors.dart';
 import 'package:human_face_generator/src/features/authentication/screens/profile/profile_screen.dart';
-import 'package:human_face_generator/src/features/withoutLive/screens/drawing_screen_without_live.dart';
-import 'package:human_face_generator/src/repository/authentication_repository/authentication_repository.dart';
+import 'package:human_face_generator/src/features/sketchify/sketchify_screen.dart';
+import 'package:human_face_generator/src/utlis/helpers/sketch_detector.dart';
+import 'package:human_face_generator/src/utlis/helpers/sketch_validation.dart';
 import 'package:intl/intl.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -178,10 +177,19 @@ class _Screen2State extends State<DrawingScreen> {
 
       // If user cancels the picker, do nothing
       if (result == null) return;
+
+      Uint8List bytes;
       if (!kIsWeb) {
         file = File(result.files.single.path!);
+        bytes = await file!.readAsBytes();
         final decodedImage = await decodeImageFromFile(file!);
         if (decodedImage!.width != 256 && decodedImage.height != 256) {
+          DialogHelper.showImageNotSupportedDialog(context);
+          return;
+        }
+        final detector = SketchDetector(imageBytes: bytes);
+        // Check for white background/black lines sketch
+        if (await detector.isWhiteBackgroundBlackLinesSketch()) {
           DialogHelper.showImageNotSupportedDialog(context);
           return;
         }
@@ -191,11 +199,18 @@ class _Screen2State extends State<DrawingScreen> {
       }
       if (kIsWeb) {
         _imageFile = result.files.first;
+        bytes = _imageFile!.bytes!;
         final decodedImage = await decodeImageFromPlatformFile(_imageFile!);
         if (!((decodedImage!.width == 256 && decodedImage.height == 256) ||
             (decodedImage.width == 324 && decodedImage.height == 324))) {
           DialogHelper.showImageNotSupportedDialog(context);
           _imageFile = null;
+          return;
+        }
+        final detector = SketchDetector(imageBytes: bytes);
+        // Check for white background/black lines sketch
+        if (await detector.isWhiteBackgroundBlackLinesSketch()) {
+          DialogHelper.showImageNotSupportedDialog(context);
           return;
         }
         // If user picks an image, update the state with the new image file
@@ -308,7 +323,7 @@ class _Screen2State extends State<DrawingScreen> {
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.dashboard, color: Colors.white),
+          icon: const Icon(Icons.menu, color: Colors.white),
           onPressed: () => Get.to(
             () => const ProfileScreen(),
           ),
@@ -317,17 +332,18 @@ class _Screen2State extends State<DrawingScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
+                tooltip: "Sketchify",
                 onPressed: () => Get.to(
-                      () => const DrawingScreenWithoutLive(),
+                      () => const SketchifyScreen(),
                     ),
                 icon: const Icon(
-                  Icons.draw,
+                  Icons.swipe,
                   color: Colors.white,
                 )),
           )
         ],
         title: Text(
-          "Home",
+          "Sketch To Real Face",
           style: GoogleFonts.poppins(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,

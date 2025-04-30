@@ -58,5 +58,11 @@
 			</array>
 		</dict>
 		</array>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>This app requires access to your photo library to save sketches and thier generated AI images.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>This app requires access to your photo library to upload sketches images to get real AI generated images.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>This app requires access to your camera to take photos and upload them to get AI generated images.</string>
 	</dict>
 </plist>

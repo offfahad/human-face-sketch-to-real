@@ -69,5 +69,7 @@ flutter {
 }
 
 dependencies {
-      implementation "androidx.multidex:multidex:2.0.1"
+    implementation "androidx.multidex:multidex:2.0.1"
+    implementation 'androidx.appcompat:appcompat:1.6.1'  // Required for UCrop
+    implementation 'com.github.yalantis:ucrop:2.2.8'    // Explicit UCrop dependency
 }

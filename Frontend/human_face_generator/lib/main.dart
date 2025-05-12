@@ -25,9 +25,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'FYP APP',
-        theme: TAppTheme.lightTheme,
-        home: const OnBoardingScreen());
+      debugShowCheckedModeBanner: false,
+      title: 'FYP APP',
+      theme: TAppTheme.lightTheme,
+      home: const OnBoardingScreen(),
+    );
   }
 }
